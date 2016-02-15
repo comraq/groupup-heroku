@@ -39,6 +39,7 @@ CREATE TABLE `Event` (
     FOREIGN KEY (createdBy)
         REFERENCES EventProvider (email)
         ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 /*
@@ -58,6 +59,7 @@ CREATE TABLE PrivateEvent (
     FOREIGN KEY (createdBy)
         REFERENCES EventProvider (email)
         ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 /*
@@ -76,6 +78,7 @@ CREATE TABLE HasInvitation (
     FOREIGN KEY (eventName , lat , lon , timeStart , timeEnd)
         REFERENCES PrivateEvent (eventName , lat , lon , timeStart , timeEnd)
         ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 /*
@@ -128,9 +131,13 @@ CREATE TABLE EventTypeHasEvent (
     timeEnd TIME,
     PRIMARY KEY (eventTypeId , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (eventTypeId)
-        REFERENCES EventType (eventTypeId),
+        REFERENCES EventType (eventTypeId)
+        ON DELETE NO ACTION
+        ON UPDATE CASCADE,
     FOREIGN KEY (eventName , lat, lon , timeStart , timeEnd)
         REFERENCES `Event` (eventName , lat, lon , timeStart , timeEnd)
+        ON DELETE NO ACTION
+        ON UPDATE CASCADE
 );
 
 /*
@@ -147,9 +154,13 @@ CREATE TABLE EventTypeHasEvent (
     timeEnd TIME,
     PRIMARY KEY (email , invitationId , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (email)
-        REFERENCES `User` (email),
+        REFERENCES `User` (email)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
     FOREIGN KEY (invitationId , eventName , lat , lon , timeStart , timeEnd)
         REFERENCES HasInvitation (invitationId , eventName , lat , lon , timeStart , timeEnd)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 /*
@@ -166,9 +177,13 @@ CREATE TABLE EventProviderSendInvitation (
     timeEnd TIME,
     PRIMARY KEY (email , invitationId , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (email)
-        REFERENCES EventProvider (email),
+        REFERENCES EventProvider (email)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
     FOREIGN KEY (invitationId , eventName , lat , lon , timeStart , timeEnd)
         REFERENCES HasInvitation (invitationId , eventName , lat , lon , timeStart , timeEnd)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 /*
@@ -184,9 +199,13 @@ CREATE TABLE EventProviderSendInvitation (
     timeEnd TIME,
     PRIMARY KEY (email , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (email)
-        REFERENCES `User` (email),
+        REFERENCES `User` (email)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
     FOREIGN KEY (eventName , lat , lon , timeStart , timeEnd)
         REFERENCES `Event` (eventName , lat , lon , timeStart , timeEnd)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 /*
@@ -203,7 +222,11 @@ CREATE TABLE EventProviderSendInvitation (
     timeEnd TIME,
     PRIMARY KEY (groupId , email , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (groupId)
-        REFERENCES `Group` (groupId),
+        REFERENCES `Group` (groupId)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
     FOREIGN KEY (email , eventName , lat , lon , timeStart , timeEnd)
         REFERENCES UserGoesEvent (email , eventName , lat , lon , timeStart , timeEnd)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );

@@ -1,0 +1,6 @@
+email,eventName,lat,lon,timeStart,timeEnd
+testUser1@test.com,"Test Event 1",-128.8,3.45,14:53:28,14:53:28
+testUser2@test.com,"Test Event 1",-128.8,3.45,14:53:28,14:53:28
+testUser3@test.com,"Test Event 1",-128.8,3.45,14:53:28,14:53:28
+testUser4@test.com,"Test Event 1",-128.8,3.45,14:53:28,14:53:28
+testUser5@test.com,"Test Event 1",-128.8,3.45,14:53:28,14:53:28

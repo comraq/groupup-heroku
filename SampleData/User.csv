@@ -1,0 +1,6 @@
+email,password,firstName,lastName,phone,age
+testUser1@test.com,password,User1,Test,2222222,99
+testUser2@test.com,password,User2,Test,2222223,98
+testUser3@test.com,password,User3,Test,2222224,97
+testUser4@test.com,password,User4,Test,2222225,99
+testUser5@test.com,password,User5,Test,2222227,14
