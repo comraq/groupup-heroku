@@ -129,15 +129,15 @@ CREATE TABLE EventTypeHasEvent (
     PRIMARY KEY (eventTypeId , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (eventTypeId)
         REFERENCES EventType (eventTypeId),
-    FOREIGN KEY (eventName , lat , lon , timeStart , timeEnd)
-        REFERENCES `Event` (eventName , lat , lon , timeStart , timeEnd)
+    FOREIGN KEY (eventName , lat, lon , timeStart , timeEnd)
+        REFERENCES `Event` (eventName , lat, lon , timeStart , timeEnd)
 );
 
 /*
  * UserReceiveInvitation(email: char, invitationId: int, eventName: char, lat: float, lon: float,
  *						 timeStart: time, timeEnd: time)
  */
- CREATE TABLE UserReveiveInvitation (
+ CREATE TABLE UserReadsInvitation (
     email VARCHAR(50),
     invitationId INT,
     eventName VARCHAR(50),

@@ -810,7 +810,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
 
-INSERT INTO `TEST`.`UserReveiveInvitation`
+INSERT INTO `TEST`.`UserReadsInvitation`
 (`email`,
 `invitationId`,
 `eventName`,
@@ -827,7 +827,7 @@ VALUES
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
-INSERT INTO `TEST`.`UserReveiveInvitation`
+INSERT INTO `TEST`.`UserReadsInvitation`
 (`email`,
 `invitationId`,
 `eventName`,
@@ -844,7 +844,7 @@ VALUES
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
-INSERT INTO `TEST`.`UserReveiveInvitation`
+INSERT INTO `TEST`.`UserReadsInvitation`
 (`email`,
 `invitationId`,
 `eventName`,
@@ -862,7 +862,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
 
-INSERT INTO `TEST`.`UserReveiveInvitation`
+INSERT INTO `TEST`.`UserReadsInvitation`
 (`email`,
 `invitationId`,
 `eventName`,
@@ -880,7 +880,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
 
-INSERT INTO `TEST`.`UserReveiveInvitation`
+INSERT INTO `TEST`.`UserReadsInvitation`
 (`email`,
 `invitationId`,
 `eventName`,
@@ -999,7 +999,7 @@ SELECT * FROM HasInvitation;
 SELECT * FROM EventProviderSendInvitation;
 SELECT * FROM User;
 SELECT * FROM UserGoesEvent;
-SELECT * FROM UserReveiveInvitation;
+SELECT * FROM UserReadsInvitation;
 */
 
 SELECT * FROM `With`;
