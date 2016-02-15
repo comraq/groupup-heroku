@@ -96,7 +96,7 @@ CREATE TABLE Admin (
 /*
  * User(email: char, password: char, firstName: char, lastName: char, phone: int, age: int)
  */
-	CREATE TABLE `User` (
+CREATE TABLE `User` (
     email VARCHAR(50),
     password VARCHAR(50),
     firstName VARCHAR(50),
@@ -141,7 +141,7 @@ CREATE TABLE EventTypeHasEvent (
 );
 
 /*
- * UserReceiveInvitation(email: char, invitationId: int, eventName: char, lat: float, lon: float,
+ * UserReadsInvitation(email: char, invitationId: int, eventName: char, lat: float, lon: float,
  *						 timeStart: time, timeEnd: time)
  */
  CREATE TABLE UserReadsInvitation (
