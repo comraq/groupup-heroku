@@ -487,6 +487,81 @@ TIMESTAMP('2016-04-30 14:53:28'),
 "test description",
 "testEP5@test.com");
 
+INSERT INTO `TEST`.`User`
+(`email`,
+`password`,
+`firstName`,
+`lastName`,
+`phone`,
+`age`)
+VALUES
+("testUser1@test.com",
+"password",
+"User1",
+"Test",
+2222222,
+99);
+
+INSERT INTO `TEST`.`User`
+(`email`,
+`password`,
+`firstName`,
+`lastName`,
+`phone`,
+`age`)
+VALUES
+("testUser2@test.com",
+"password",
+"User2",
+"Test",
+2222223,
+98);
+
+INSERT INTO `TEST`.`User`
+(`email`,
+`password`,
+`firstName`,
+`lastName`,
+`phone`,
+`age`)
+VALUES
+("testUser3@test.com",
+"password",
+"User3",
+"Test",
+2222224,
+97);
+
+INSERT INTO `TEST`.`User`
+(`email`,
+`password`,
+`firstName`,
+`lastName`,
+`phone`,
+`age`)
+VALUES
+("testUser4@test.com",
+"password",
+"User4",
+"Test",
+2222225,
+99);
+
+INSERT INTO `TEST`.`User`
+(`email`,
+`password`,
+`firstName`,
+`lastName`,
+`phone`,
+`age`)
+VALUES
+("testUser5@test.com",
+"password",
+"User5",
+"Test",
+"2222227",
+14);
+
 
 INSERT INTO `TEST`.`HasInvitation`
 (`invitationId`,
@@ -495,6 +570,8 @@ INSERT INTO `TEST`.`HasInvitation`
 `lon`,
 `timeStart`,
 `timeEnd`,
+`sendToEmail`,
+`read`,
 `message`)
 VALUES
 (1,
@@ -503,7 +580,9 @@ VALUES
 3.33,
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'),
-"Test");
+"testUser1@test.com",
+0,
+"TestMessage");
 
 INSERT INTO `TEST`.`HasInvitation`
 (`invitationId`,
@@ -512,6 +591,8 @@ INSERT INTO `TEST`.`HasInvitation`
 `lon`,
 `timeStart`,
 `timeEnd`,
+`sendToEmail`,
+`read`,
 `message`)
 VALUES
 (2,
@@ -520,7 +601,9 @@ VALUES
 3.33,
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'),
-"Test");
+"testUser2@test.com",
+0,
+"TestMessage");
 
 INSERT INTO `TEST`.`HasInvitation`
 (`invitationId`,
@@ -529,6 +612,8 @@ INSERT INTO `TEST`.`HasInvitation`
 `lon`,
 `timeStart`,
 `timeEnd`,
+`sendToEmail`,
+`read`,
 `message`)
 VALUES
 (3,
@@ -537,7 +622,9 @@ VALUES
 3.33,
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'),
-"Test");
+"testUser3@test.com",
+0,
+"TestMessage");
 
 INSERT INTO `TEST`.`HasInvitation`
 (`invitationId`,
@@ -546,6 +633,8 @@ INSERT INTO `TEST`.`HasInvitation`
 `lon`,
 `timeStart`,
 `timeEnd`,
+`sendToEmail`,
+`read`,
 `message`)
 VALUES
 (4,
@@ -554,7 +643,9 @@ VALUES
 3.33,
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'),
-"Test");
+"testUser4@test.com",
+0,
+"TestMessage");
 
 INSERT INTO `TEST`.`HasInvitation`
 (`invitationId`,
@@ -563,6 +654,8 @@ INSERT INTO `TEST`.`HasInvitation`
 `lon`,
 `timeStart`,
 `timeEnd`,
+`sendToEmail`,
+`read`,
 `message`)
 VALUES
 (5,
@@ -571,8 +664,9 @@ VALUES
 3.33,
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'),
-"Test");
-
+"testUser5@test.com",
+0,
+"TestMessage");
 
 INSERT INTO `TEST`.`EventProviderSendInvitation`
 (`email`,
@@ -658,81 +752,6 @@ VALUES
 3.33,
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
-
-INSERT INTO `TEST`.`User`
-(`email`,
-`password`,
-`firstName`,
-`lastName`,
-`phone`,
-`age`)
-VALUES
-("testUser1@test.com",
-"password",
-"User1",
-"Test",
-2222222,
-99);
-
-INSERT INTO `TEST`.`User`
-(`email`,
-`password`,
-`firstName`,
-`lastName`,
-`phone`,
-`age`)
-VALUES
-("testUser2@test.com",
-"password",
-"User2",
-"Test",
-2222223,
-98);
-
-INSERT INTO `TEST`.`User`
-(`email`,
-`password`,
-`firstName`,
-`lastName`,
-`phone`,
-`age`)
-VALUES
-("testUser3@test.com",
-"password",
-"User3",
-"Test",
-2222224,
-97);
-
-INSERT INTO `TEST`.`User`
-(`email`,
-`password`,
-`firstName`,
-`lastName`,
-`phone`,
-`age`)
-VALUES
-("testUser4@test.com",
-"password",
-"User4",
-"Test",
-2222225,
-99);
-
-INSERT INTO `TEST`.`User`
-(`email`,
-`password`,
-`firstName`,
-`lastName`,
-`phone`,
-`age`)
-VALUES
-("testUser5@test.com",
-"password",
-"User5",
-"Test",
-"2222227",
-14);
 
 INSERT INTO `TEST`.`UserGoesEvent`
 (`email`,

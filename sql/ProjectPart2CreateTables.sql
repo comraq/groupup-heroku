@@ -74,13 +74,15 @@ CREATE TABLE HasInvitation (
     timeStart TIME,
     timeEnd TIME,
     sendToEmail VARCHAR(225),
-    read TINYINT(1),
+    `read` TINYINT(1),
     message VARCHAR(255),
     PRIMARY KEY (invitationId , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (eventName , lat , lon , timeStart , timeEnd)
         REFERENCES PrivateEvent (eventName , lat , lon , timeStart , timeEnd)
         ON DELETE CASCADE
         ON UPDATE CASCADE
+	FOREIGN KEY (sendToEmail)
+    REFERENCES `User`(email)
 );
 
 /*
