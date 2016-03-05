@@ -73,6 +73,8 @@ CREATE TABLE HasInvitation (
     lon FLOAT,
     timeStart TIME,
     timeEnd TIME,
+    sendToEmail VARCHAR(225),
+    read TINYINT(1),
     message VARCHAR(255),
     PRIMARY KEY (invitationId , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (eventName , lat , lon , timeStart , timeEnd)
