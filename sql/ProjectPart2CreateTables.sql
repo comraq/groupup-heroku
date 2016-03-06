@@ -63,29 +63,6 @@ CREATE TABLE PrivateEvent (
 );
 
 /*
- * HasInvitation(invitationId: int, eventName: char, lat: float, lon: float, 
- *				 timeStart: time, timeEnd: time, message: char)
- */
-CREATE TABLE HasInvitation (
-    invitationId INT,
-    eventName VARCHAR(50),
-    lat FLOAT,
-    lon FLOAT,
-    timeStart TIME,
-    timeEnd TIME,
-    sendToEmail VARCHAR(225),
-    `read` TINYINT(1),
-    message VARCHAR(255),
-    PRIMARY KEY (invitationId , eventName , lat , lon , timeStart , timeEnd),
-    FOREIGN KEY (eventName , lat , lon , timeStart , timeEnd)
-        REFERENCES PrivateEvent (eventName , lat , lon , timeStart , timeEnd)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-	FOREIGN KEY (sendToEmail)
-    REFERENCES `User`(email)
-);
-
-/*
  * Admin(email: char, password: char, firstName: char, lastName: char, phone: int)
  */
 CREATE TABLE Admin (
@@ -109,6 +86,30 @@ CREATE TABLE `User` (
     age INT,
     UNIQUE (firstName , lastName , age),
     PRIMARY KEY (email)
+);
+
+
+/*
+ * HasInvitation(invitationId: int, eventName: char, lat: float, lon: float, 
+ *				 timeStart: time, timeEnd: time, message: char)
+ */
+CREATE TABLE HasInvitation (
+    invitationId INT,
+    eventName VARCHAR(50),
+    lat FLOAT,
+    lon FLOAT,
+    timeStart TIME,
+    timeEnd TIME,
+    sendToEmail VARCHAR(225),
+    `read` TINYINT(1),
+    message VARCHAR(255),
+    PRIMARY KEY (invitationId , eventName , lat , lon , timeStart , timeEnd),
+    FOREIGN KEY (eventName , lat , lon , timeStart , timeEnd)
+        REFERENCES PrivateEvent (eventName , lat , lon , timeStart , timeEnd)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (sendToEmail)
+        REFERENCES `User` (email)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
