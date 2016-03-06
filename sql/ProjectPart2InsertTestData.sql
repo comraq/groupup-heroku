@@ -1,4 +1,4 @@
-INSERT INTO `TEST`.`Admin`
+INSERT INTO `GroupUpDebug`.`Admin`
 (`email`,
 `password`,
 `firstName`,
@@ -11,7 +11,7 @@ VALUES
 "test1LastName",
 1234567);
 
-INSERT INTO `TEST`.`Admin`
+INSERT INTO `GroupUpDebug`.`Admin`
 (`email`,
 `password`,
 `firstName`,
@@ -24,7 +24,7 @@ VALUES
 "test2LastName",
 2345678);
 
-INSERT INTO `TEST`.`Admin`
+INSERT INTO `GroupUpDebug`.`Admin`
 (`email`,
 `password`,
 `firstName`,
@@ -37,7 +37,7 @@ VALUES
 "test3LastName",
 3456789);
 
-INSERT INTO `TEST`.`Admin`
+INSERT INTO `GroupUpDebug`.`Admin`
 (`email`,
 `password`,
 `firstName`,
@@ -50,7 +50,7 @@ VALUES
 "test4LastName",
 4567891);
 
-INSERT INTO `TEST`.`Admin`
+INSERT INTO `GroupUpDebug`.`Admin`
 (`email`,
 `password`,
 `firstName`,
@@ -63,7 +63,7 @@ VALUES
 "test5LastName",
 5678912);
 
-INSERT INTO `TEST`.`EventProvider`
+INSERT INTO `GroupUpDebug`.`EventProvider`
 (`email`,
 `password`,
 `firstName`,
@@ -76,7 +76,7 @@ VALUES
 "EventProvider",
 6789123);
 
-INSERT INTO `TEST`.`EventProvider`
+INSERT INTO `GroupUpDebug`.`EventProvider`
 (`email`,
 `password`,
 `firstName`,
@@ -89,7 +89,7 @@ VALUES
 "EventProvider2",
 6789124);
 
-INSERT INTO `TEST`.`EventProvider`
+INSERT INTO `GroupUpDebug`.`EventProvider`
 (`email`,
 `password`,
 `firstName`,
@@ -102,7 +102,7 @@ VALUES
 "EventProvider3",
 6789125);
 
-INSERT INTO `TEST`.`EventProvider`
+INSERT INTO `GroupUpDebug`.`EventProvider`
 (`email`,
 `password`,
 `firstName`,
@@ -115,7 +115,7 @@ VALUES
 "EventProvider4",
 6789126);
 
-INSERT INTO `TEST`.`EventProvider`
+INSERT INTO `GroupUpDebug`.`EventProvider`
 (`email`,
 `password`,
 `firstName`,
@@ -129,7 +129,7 @@ VALUES
 6789127);
 
 
-INSERT INTO `TEST`.`Event`
+INSERT INTO `GroupUpDebug`.`Event`
 (`eventName`,
 `lat`,
 `lon`,
@@ -148,7 +148,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 "test description",
 "testEP1@test.com");
 
-INSERT INTO `TEST`.`Event`
+INSERT INTO `GroupUpDebug`.`Event`
 (`eventName`,
 `lat`,
 `lon`,
@@ -167,7 +167,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 "test description",
 "testEP2@test.com");
 
-INSERT INTO `TEST`.`Event`
+INSERT INTO `GroupUpDebug`.`Event`
 (`eventName`,
 `lat`,
 `lon`,
@@ -187,7 +187,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 "testEP3@test.com");
 
 
-INSERT INTO `TEST`.`Event`
+INSERT INTO `GroupUpDebug`.`Event`
 (`eventName`,
 `lat`,
 `lon`,
@@ -207,7 +207,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 "testEP4@test.com");
 
 
-INSERT INTO `TEST`.`Event`
+INSERT INTO `GroupUpDebug`.`Event`
 (`eventName`,
 `lat`,
 `lon`,
@@ -227,42 +227,42 @@ TIMESTAMP('2016-04-30 14:53:28'),
 "testEP5@test.com");
 
 
-INSERT INTO `TEST`.`EventType`
+INSERT INTO `GroupUpDebug`.`EventType`
 (`eventTypeId`,
 `category`)
 VALUES
 (1,
 "Horror Movie");
 
-INSERT INTO `TEST`.`EventType`
+INSERT INTO `GroupUpDebug`.`EventType`
 (`eventTypeId`,
 `category`)
 VALUES
 (2,
 "Rock Concert");
 
-INSERT INTO `TEST`.`EventType`
+INSERT INTO `GroupUpDebug`.`EventType`
 (`eventTypeId`,
 `category`)
 VALUES
 (3,
 "Fight Club");
 
-INSERT INTO `TEST`.`EventType`
+INSERT INTO `GroupUpDebug`.`EventType`
 (`eventTypeId`,
 `category`)
 VALUES
 (4,
 "Study Group");
 
-INSERT INTO `TEST`.`EventType`
+INSERT INTO `GroupUpDebug`.`EventType`
 (`eventTypeId`,
 `category`)
 VALUES
 (5,
 "Wine Tasting");
 
-INSERT INTO `TEST`.`EventTypeHasEvent`
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
 (`eventTypeId`,
 `eventName`,
 `lat`,
@@ -279,7 +279,7 @@ TIMESTAMP('2016-04-30 14:53:28')
 );
 
 
-INSERT INTO `TEST`.`EventTypeHasEvent`
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
 (`eventTypeId`,
 `eventName`,
 `lat`,
@@ -296,7 +296,7 @@ TIMESTAMP('2016-04-30 14:53:28')
 );
 
 
-INSERT INTO `TEST`.`EventTypeHasEvent`
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
 (`eventTypeId`,
 `eventName`,
 `lat`,
@@ -312,7 +312,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28')
 );
 
-INSERT INTO `TEST`.`EventTypeHasEvent`
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
 (`eventTypeId`,
 `eventName`,
 `lat`,
@@ -328,7 +328,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28')
 );
 
-INSERT INTO `TEST`.`EventTypeHasEvent`
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
 (`eventTypeId`,
 `eventName`,
 `lat`,
@@ -344,7 +344,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28')
 );
 
-INSERT INTO `TEST`.`Group`
+INSERT INTO `GroupUpDebug`.`Group`
 (`groupId`,
 `groupName`,
 `description`)
@@ -353,7 +353,7 @@ VALUES
 "Test Group 1",
 "Test Group");
 
-INSERT INTO `TEST`.`Group`
+INSERT INTO `GroupUpDebug`.`Group`
 (`groupId`,
 `groupName`,
 `description`)
@@ -362,7 +362,7 @@ VALUES
 "Test Group 2",
 "Test Group");
 
-INSERT INTO `TEST`.`Group`
+INSERT INTO `GroupUpDebug`.`Group`
 (`groupId`,
 `groupName`,
 `description`)
@@ -371,7 +371,7 @@ VALUES
 "Test Group 3",
 "Test Group");
 
-INSERT INTO `TEST`.`Group`
+INSERT INTO `GroupUpDebug`.`Group`
 (`groupId`,
 `groupName`,
 `description`)
@@ -380,7 +380,7 @@ VALUES
 "Test Group 4",
 "Test Group");
 
-INSERT INTO `TEST`.`Group`
+INSERT INTO `GroupUpDebug`.`Group`
 (`groupId`,
 `groupName`,
 `description`)
@@ -389,7 +389,7 @@ VALUES
 "Test Group 5",
 "Test Group");
 
-INSERT INTO `TEST`.`PrivateEvent`
+INSERT INTO `GroupUpDebug`.`PrivateEvent`
 (`eventName`,
 `lat`,
 `lon`,
@@ -408,7 +408,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 "test description",
 "testEP1@test.com");
 
-INSERT INTO `TEST`.`PrivateEvent`
+INSERT INTO `GroupUpDebug`.`PrivateEvent`
 (`eventName`,
 `lat`,
 `lon`,
@@ -428,7 +428,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 "testEP2@test.com");
 
 
-INSERT INTO `TEST`.`PrivateEvent`
+INSERT INTO `GroupUpDebug`.`PrivateEvent`
 (`eventName`,
 `lat`,
 `lon`,
@@ -448,7 +448,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 "testEP3@test.com");
 
 
-INSERT INTO `TEST`.`PrivateEvent`
+INSERT INTO `GroupUpDebug`.`PrivateEvent`
 (`eventName`,
 `lat`,
 `lon`,
@@ -468,7 +468,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 "testEP4@test.com");
 
 
-INSERT INTO `TEST`.`PrivateEvent`
+INSERT INTO `GroupUpDebug`.`PrivateEvent`
 (`eventName`,
 `lat`,
 `lon`,
@@ -487,7 +487,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 "test description",
 "testEP5@test.com");
 
-INSERT INTO `TEST`.`User`
+INSERT INTO `GroupUpDebug`.`User`
 (`email`,
 `password`,
 `firstName`,
@@ -502,7 +502,7 @@ VALUES
 2222222,
 99);
 
-INSERT INTO `TEST`.`User`
+INSERT INTO `GroupUpDebug`.`User`
 (`email`,
 `password`,
 `firstName`,
@@ -517,7 +517,7 @@ VALUES
 2222223,
 98);
 
-INSERT INTO `TEST`.`User`
+INSERT INTO `GroupUpDebug`.`User`
 (`email`,
 `password`,
 `firstName`,
@@ -532,7 +532,7 @@ VALUES
 2222224,
 97);
 
-INSERT INTO `TEST`.`User`
+INSERT INTO `GroupUpDebug`.`User`
 (`email`,
 `password`,
 `firstName`,
@@ -547,7 +547,7 @@ VALUES
 2222225,
 99);
 
-INSERT INTO `TEST`.`User`
+INSERT INTO `GroupUpDebug`.`User`
 (`email`,
 `password`,
 `firstName`,
@@ -563,7 +563,7 @@ VALUES
 14);
 
 
-INSERT INTO `TEST`.`HasInvitation`
+INSERT INTO `GroupUpDebug`.`HasInvitation`
 (`invitationId`,
 `eventName`,
 `lat`,
@@ -584,7 +584,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 0,
 "TestMessage");
 
-INSERT INTO `TEST`.`HasInvitation`
+INSERT INTO `GroupUpDebug`.`HasInvitation`
 (`invitationId`,
 `eventName`,
 `lat`,
@@ -605,7 +605,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 0,
 "TestMessage");
 
-INSERT INTO `TEST`.`HasInvitation`
+INSERT INTO `GroupUpDebug`.`HasInvitation`
 (`invitationId`,
 `eventName`,
 `lat`,
@@ -626,7 +626,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 0,
 "TestMessage");
 
-INSERT INTO `TEST`.`HasInvitation`
+INSERT INTO `GroupUpDebug`.`HasInvitation`
 (`invitationId`,
 `eventName`,
 `lat`,
@@ -647,7 +647,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 0,
 "TestMessage");
 
-INSERT INTO `TEST`.`HasInvitation`
+INSERT INTO `GroupUpDebug`.`HasInvitation`
 (`invitationId`,
 `eventName`,
 `lat`,
@@ -668,7 +668,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 0,
 "TestMessage");
 
-INSERT INTO `TEST`.`EventProviderSendInvitation`
+INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 (`email`,
 `invitationId`,
 `eventName`,
@@ -685,7 +685,7 @@ VALUES
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
-INSERT INTO `TEST`.`EventProviderSendInvitation`
+INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 (`email`,
 `invitationId`,
 `eventName`,
@@ -702,7 +702,7 @@ VALUES
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
-INSERT INTO `TEST`.`EventProviderSendInvitation`
+INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 (`email`,
 `invitationId`,
 `eventName`,
@@ -719,7 +719,7 @@ VALUES
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
-INSERT INTO `TEST`.`EventProviderSendInvitation`
+INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 (`email`,
 `invitationId`,
 `eventName`,
@@ -736,7 +736,7 @@ VALUES
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
-INSERT INTO `TEST`.`EventProviderSendInvitation`
+INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 (`email`,
 `invitationId`,
 `eventName`,
@@ -753,7 +753,7 @@ VALUES
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
-INSERT INTO `TEST`.`UserGoesEvent`
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 (`email`,
 `eventName`,
 `lat`,
@@ -768,7 +768,7 @@ VALUES
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
-INSERT INTO `TEST`.`UserGoesEvent`
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 (`email`,
 `eventName`,
 `lat`,
@@ -783,7 +783,7 @@ VALUES
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
-INSERT INTO `TEST`.`UserGoesEvent`
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 (`email`,
 `eventName`,
 `lat`,
@@ -798,7 +798,7 @@ VALUES
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
-INSERT INTO `TEST`.`UserGoesEvent`
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 (`email`,
 `eventName`,
 `lat`,
@@ -813,7 +813,7 @@ VALUES
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
-INSERT INTO `TEST`.`UserGoesEvent`
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 (`email`,
 `eventName`,
 `lat`,
@@ -829,7 +829,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
 
-INSERT INTO `TEST`.`UserReadsInvitation`
+INSERT INTO `GroupUpDebug`.`UserReadsInvitation`
 (`email`,
 `invitationId`,
 `eventName`,
@@ -846,7 +846,7 @@ VALUES
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
-INSERT INTO `TEST`.`UserReadsInvitation`
+INSERT INTO `GroupUpDebug`.`UserReadsInvitation`
 (`email`,
 `invitationId`,
 `eventName`,
@@ -863,7 +863,7 @@ VALUES
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
-INSERT INTO `TEST`.`UserReadsInvitation`
+INSERT INTO `GroupUpDebug`.`UserReadsInvitation`
 (`email`,
 `invitationId`,
 `eventName`,
@@ -881,7 +881,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
 
-INSERT INTO `TEST`.`UserReadsInvitation`
+INSERT INTO `GroupUpDebug`.`UserReadsInvitation`
 (`email`,
 `invitationId`,
 `eventName`,
@@ -899,7 +899,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
 
-INSERT INTO `TEST`.`UserReadsInvitation`
+INSERT INTO `GroupUpDebug`.`UserReadsInvitation`
 (`email`,
 `invitationId`,
 `eventName`,
@@ -917,7 +917,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
 
-INSERT INTO `TEST`.`With`
+INSERT INTO `GroupUpDebug`.`With`
 (`groupId`,
 `email`,
 `eventName`,
@@ -935,7 +935,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
 
-INSERT INTO `TEST`.`With`
+INSERT INTO `GroupUpDebug`.`With`
 (`groupId`,
 `email`,
 `eventName`,
@@ -952,7 +952,7 @@ VALUES
 TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
-INSERT INTO `TEST`.`With`
+INSERT INTO `GroupUpDebug`.`With`
 (`groupId`,
 `email`,
 `eventName`,
@@ -970,7 +970,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
 
-INSERT INTO `TEST`.`With`
+INSERT INTO `GroupUpDebug`.`With`
 (`groupId`,
 `email`,
 `eventName`,
@@ -988,7 +988,7 @@ TIMESTAMP('2016-04-30 14:53:28'),
 TIMESTAMP('2016-04-30 14:53:28'));
 
 
-INSERT INTO `TEST`.`With`
+INSERT INTO `GroupUpDebug`.`With`
 (`groupId`,
 `email`,
 `eventName`,

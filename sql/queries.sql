@@ -1,7 +1,7 @@
 /*
 A user can create a new user profile. This will be an insert statement on the User table.
 */
-INSERT INTO `TEST`.`User`
+INSERT INTO `GroupUpDebug`.`User`
 (`email`,
  `password`,
  `firstName`,
@@ -34,7 +34,7 @@ WHERE ABS($eventLocation - $userLocation) > 10;
 /*
 Users will be able to add themselves to a group and attend an event. This will be an insert statement on the Goes table
 */
-INSERT INTO `TEST`.`UserGoesEvent`
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 (`email`,
  `eventName`,
  `lat`,
@@ -66,7 +66,7 @@ WHERE email = $userEmail;
 An event provider can post events to promote them and allow users to attend.
 This would be an insert statement on the Event table.
 */
-INSERT INTO `TEST`.`Event`
+INSERT INTO `GroupUpDebug`.`Event`
 (`eventName`,
  `lat`,
  `lon`,
@@ -88,7 +88,7 @@ VALUES
 /*
 An event can also be a private event, and users would require an invitation to attend.
 Invitations are sent by event providers. This would be an insert statement on the HasInvitation table.*/
-INSERT INTO `TEST`.`HasInvitation`
+INSERT INTO `GroupUpDebug`.`HasInvitation`
 (`invitationId`,
  `eventName`,
  `lat`,

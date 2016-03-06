@@ -1,6 +1,6 @@
-DROP DATABASE TEST;
-CREATE DATABASE TEST;
-USE TEST;
+DROP DATABASE GroupUpDebug;
+CREATE DATABASE GroupUpDebug;
+USE GroupUpDebug;
 
 -- EventType(eventTypeId: int, category: char)
 CREATE TABLE EventType (
