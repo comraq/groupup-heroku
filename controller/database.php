@@ -3,9 +3,9 @@
 class Database{
 
 	var $servername = "localhost";
-	var $username = "root";
-	var $password = "EdwardChoi90!";
-	var $database = "TEST";
+	var $username = "";
+	var $password = "";
+	var $database = "GroupUpDebug";
 	public $conn;
 
 	function __construct(){
