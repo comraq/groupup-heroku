@@ -31,6 +31,6 @@ app.config(function ($routeProvider) {
             templateUrl: 'ng/views/register.html',
             controller: 'RegisterCtrl',
             controllerAs: 'ctrl'
-        })
-        .otherwise({redirectTo: "/"});
+        });
+        //.otherwise({redirectTo: "/"});
 });

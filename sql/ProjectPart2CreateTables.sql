@@ -1,4 +1,4 @@
-DROP DATABASE GroupUpDebug;
+DROP DATABASE IF EXISTS GroupUpDebug;
 CREATE DATABASE GroupUpDebug;
 USE GroupUpDebug;
 
@@ -14,8 +14,8 @@ CREATE TABLE EventType (
  * 			     companyName: char, phone: int, password: char)
  */
  CREATE TABLE EventProvider (
-    email VARCHAR(50),
-    password VARCHAR(50),
+    email VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL,
     firstName VARCHAR(50),
     lastName VARCHAR(50),
     phone INT UNIQUE,
@@ -66,11 +66,11 @@ CREATE TABLE PrivateEvent (
  * Admin(email: char, password: char, firstName: char, lastName: char, phone: int)
  */
 CREATE TABLE Admin (
-    email VARCHAR(50),
-    password VARCHAR(50),
-    firstName VARCHAR(50),
-    lastName VARCHAR(50),
-    phone INT UNIQUE,
+    email VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    firstName VARCHAR(50) NOT NULL,
+    lastName VARCHAR(50) NOT NULL,
+    phone INT UNIQUE NOT NULL,
     PRIMARY KEY (email)
 );
 
@@ -78,8 +78,8 @@ CREATE TABLE Admin (
  * User(email: char, password: char, firstName: char, lastName: char, phone: int, age: int)
  */
 CREATE TABLE `User` (
-    email VARCHAR(50),
-    password VARCHAR(50),
+    email VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL,
     firstName VARCHAR(50),
     lastName VARCHAR(50),
     phone INT UNIQUE,
