@@ -7,8 +7,8 @@ class Search extends Database{
 		parent::__construct();
 	}
 
-	function searchGroups(){
-		$data = $_POST["searchGroups"];
+	function searchEvents(){
+		$data = $_POST["searchEvents"];
 		$searchTarget = "%".$data["searchTarget"]."%";
 		
 		if (array_key_exists("lat", $data)){
@@ -19,20 +19,30 @@ class Search extends Database{
 		
 		parent::connect();
 		
-		$searchGroupsSQL = "select * from `Group` where groupName like ?";
+		$searchEventsSQL = "select * from `Event` where eventName like ?";
 
-		$stmt = $this->conn->prepare($searchGroupsSQL);
+		$stmt = $this->conn->prepare($searchEventsSQL);
 		$stmt->bind_param('s', $searchTarget);
 		$stmt->execute();
-		$stmt->store_result();
-
+		$result = $stmt->get_result();
+        while ($row = $result->fetch_array(MYSQLI_NUM))
+        {
+            foreach ($row as $r)
+            {
+                $results[] = $r;
+                print "$r ";
+            }
+            print "\n";
+        }
 		parent::disconnect();
-		return $stmt->num_rows;
+		return $results;
+		
+
+	
+		//return $stmt->num_rows;
 	}
 }
 $search = new Search();
-$result = $search->searchGroups();
-
-echo $result;
-
+$result = $search->searchEvents();
+return $result;
 ?>

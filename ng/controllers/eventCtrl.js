@@ -3,9 +3,9 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope,$
 	this.searchTarget;
 
 
-	this.searchGroups = function searchGroups(){
+	this.searchEvents = function searchEvents(){
 		var data = {
-			searchGroups: 
+			searchEvents: 
 			{
 				searchTarget: this.searchTarget,
 				lat: $scope.lat,
