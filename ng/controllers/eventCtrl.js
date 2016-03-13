@@ -1,4 +1,4 @@
-var app = angular.module('groupUpApp').controller('EventCtrl', function($scope,$window, $location, $http){
+var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, $window, $location, $http){
 	this.url = "../../controller/search.php"
 	this.searchTarget;
 
@@ -20,7 +20,8 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope,$
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 		}).then(function successCallback(response){
 			console.log(response);
-			
+			$scope.events = response;
+			console.log($scope.events)
 		}.bind(this), function errorCallback(response){
 			    // called asynchronously if an error occurs
 			    // or server returns response with an error status.

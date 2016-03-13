@@ -19,23 +19,16 @@ class Search extends Database{
 		
 		parent::connect();
 		
-		$searchEventsSQL = "select * from `Event` where eventName like ?";
+		$searchEventsSQL = "SELECT * FROM `Event` WHERE eventName LIKE ?";
 
 		$stmt = $this->conn->prepare($searchEventsSQL);
 		$stmt->bind_param('s', $searchTarget);
 		$stmt->execute();
-		$result = $stmt->get_result();
-        while ($row = $result->fetch_array(MYSQLI_NUM))
-        {
-            foreach ($row as $r)
-            {
-                $results[] = $r;
-                print "$r ";
-            }
-            print "\n";
-        }
+		$res = $stmt->get_result();
+		$data = $res->fetch_all( MYSQLI_ASSOC );
+		print json_encode( $data );
 		parent::disconnect();
-		return $results;
+		return TRUE;
 		
 
 	
