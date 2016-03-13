@@ -1,1 +1,23 @@
 <div>Event Page</div>
+
+<div class="container">
+	<h2 class="title">Groups</h2>
+
+	<!-- <ul class="nav nav-tabs nav-justified">
+		<li class="active"><a data-toggle="tab" data-target="#userRegister">User</a></li>
+		<li><a data-toggle="tab" data-target="#eventProviderRegister">Event Provider</a></li>
+		<li><a data-toggle="tab" data-target="#adminRegister">Admin</a></li>
+	</ul> -->
+
+	
+		<div id="groupSearchBar" class="tab-pane fade in active">
+			<form class="form-signin" ng-submit="ctrl.searchGroups()" name="searchGroups" role="form">
+				<div>
+				    <label for="inputSearch" class="sr-only">Search</label>
+				    <input type="text" name="search" data-ng-model="ctrl.searchTarget" id="inputSearch" class="form-control" placeholder="Find a group" required autofocus>
+				</div>
+
+	{{ctrl.searchTarget}}
+
+</div> <!-- /container -->
+<!-- ng-disabled="registerUser.$invalid || ctrl.dataLoading" -->

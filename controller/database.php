@@ -3,8 +3,8 @@
 class Database{
 
 	var $servername = "localhost";
-	var $username = "";
-	var $password = "";
+	var $username = "groupup";
+	var $password = "groupup";
 	var $database = "GroupUpDebug";
 	public $conn;
 
