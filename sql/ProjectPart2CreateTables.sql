@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS GroupUpDebug;
-CREATE DATABASE GroupUpDebug;
+CREATE DATABASE IF NOT EXISTS GroupUpDebug;
 USE GroupUpDebug;
 
 -- EventType(eventTypeId: int, category: char)
@@ -14,8 +14,8 @@ CREATE TABLE EventType (
  * 			     companyName: char, phone: int, password: char)
  */
  CREATE TABLE EventProvider (
-    email VARCHAR(50) NOT NULL,
-    password VARCHAR(50) NOT NULL,
+    email VARCHAR(50),
+    password VARCHAR(50),
     firstName VARCHAR(50),
     lastName VARCHAR(50),
     phone INT UNIQUE,
@@ -30,8 +30,8 @@ CREATE TABLE `Event` (
     eventName VARCHAR(50),
     lat FLOAT,
     lon FLOAT,
-    timeStart TIME,
-    timeEnd TIME,
+    timeStart DATETIME,
+    timeEnd DATETIME,
     cost FLOAT,
     description VARCHAR(255),
     createdBy VARCHAR(50),
@@ -50,8 +50,8 @@ CREATE TABLE PrivateEvent (
     eventName VARCHAR(50),
     lat FLOAT,
     lon FLOAT,
-    timeStart TIME,
-    timeEnd TIME,
+    timeStart DATETIME,
+    timeEnd DATETIME,
     cost FLOAT,
     description VARCHAR(255),
     createdBy VARCHAR(50),
@@ -66,11 +66,11 @@ CREATE TABLE PrivateEvent (
  * Admin(email: char, password: char, firstName: char, lastName: char, phone: int)
  */
 CREATE TABLE Admin (
-    email VARCHAR(50) NOT NULL,
-    password VARCHAR(50) NOT NULL,
-    firstName VARCHAR(50) NOT NULL,
-    lastName VARCHAR(50) NOT NULL,
-    phone INT UNIQUE NOT NULL,
+    email VARCHAR(50),
+    password VARCHAR(50),
+    firstName VARCHAR(50),
+    lastName VARCHAR(50),
+    phone INT UNIQUE,
     PRIMARY KEY (email)
 );
 
@@ -78,8 +78,8 @@ CREATE TABLE Admin (
  * User(email: char, password: char, firstName: char, lastName: char, phone: int, age: int)
  */
 CREATE TABLE `User` (
-    email VARCHAR(50) NOT NULL,
-    password VARCHAR(50) NOT NULL,
+    email VARCHAR(50),
+    password VARCHAR(50),
     firstName VARCHAR(50),
     lastName VARCHAR(50),
     phone INT UNIQUE,
@@ -98,8 +98,8 @@ CREATE TABLE HasInvitation (
     eventName VARCHAR(50),
     lat FLOAT,
     lon FLOAT,
-    timeStart TIME,
-    timeEnd TIME,
+    timeStart DATETIME,
+    timeEnd DATETIME,
     sendToEmail VARCHAR(225),
     `read` TINYINT(1),
     message VARCHAR(255),
@@ -132,8 +132,8 @@ CREATE TABLE EventTypeHasEvent (
     eventName VARCHAR(50),
     lat FLOAT,
     lon FLOAT,
-    timeStart TIME,
-    timeEnd TIME,
+    timeStart DATETIME,
+    timeEnd DATETIME,
     PRIMARY KEY (eventTypeId , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (eventTypeId)
         REFERENCES EventType (eventTypeId)
@@ -155,8 +155,8 @@ CREATE TABLE EventTypeHasEvent (
     eventName VARCHAR(50),
     lat FLOAT,
     lon FLOAT,
-    timeStart TIME,
-    timeEnd TIME,
+    timeStart DATETIME,
+    timeEnd DATETIME,
     PRIMARY KEY (email , invitationId , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (email)
         REFERENCES `User` (email)
@@ -178,8 +178,8 @@ CREATE TABLE EventProviderSendInvitation (
     eventName VARCHAR(50),
     lat FLOAT,
     lon FLOAT,
-    timeStart TIME,
-    timeEnd TIME,
+    timeStart DATETIME,
+    timeEnd DATETIME,
     PRIMARY KEY (email , invitationId , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (email)
         REFERENCES EventProvider (email)
@@ -200,8 +200,8 @@ CREATE TABLE EventProviderSendInvitation (
     eventName VARCHAR(50),
     lat FLOAT,
     lon FLOAT,
-    timeStart TIME,
-    timeEnd TIME,
+    timeStart DATETIME,
+    timeEnd DATETIME,
     PRIMARY KEY (email , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (email)
         REFERENCES `User` (email)
@@ -223,8 +223,8 @@ CREATE TABLE EventProviderSendInvitation (
     eventName VARCHAR(50),
     lat FLOAT,
     lon FLOAT,
-    timeStart TIME,
-    timeEnd TIME,
+    timeStart DATETIME,
+    timeEnd DATETIME,
     PRIMARY KEY (groupId , email , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (groupId)
         REFERENCES `Group` (groupId)

@@ -9,7 +9,8 @@
 				<label for="inputSearch" class="sr-only">Search</label>
 				<input type="text" name="search" data-ng-model="ctrl.searchTarget" id="inputSearch" class="form-control" placeholder="Find an Event" required autofocus>
 			</div>
-			<table>
+			<!-- referenced: http://jsfiddle.net/mjaric/pj5br/ -->
+			<table border="1" style="width:100%">
 				<tr>
 					<th>Event Name</th>
 					<th>Created By</th>
@@ -19,7 +20,7 @@
 					<th>Time Start</th>
 					<th>Time End</th>
 				</tr>
-				<tr ng-repeat="event in events.data">
+				<tr ng-repeat="event in events">
 					<td>{{event.eventName}}</td>
 					<td>{{event.createdBy}}</td>
 					<td>{{event.lat}}</td>
@@ -29,6 +30,13 @@
 					<td>{{event.timeEnd}}</td>
 				</tr>
 			</table>
-			
-		</div> <!-- /container -->
-<!-- ng-disabled="registerUser.$invalid || ctrl.dataLoading" -->
+			{{ctrl.userPosition}}
+			{{positions}}
+			<!-- https://www.kevinhooke.com/2015/06/15/angularjs-and-google-maps-dynamic-marker-updates/ -->
+			<map style="height:100%" center="[0,0]" zoom="13">
+				<marker ng-repeat="pos in positions" position="{{pos.lat}}, {{pos.lng}}"></marker>
+			</map>
+
+
+		</div>   <!-- /container -->
+	<!-- ng-disabled="registerUser.$invalid || ctrl.dataLoading" -->

@@ -24,15 +24,12 @@ class Search extends Database{
 		$stmt = $this->conn->prepare($searchEventsSQL);
 		$stmt->bind_param('s', $searchTarget);
 		$stmt->execute();
+		//referenced http://stackoverflow.com/questions/11892699/how-do-i-properly-use-php-to-encode-mysql-object-into-json
 		$res = $stmt->get_result();
 		$data = $res->fetch_all( MYSQLI_ASSOC );
 		print json_encode( $data );
 		parent::disconnect();
 		return TRUE;
-		
-
-	
-		//return $stmt->num_rows;
 	}
 }
 $search = new Search();
