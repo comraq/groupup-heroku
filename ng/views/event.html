@@ -30,12 +30,11 @@
 					<td>{{event.timeEnd}}</td>
 				</tr>
 			</table>
-			{{ctrl.userPosition}}
-			{{positions}}
 			<!-- https://www.kevinhooke.com/2015/06/15/angularjs-and-google-maps-dynamic-marker-updates/ -->
-			<map style="height:100%" center="[0,0]" zoom="13">
+
+			<ng-map style="height:100%" center="[0,0]" zoom="13">
 				<marker ng-repeat="pos in positions" position="{{pos.lat}}, {{pos.lng}}"></marker>
-			</map>
+			</ng-map>
 
 
 		</div>   <!-- /container -->

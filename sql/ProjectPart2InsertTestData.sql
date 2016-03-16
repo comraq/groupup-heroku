@@ -140,8 +140,8 @@ INSERT INTO `GroupUpDebug`.`Event`
 `createdBy`)
 VALUES
 ("Test Event 1",
-3.45,
--128.8,
+49.2,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
 10.89,
@@ -159,8 +159,8 @@ INSERT INTO `GroupUpDebug`.`Event`
 `createdBy`)
 VALUES
 ("Test Event 2",
-3.46,
--128.9,
+49.46,
+-123.1,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
 10.90,
@@ -178,8 +178,8 @@ INSERT INTO `GroupUpDebug`.`Event`
 `createdBy`)
 VALUES
 ("Test Event 3",
-3.47,
--129.0,
+49.3,
+-122.9,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
 10.96,
@@ -198,7 +198,7 @@ INSERT INTO `GroupUpDebug`.`Event`
 `createdBy`)
 VALUES
 ("Test Event 4",
-3.2,
+49.1,
 -128.7,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
@@ -218,8 +218,8 @@ INSERT INTO `GroupUpDebug`.`Event`
 `createdBy`)
 VALUES
 ("Test Event 5",
-3.45,
--128.8,
+49.2,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
 1827.77,
@@ -272,8 +272,8 @@ INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
 VALUES
 (1,
 "Test Event 1",
-3.45,
--128.8,
+49.2,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28'
 );
@@ -289,8 +289,8 @@ INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
 VALUES
 (2,
 "Test Event 1",
-3.45,
--128.8,
+49.2,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28'
 );
@@ -306,8 +306,8 @@ INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
 VALUES
 (1,
 "Test Event 2",
-3.46,
--128.9,
+49.46,
+-123.1,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28'
 );
@@ -322,8 +322,8 @@ INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
 VALUES
 (3,
 "Test Event 2",
-3.46,
--128.9,
+49.46,
+-123.1,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28'
 );
@@ -338,8 +338,8 @@ INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
 VALUES
 (4,
 "Test Event 2",
-3.46,
--128.9,
+49.46,
+-123.1,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28'
 );
@@ -400,8 +400,8 @@ INSERT INTO `GroupUpDebug`.`PrivateEvent`
 `createdBy`)
 VALUES
 ("Private Test Event 1",
-3.45,
--128.8,
+49.2,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
 1827.77,
@@ -419,8 +419,8 @@ INSERT INTO `GroupUpDebug`.`PrivateEvent`
 `createdBy`)
 VALUES
 ("Private Test Event 2",
-3.47,
--128.9,
+49.3,
+-123.1,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
 1827.77,
@@ -459,8 +459,8 @@ INSERT INTO `GroupUpDebug`.`PrivateEvent`
 `createdBy`)
 VALUES
 ("Private Test Event 4",
-3.45,
--128.8,
+49.2,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
 1827.77,
@@ -480,7 +480,7 @@ INSERT INTO `GroupUpDebug`.`PrivateEvent`
 VALUES
 ("Private Test Event 5",
 3.33,
--128.8,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
 1827.77,
@@ -577,7 +577,7 @@ VALUES
 (1,
 "Private Test Event 5",
 3.33,
--128.8,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
 "testUser1@test.com",
@@ -598,7 +598,7 @@ VALUES
 (2,
 "Private Test Event 5",
 3.33,
--128.8,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
 "testUser2@test.com",
@@ -619,7 +619,7 @@ VALUES
 (3,
 "Private Test Event 5",
 3.33,
--128.8,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
 "testUser3@test.com",
@@ -640,7 +640,7 @@ VALUES
 (4,
 "Private Test Event 5",
 3.33,
--128.8,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
 "testUser4@test.com",
@@ -661,7 +661,7 @@ VALUES
 (5,
 "Private Test Event 5",
 3.33,
--128.8,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
 "testUser5@test.com",
@@ -681,7 +681,7 @@ VALUES
 1,
 "Private Test Event 5",
 3.33,
--128.8,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -698,7 +698,7 @@ VALUES
 2,
 "Private Test Event 5",
 3.33,
--128.8,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -715,7 +715,7 @@ VALUES
 3,
 "Private Test Event 5",
 3.33,
--128.8,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -732,7 +732,7 @@ VALUES
 4,
 "Private Test Event 5",
 3.33,
--128.8,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -749,7 +749,7 @@ VALUES
 5,
 "Private Test Event 5",
 3.33,
--128.8,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -763,8 +763,8 @@ INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 VALUES
 ("testUser1@test.com",
 "Test Event 1",
-3.45,
--128.8,
+49.2,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -778,8 +778,8 @@ INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 VALUES
 ("testUser2@test.com",
 "Test Event 1",
-3.45,
--128.8,
+49.2,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -793,8 +793,8 @@ INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 VALUES
 ("testUser3@test.com",
 "Test Event 1",
-3.45,
--128.8,
+49.2,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -808,8 +808,8 @@ INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 VALUES
 ("testUser4@test.com",
 "Test Event 1",
-3.45,
--128.8,
+49.2,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -823,8 +823,8 @@ INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 VALUES
 ("testUser5@test.com",
 "Test Event 1",
-3.45,
--128.8,
+49.2,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -842,7 +842,7 @@ VALUES
 1,
 "Private Test Event 5",
 3.33,
--128.8,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -859,7 +859,7 @@ VALUES
 2,
 "Private Test Event 5",
 3.33,
--128.8,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -876,7 +876,7 @@ VALUES
 3,
 "Private Test Event 5",
 3.33,
--128.8,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -894,7 +894,7 @@ VALUES
 4,
 "Private Test Event 5",
 3.33,
--128.8,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -912,7 +912,7 @@ VALUES
 5,
 "Private Test Event 5",
 3.33,
--128.8,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -929,8 +929,8 @@ VALUES
 (1,
 "testUser1@test.com",
 "Test Event 1",
-3.45,
--128.8,
+49.2,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -947,8 +947,8 @@ VALUES
 (1,
 "testUser2@test.com",
 "Test Event 1",
-3.45,
--128.8,
+49.2,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -964,8 +964,8 @@ VALUES
 (1,
 "testUser3@test.com",
 "Test Event 1",
-3.45,
--128.8,
+49.2,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -982,8 +982,8 @@ VALUES
 (1,
 "testUser4@test.com",
 "Test Event 1",
-3.45,
--128.8,
+49.2,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -1000,8 +1000,8 @@ VALUES
 (1,
 "testUser5@test.com",
 "Test Event 1",
-3.45,
--128.8,
+49.2,
+-123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
