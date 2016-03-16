@@ -19,10 +19,14 @@ class Search extends Database{
 		
 		parent::connect();
 		
-		$searchEventsSQL = "SELECT * FROM `Event` WHERE eventName LIKE ?";
+		$searchEventsSQL = "SELECT DISTINCT * FROM `Event` WHERE eventName LIKE ?
+		UNION 
+		SELECT DISTINCT * FROM `Event` WHERE createdBy LIKE ?
+		UNION 
+		SELECT DISTINCT * FROM `Event` WHERE description LIKE ?";
 
 		$stmt = $this->conn->prepare($searchEventsSQL);
-		$stmt->bind_param('s', $searchTarget);
+		$stmt->bind_param('sss', $searchTarget, $searchTarget, $searchTarget);
 		$stmt->execute();
 		//referenced http://stackoverflow.com/questions/11892699/how-do-i-properly-use-php-to-encode-mysql-object-into-json
 		$res = $stmt->get_result();

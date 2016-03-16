@@ -22,7 +22,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 		}).then(function successCallback(response){
 			$scope.events = response.data;
-			
+			console.log(response.data);
 			//https://ngmap.github.io/#/!map_fit_bounds.html
 			if($scope.events.length > 0){
 				var bounds = new google.maps.LatLngBounds();
