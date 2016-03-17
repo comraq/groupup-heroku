@@ -3,35 +3,58 @@
 <div class="container">
 	<h2 class="title">Events</h2>
 	
-	<div id="eventSearchBar" class="tab-pane fade in active">
-		<form class="form-signin" ng-submit="ctrl.searchEvents()" name="searchEvents" role="form">
-			<div>
-				<label for="inputSearch" class="sr-only">Search</label>
-				<input type="text" name="search" data-ng-model="ctrl.searchTarget" id="inputSearch" class="form-control" placeholder="Find an Event" required autofocus>
-			</div>
-			<!-- referenced: http://jsfiddle.net/mjaric/pj5br/ -->
-			<table border="1" style="width:100%">
-				<tr>
-					<th>Event Name</th>
-					<th>Created By</th>
-					<th>Description</th>
-					<th>Time Start</th>
-					<th>Time End</th>
-				</tr>
-				<tr ng-repeat="event in events">
-					<td>{{event.eventName}}</td>
-					<td>{{event.createdBy}}</td>
-					<td>{{event.description}}</td>
-					<td>{{event.timeStart}}</td>
-					<td>{{event.timeEnd}}</td>
-				</tr>
-			</table>
-			<!-- https://www.kevinhooke.com/2015/06/15/angularjs-and-google-maps-dynamic-marker-updates/ -->
+	<ul class="nav nav-tabs nav-justified">
+		<li class="active"><a data-toggle="tab" data-target="#eventSearchBar">Event Search</a></li>
+		<li><a data-toggle="tab" data-target="#createEvent">Create Event</a></li>
+	</ul>
 
-			<ng-map style="height:100%" center="[0,0]" zoom="13">
-				<marker ng-repeat="pos in positions" position="{{pos.lat}}, {{pos.lng}}"></marker>
-			</ng-map>
-
-
-		</div>   <!-- /container -->
+	<div class="tab-content">
+		<div id="eventSearchBar" class="tab-pane fade in active">
+			<form class="form-signin" ng-submit="ctrl.searchEvents()" name="searchEvents" role="form">
+				<div>
+					<label for="inputSearch" class="sr-only">Search</label>
+					<input type="text" name="search" data-ng-model="ctrl.searchTarget" id="inputSearch" class="form-control" placeholder="Find an Event" required autofocus>
+				</div>
+				<!-- referenced: http://jsfiddle.net/mjaric/pj5br/ -->
+				<table border="1" style="width:100%" ng-if="results">
+					<tr>
+						<th>Event Name</th>
+						<th>Created By</th>
+						<th>Description</th>
+						<th>Time Start</th>
+						<th>Time End</th>
+					</tr>
+					<tr ng-repeat="event in events">
+						<td>{{event.eventName}}</td>
+						<td>{{event.createdBy}}</td>
+						<td>{{event.description}}</td>
+						<td>{{event.timeStart}}</td>
+						<td>{{event.timeEnd}}</td>
+					</tr>
+				</table>
+			</form>
+			
+		</div> 
+		<div id="createEvent" class="tab-pane fade">
+			<form class="form-createEvent" ng-submit="ctrl.searchEvents()" name="searchEvents" role="form">
+				<div>
+					<label for="eventName" class="sr-only">Event Name</label>
+					<input type="text" name="eventName" data-ng-model="ctrl.eventName" id="eventName" class="form-control" placeholder="Event Name" required autofocus>
+				</div>
+				<div>
+					<label for="inputSearch" class="sr-only">Event Description</label>
+					<input type="text" name="eventDescription" data-ng-model="ctrl.eventDescription" id="eventDescription" class="form-control" placeholder="Event Description" required>
+				</div>
+				<select id="eventType" name="eventType" data-ng-model="ctrl.eventType" class="form-control" required>
+					<option ng-repeat="eventType in eventTypes" value="{{eventType.eventTypeId}}">{{eventType.category}}</option>
+				</select>
+			</form> 
+		</div>
+		<!-- https://www.kevinhooke.com/2015/06/15/angularjs-and-google-maps-dynamic-marker-updates/ -->
+		<ng-map style="height:100%" center="[0,0]" zoom="13">
+		<marker ng-repeat="pos in positions" position="{{pos.lat}}, {{pos.lng}}"></marker>
+	</ng-map>
+</div>
+</div>
+<!-- /container -->
 	<!-- ng-disabled="registerUser.$invalid || ctrl.dataLoading" -->

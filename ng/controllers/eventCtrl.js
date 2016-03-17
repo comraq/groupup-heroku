@@ -1,8 +1,10 @@
 var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, $window, $location, $http, NgMap){
-	this.url = "../../controller/search.php"
+	this.searchUrl = "../../controller/search.php";
+	this.typeUrl = "../../controller/eventTypes/php";
 	this.searchTarget;
 	this.bounds;
 	$scope.positions = [];
+	$scope.results;
 	var userPosition;
 
 	this.searchEvents = function searchEvents(){
@@ -18,13 +20,14 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
 		$http({
 			method: 'POST',
 			data: $.param(data),
-			url: this.url,
+			url: this.searchUrl,
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 		}).then(function successCallback(response){
 			$scope.events = response.data;
 			console.log(response.data);
 			//https://ngmap.github.io/#/!map_fit_bounds.html
 			if($scope.events.length > 0){
+				$scope.results = true;
 				var bounds = new google.maps.LatLngBounds();
 
 				$scope.positions = [];
@@ -67,11 +70,23 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
 			var up = new google.maps.LatLng(userPosition.lat, userPosition.lng);
 			bounds.extend(up);
 		}
-			map.setCenter(bounds.getCenter());
-			map.fitBounds(bounds);
-		
+		map.setCenter(bounds.getCenter());
+		map.fitBounds(bounds);
 	}
 
+	var getEventTypes = function getEventTypes(){
+		console.log(this.typeUrl)
+		$http({
+			method: 'GET',
+			url: "../../controller/eventTypes.php",
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+		}).then(function successCallback(response){
+			console.log("success");
+			$scope.eventTypes = response.data;
+			console.log(response.data);	
+		});
+	}
 	getLocation();
+	getEventTypes();
 
 });
