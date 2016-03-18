@@ -1,11 +1,23 @@
 var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, $window, $location, $http, NgMap){
-	this.searchUrl = "../../controller/search.php";
-	this.typeUrl = "../../controller/eventTypes/php";
-	this.searchTarget;
-	this.bounds;
 	$scope.positions = [];
 	$scope.results;
+	this.searchUrl = "../../controller/search.php";
+	this.typeUrl = "../../controller/eventTypes.php";
+	this.createEventUrl = "../../controller/createEvent.php";
+	
+	this.searchTarget;
+	this.bounds;
+
+	this.eventName;
+	this.eventDescription;
+	this.eventCost;
+	this.timeStart;
+	this.timeEnd;
+	this.eventType;
+
 	var userPosition;
+	var newEventLat; 
+	var newEventLng;
 
 	this.searchEvents = function searchEvents(){
 		var data = {
@@ -24,7 +36,6 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 		}).then(function successCallback(response){
 			$scope.events = response.data;
-			console.log(response.data);
 			//https://ngmap.github.io/#/!map_fit_bounds.html
 			if($scope.events.length > 0){
 				$scope.results = true;
@@ -69,24 +80,74 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
 			$scope.positions.push(userPosition);
 			var up = new google.maps.LatLng(userPosition.lat, userPosition.lng);
 			bounds.extend(up);
+			newEventLat = userPosition.lat;
+			newEventLng = userPosition.lng;
 		}
 		map.setCenter(bounds.getCenter());
 		map.fitBounds(bounds);
 	}
 
-	var getEventTypes = function getEventTypes(){
-		console.log(this.typeUrl)
+	this.getEventTypes = function getEventTypes(){
 		$http({
 			method: 'GET',
-			url: "../../controller/eventTypes.php",
+			url: this.typeUrl,
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 		}).then(function successCallback(response){
-			console.log("success");
 			$scope.eventTypes = response.data;
-			console.log(response.data);	
 		});
 	}
-	getLocation();
-	getEventTypes();
+
+	this.clearMap = function clearMap(){
+		$scope.positions = [];
+		NgMap.getMap().then(function(map) {
+			var bounds = new google.maps.LatLngBounds();
+			drawUserPostion(bounds, map, userPosition);
+		});
+	}
+
+	this.mapClick = function mapClick(event){
+		$scope.positions = [];
+		newEventLat = event.latLng.lat();
+		newEventLng = event.latLng.lng();
+		$scope.positions.push({lat: newEventLat, lng: newEventLng})
+
+	}
+
+	this.createEvent = function createEvent(){
+		
+		var data = {
+			createEvent: 
+			{
+				eventName: this.eventName,
+				eventDescription: this.eventDescription,
+				eventCost: this.eventCost,
+				timeStart: this.timeStart,
+				timeEnd: this.timeEnd,
+				eventType: this.eventType,
+				lat: newEventLat,
+				lng: newEventLng
+			}
+		}
+
+		$http({
+			method: 'POST',
+			data: $.param(data),
+			url: this.createEventUrl,
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+		}).then(function successCallback(response){
+			if (response.data == true){
+				console.log("event creation successful");
+			}else{
+				console.log(response.data);
+				console.log("event creation unsuccessful");
+			}
+		});
+
+	}
+
+	if(!userPosition){
+		getLocation();
+	}
+	this.getEventTypes();
 
 });

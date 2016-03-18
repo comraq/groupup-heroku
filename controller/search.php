@@ -32,6 +32,7 @@ class Search extends Database{
 		$res = $stmt->get_result();
 		$data = $res->fetch_all( MYSQLI_ASSOC );
 		print json_encode( $data );
+		$stmt->close();
 		parent::disconnect();
 		return TRUE;
 	}
