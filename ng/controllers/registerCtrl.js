@@ -1,4 +1,4 @@
-var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scope, $http){
+var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scope, $http, $location){
 	this.url = "../../controller/authentication.php"
 	this.scope = $scope;
 	this.dataLoading;
@@ -24,6 +24,28 @@ var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scop
 	this.aFirstName;
 	this.aLastName;
 	this.aPhone;
+
+	this.test = function(){
+		var testUrl = "controller/test";
+		$http({
+			method: 'GET',
+			url: testUrl,
+		}).then(function successCallback(response){
+			if (response.status == 200){
+				alert(response.data);
+				console.log(response.data);
+			}else{
+				console.log("fail");
+			}
+			this.dataLoading = false;
+			
+		}.bind(this), function errorCallback(response){
+			this.dataLoading = false;
+			    // called asynchronously if an error occurs
+			    // or server returns response with an error status.
+		});
+
+	}
 
 	this.registerUser = function(){
 		this.dataLoading = true;
