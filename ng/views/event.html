@@ -47,18 +47,18 @@
                     <label for="eventCost" class="sr-only">Event Cost</label>
                     <input type="number" name="eventCost" data-ng-model="ctrl.eventCost" id="eventCost" class="form-control" placeholder="Event Cost" required>
                 </div>
-                 <div>
+                <div>
                     <select id="eventType" name="eventType" data-ng-model="ctrl.eventType" class="form-control" required>
                         <option ng-repeat="eventType in eventTypes" value="{{eventType.eventTypeId}}">{{eventType.category}}</option>
                     </select>
                 </div>
-                <div>
-                    <div style="display: inline-flex;">
-                        <datetimepicker data-ng-model="ctrl.timeStart"></datetimepicker>
-                    </div>
-                    <div style="display: inline-flex;">
-                        <datetimepicker style="display: inline-block;" data-ng-model="ctrl.timeEnd"></datetimepicker>
-                    </div>
+                <div style=" display: flex; align-items: center; justify-content: center;">
+                    Start Time
+                    <datetimepicker style="margin: auto;" data-ng-model="ctrl.timeStart"></datetimepicker>
+                    End Time
+                    <datetimepicker style="margin: auto;" data-ng-model="ctrl.timeEnd"></datetimepicker>
+                   </div>
+                <div style=" display: flex; align-items: center; justify-content: center;">
                 </div>
                 <button class="btn btn-lg btn-block btn-blog" type="submit">Create Event</button>
             </form>
