@@ -2,7 +2,8 @@
 
 require_once(__DIR__.'/rest.inc.php');
 
-class Restapi extends Rest{
+class Restapi extends Rest
+{
 
 	function __construct(){
 		parent::__construct();
@@ -15,20 +16,29 @@ class Restapi extends Rest{
 	}
 
 	public function processApi(){
+		$requestArray = explode("/", $_REQUEST['x']);
+		$cont = $requestArray[0];
+		$fileName = $cont.".php";
+		$func = $requestArray[1];
 
-		$func = strtolower(trim(str_replace("/","",$_REQUEST['x'])));
-		if((int)method_exists($this,$func) > 0)
-			$this->$func();
-		else
-			$this->response('Bad Request',404);
-	}
+		if (file_exists($fileName)){
+			require_once(__DIR__."/".$fileName);
+			$controller = new $cont;
 
-	private function test(){
-		
-		if($this->get_request_method() == "GET"){
-		 		$this->response('test works',200);
+			if((int) method_exists($controller, $func) > 0){
+				$data = $controller->$func();
+			
+			}else{
+				$this->response('Function Not Found', 404);
+			}
+
 		}
+
+		
+		else
+			$this->response('Page Not Found: '.$cont,404);
 	}
+
 }
 
 $restApi = new Restapi();

@@ -2,7 +2,8 @@
 
 require_once(__DIR__.'/database.php');
 
-class Authentication extends Database{
+class Authentication extends Database
+{
 
 	function __construct(){
 		parent::__construct();
@@ -10,8 +11,19 @@ class Authentication extends Database{
 
 	private function createUser($db, $dataArray)
 	{
-		$database = $db;
+		
 		$data = $dataArray;
+		if (is_null($data))
+		{
+			$result = array(
+				'data' => "Emtpy Data"
+				);
+			$statusCode = 404;
+			$this->response($result, $statusCode);
+			exit;
+		}
+		
+		$database = $db;
 		$email = $data["email"];
 		$password = $data["password"];
 		$rePassword = $data["rePassword"];
@@ -20,14 +32,32 @@ class Authentication extends Database{
 		$phone = $data["phone"];
 		$age;
 		$result;
+		$statusCode;
+
 		if (array_key_exists("age", $data)){
 			$age = $data["age"];
 		}
 
-		if(is_null($email) || is_null($password) || is_null($rePassword)) return "Email|Password|Confirm Password missing";
-		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) return "Incorrect Email format";
+		if(is_null($email) || is_null($password) || is_null($rePassword)) 
+		{
+			$result = array(
+				'data' => "Email|Password|Confirm Password missing"
+				);
+			$statusCode = 404;
+			$this->response($result, $statusCode);
+			exit;
+		}
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+		{
+			$result = array(
+				'data' => "Incorrect Email format"
+				);
+			$statusCode = 404;
+			$this->response($result, $statusCode);
+			exit;
+		}
 
-		parent::connect();
+		$this->connect();
 		$escapePass = $this->conn->real_escape_string($password);
 		$escapeRePass = $this->conn->real_escape_string($rePassword);
 		$escapeEmail = $this->conn->real_escape_string($email);
@@ -38,12 +68,18 @@ class Authentication extends Database{
 		$hashPass = password_hash($escapePass, PASSWORD_BCRYPT);
 		if (!password_verify($escapeRePass, $hashPass))
 		{ 
-			parent::disconnect(); 
-			return "wrong password";
+			$this->disconnect(); 
+			$result = array(
+				'data' => "Password|Re-password are different"
+				);
+			$statusCode = 404;
+			$this->response($result, $statusCode);
+			exit;
 		}
 		if (!is_null($age)){
 			$escapeAge = $this->conn->real_escape_string($age);
 		}
+
 		// check User
 		$checkEmailSql = "select * from " . $database . " where email = ?";
 
@@ -63,7 +99,11 @@ class Authentication extends Database{
 				$stmt->bind_param('ssssdd', $escapeEmail, $hashPass, $escapeFName, $escapeLName, $escapePhone, $escapeAge);
 				$stmt->execute();
 				$stmt->close();
-				$result =  TRUE;
+
+				$result = array(
+					'data' => True
+				);
+				$statusCode = 200;
 			}
 
 			if ($database == "EventProvider")
@@ -74,7 +114,11 @@ class Authentication extends Database{
 				$stmt->bind_param('ssssd', $escapeEmail, $hashPass, $escapeFName, $escapeLName, $escapePhone);
 				$stmt->execute();
 				$stmt->close();
-				$result =  TRUE;
+
+				$result = array(
+					'data' => True
+				);
+				$statusCode = 200;
 			}
 
 			if ($database == "Admin")
@@ -85,47 +129,69 @@ class Authentication extends Database{
 				$stmt->bind_param('ssssd', $escapeEmail, $hashPass, $escapeFName, $escapeLName, $escapePhone);
 				$stmt->execute();
 				$stmt->close();
-				$result =  TRUE;
+				
+				$result = array(
+					'data' => True
+				);
+				$statusCode = 200;
 			}
 		}else{
-			$result = "Email already exists";
+			$result = array(
+				'data' => "Email already exists"
+				);
+			$statusCode = 404;
 		}
 		
-		parent::disconnect();
-		return $result;
+		$this->disconnect();
+		$this->response($data, $statusCode);
 	}
 
-	public function register()
+	public function user()
 	{
-		if (isset($_POST["registerUser"])){
-			$test = "TRUE";
-			$form = $_POST["registerUser"];
+		$method = $_SERVER['REQUEST_METHOD'];
+		if ($method == 'POST')
+		{
 			$database = "User";
-			$result = $this->createUser($database, $form);
-			return $result;
-
+			$json = file_get_contents("php://input");
+			$data = json_decode($json,TRUE);
+			$result = $this->createUser($database, $data);
+			$this->response($result, 200);
+		}else{
+			$this->response("Method Not Allowed", 405);
 		}
-		if (isset($_POST["registerEProvider"])){
-			$form = $_POST["registerUser"];
+	}
+
+	public function eventProvider()
+	{
+		$method = $_SERVER['REQUEST_METHOD'];
+		if ($method == 'POST')
+		{
 			$database = "EventProvider";
-			$result = $this->createUser($database, $form);
-			return $result;
+			$json = file_get_contents("php://input");
+			$data = json_decode($json, TRUE);
+			$result = $this->createUser($database, $data);
+			$this->response($result, 200);
 		}
-		if (isset($_POST["registerAdmin"])){
-			$form = $_POST["registerUser"];
-			$database = "Admin";
-			$result = $this->createUser($database, $form);
-			return $result;
-		}
+	}
 
-		return "No Post Set";
+	public function admin()
+	{
+		$method = $_SERVER['REQUEST_METHOD'];
+		if ($method == 'POST')
+		{
+			$database = "Admin";
+			$json = file_get_contents("php://input");
+			$data = json_decode($json, TRUE);
+			$result = $this->createUser($database, $data);
+			$this->response($result, 200);
+		}
 	}
 	
 }
 
-$authentication = new Authentication();
-$result = $authentication->register();
+// $authentication = new Authentication();
+// $result = $authentication->register();
 
-echo $result;
+// echo $result;
 
 ?>

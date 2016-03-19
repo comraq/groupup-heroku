@@ -1,15 +1,18 @@
 <?php
 
-class Database{
+require_once(__DIR__.'/rest.inc.php');
+
+class Database extends Rest
+{
 
 	var $servername = "localhost";
-	var $username = "";
-	var $password = "";
+	var $username = "groupup";
+	var $password = "groupup";
 	var $database = "GroupUpDebug";
 	public $conn;
-
+		
 	function __construct(){
-
+		parent::__construct();
 	}
 
 	public function connect(){
@@ -24,8 +27,6 @@ class Database{
 	public function disconnect(){
 		$this->conn->close();
 	}
-
-
 
 }
 
