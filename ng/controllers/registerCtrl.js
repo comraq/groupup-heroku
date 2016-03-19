@@ -1,4 +1,4 @@
-var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scope, $http, $location){
+var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scope, $http, $location, alertFactory){
 	this.url;
 	this.scope = $scope;
 	this.dataLoading;
@@ -25,18 +25,14 @@ var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scop
 	this.aLastName;
 	this.aPhone;
 
-	this.test = function(){
-		//alertCtrl.addAlert('success', 'test');
-	}
-
 	this.registerUser = function(){
 		this.url = "/controller/authentication/user"
 		this.dataLoading = true;
 		if (!validatePassword(this.password, this.rePassword)){
-			console.log("passowrd do not match");
 			this.dataLoading = false;
 			return;
-		};
+		}
+		
 		var data = {
 					email: this.email,
 					password: this.password,
@@ -52,30 +48,26 @@ var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scop
 			data: data,
 			url: this.url,
 		}).then(function successCallback(response){
-			alert(response.data);
-			if (response.data == true){
-				console.log("registration successful");
-			}else{
-				console.log("registration unsuccessful");
-			}
+			alertFactory.add('success', 'Registration Successful');
 			this.dataLoading = false;
+			$location.path('/');
 			
 		}.bind(this), function errorCallback(response){
+			var message = response.data.data;
+			alertFactory.add('danger', message);
 			this.dataLoading = false;
-			    // called asynchronously if an error occurs
-			    // or server returns response with an error status.
-			alert(response.data);
-		});
+
+		}.bind(this));
 	};
 
 	this.registerEProvider = function(){
 		this.url = "/controller/authentication/eventProvider"
 		this.dataLoading = true;
-		if (!validatePassword(this.ePassword, this.eRePassword)){
-			console.log("passowrd do not match");
+		if(!validatePassword(this.ePassword, this.eRePassword)){
 			this.dataLoading = false;
 			return;
-		};
+		}
+		
 		var data = {
 					email: this.eEmail,
 					password: this.ePassword,
@@ -90,29 +82,26 @@ var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scop
 			data: data,
 			url: this.url,
 		}).then(function successCallback(response){
-			alert(response.data);
-			if (response.data == true){
-				console.log("registration successful");
-			}else{
-				console.log("registration unsuccessful");
-			}
+			alertFactory.add('success', 'Registration Successful');
 			this.dataLoading = false;
+			$location.path('/');
+
 		}.bind(this), function errorCallback(response){
+			var message = response.data.data;
+			alertFactory.add('danger', message);
 			this.dataLoading = false;
-			    // called asynchronously if an error occurs
-			    // or server returns response with an error status.
-			    alert(response.data);
-		});
+
+		}.bind(this));
 	}
 
 	this.registerAdmin = function(){
 		this.url = "/controller/authentication/admin"
 		this.dataLoading = true;
-		if (!validatePassword(this.aPassword, this.aRePassword)){
-			console.log("passowrd do not match");
+		if(!validatePassword(this.aPassword, this.aRePassword)){
 			this.dataLoading = false;
 			return;
-		};
+		}
+
 		var data = {
 					email: this.aEmail,
 					password: this.aPassword,
@@ -127,23 +116,25 @@ var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scop
 			data: data,
 			url: this.url,
 		}).then(function successCallback(response){
-			alert(response.data);
-			if (response.data == true){
-				console.log("registration successful");
-			}else{
-				console.log("registration unsuccessful");
-			}
+			alertFactory.add('success', 'Registration Successful');
 			this.dataLoading = false;
+			$location.path('/');
+
 		}.bind(this), function errorCallback(response){
+			var message = response.data.data;
+			alertFactory.add('danger', message);
 			this.dataLoading = false;
-			    // called asynchronously if an error occurs
-			    // or server returns response with an error status.
-			    alert(response.data);
-		});
+
+		}.bind(this));
 	}
 
 	function validatePassword(password, rePassword){
-		return password == rePassword;
+		var result = (password == rePassword);
+		if(!result){
+			var message = "Password & Re-password do not match";
+			alertFactory.add('danger', message);
+		}
+		return result;
 	}
 
 });

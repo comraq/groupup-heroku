@@ -18,9 +18,9 @@ class Authentication extends Database
 			$result = array(
 				'data' => "Emtpy Data"
 				);
-			$statusCode = 404;
+			$statusCode = 400;
 			$this->response($result, $statusCode);
-			exit;
+			return;
 		}
 		
 		$database = $db;
@@ -43,18 +43,18 @@ class Authentication extends Database
 			$result = array(
 				'data' => "Email|Password|Confirm Password missing"
 				);
-			$statusCode = 404;
+			$statusCode = 400;
 			$this->response($result, $statusCode);
-			exit;
+			return;
 		}
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL))
 		{
 			$result = array(
 				'data' => "Incorrect Email format"
 				);
-			$statusCode = 404;
+			$statusCode = 400;
 			$this->response($result, $statusCode);
-			exit;
+			return;
 		}
 
 		$this->connect();
@@ -72,9 +72,9 @@ class Authentication extends Database
 			$result = array(
 				'data' => "Password|Re-password are different"
 				);
-			$statusCode = 404;
+			$statusCode = 400;
 			$this->response($result, $statusCode);
-			exit;
+			return;
 		}
 		if (!is_null($age)){
 			$escapeAge = $this->conn->real_escape_string($age);
@@ -139,11 +139,11 @@ class Authentication extends Database
 			$result = array(
 				'data' => "Email already exists"
 				);
-			$statusCode = 404;
+			$statusCode = 400;
 		}
 		
 		$this->disconnect();
-		$this->response($data, $statusCode);
+		$this->response($result, $statusCode);
 	}
 
 	public function user()

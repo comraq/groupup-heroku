@@ -12,7 +12,7 @@
 			<form class="form-signin" ng-submit="ctrl.registerUser()" name="registerUser" role="form">
 				<div class="form-group" ng-class="{ 'has-error': registerUser.email.$dirty && (registerUser.email.$error.required || registerUser.email.$invalid)}">
 				    <label for="inputEmail" class="sr-only">Email address</label>
-				    <input type="email" name="email" data-ng-model="ctrl.email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+				    <input type="email" name="email" data-ng-model="ctrl.email" id="inputEmail" class="form-control" placeholder="Email address"  required autofocus>
 				    <span ng-show="registerUser.email.$dirty && (registerUser.email.$error.required || registerUser.email.$invalid)" class="help-block">Valid Email is required</span>
 				</div>
 
@@ -52,7 +52,7 @@
 				    <span ng-show="registerUser.age.$dirty && (registerUser.age.$error.required || registerUser.age.$invalid)" class="help-block">Valid Age is required</span>
 				</div>
 
-				<button class="btn btn-lg btn-block btn-blog" type="submit" ng-disabled="registerUser.$invalid || ctrl.dataLoading">Register</button>
+				<button class="btn btn-lg btn-block btn-blog" type="submit" ng-disabled="ctrl.dataLoading">Register</button>
 
 				<hr class="href-divider">
 				<a href="#/SignIn"><p class="text-href">Already have an account?</p></a>
@@ -147,8 +147,4 @@
 			</form>
 		</div>
 	</div>
-
-	<button class="btn btn-lg btn-block btn-blog" ng-click="ctrl.test()">Test</button>
-
 </div> <!-- /container -->
-<!-- ng-disabled="registerUser.$invalid || ctrl.dataLoading" -->
