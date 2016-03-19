@@ -1,9 +1,9 @@
 var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, $window, $location, $http, NgMap){
 	$scope.positions = [];
 	$scope.results;
-	this.searchUrl = "/controller/search";
-	this.typeUrl = "/controller/eventTypes";
-	this.createEventUrl = "/controller/createEvent";
+	this.searchUrl = "/controller/search/searchEvents";
+	this.typeUrl = "/controller/eventTypes/getTypes";
+	this.createEventUrl = "/controller/createEvent/createEvent";
 	
 	this.searchTarget;
 	this.bounds;
@@ -97,8 +97,9 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
 		});
 	}
 
-	this.clearMap = function clearMap(){
+	this.clearData = function clearData(){
 		$scope.positions = [];
+		$scope.results = null;
 		NgMap.getMap().then(function(map) {
 			var bounds = new google.maps.LatLngBounds();
 			drawUserPostion(bounds, map, userPosition);

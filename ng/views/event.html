@@ -4,8 +4,8 @@
 	<h2 class="title">Events</h2>
 	
 	<ul class="nav nav-tabs nav-justified">
-		<li ng-click="ctrl.clearMap()" class="active"><a data-toggle="tab" data-target="#eventSearchBar">Event Search</a></li>
-		<li ng-click="ctrl.clearMap()"><a data-toggle="tab" data-target="#createEvent">Create Event</a></li>
+		<li ng-click="ctrl.clearData()" class="active"><a data-toggle="tab" data-target="#eventSearchBar">Event Search</a></li>
+		<li ng-click="ctrl.clearData()"><a data-toggle="tab" data-target="#createEvent">Create Event</a></li>
 	</ul>
 
 	<div class="tab-content">
@@ -48,15 +48,15 @@
 					<input type="text" name="eventDescription" data-ng-model="ctrl.eventDescription" id="eventDescription" class="form-control" placeholder="Event Description" required>
 				</div>
 				<div>
-					<label for="eventCost" class="sr-only">Event Description</label>
+					<label for="eventCost" class="sr-only">Event Cost</label>
 					<input type="number" name="eventCost" data-ng-model="ctrl.eventCost" id="eventCost" class="form-control" placeholder="Event Cost" required>
 				</div>
 				<div>
-					<label for="timeStart" class="sr-only">Event Description</label>
+					<label for="timeStart" class="sr-only">Event Time Start</label>
 					<input type="text" pattern="(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})" name="timeStart" data-ng-model="ctrl.timeStart" id="timeStart" class="form-control" placeholder="Time Start YYYY-MM-DD HH:MM:SS"required>
 				</div>
 				<div>
-					<label for="timeEnd" class="sr-only">Event Description</label>
+					<label for="timeEnd" class="sr-only">Event Time End</label>
 					<input type="text" pattern="(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})" name="timeEnd" data-ng-model="ctrl.timeEnd" id="timeEnd" class="form-control" placeholder="Time End YYYY-MM-DD HH:MM:SS"required>
 				</div>
 				<div>

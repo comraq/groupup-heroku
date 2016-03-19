@@ -30,10 +30,10 @@ class Restapi extends Rest{
 		}
 	}
 
-	// private function createEvent(){
-	// 	include "createEvent.php";
-	// 	exit;
-	// }
+	private function createEvent(){
+		include "createEvent.php";
+		exit;
+	}
 }
 
 $restApi = new Restapi();
