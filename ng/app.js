@@ -1,4 +1,4 @@
-var app = angular.module('groupUpApp', ['ngAnimate', 'ngRoute', 'ngSanitize', 'ngMap']);
+var app = angular.module('groupUpApp', ['ngAnimate', 'ngRoute', 'ngSanitize', 'ngMap', 'ui.bootstrap.datetimepicker']);
 
 app.config(function ($routeProvider) {
     $routeProvider
