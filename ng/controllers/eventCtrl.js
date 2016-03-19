@@ -1,9 +1,9 @@
 var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, $window, $location, $http, NgMap){
 	$scope.positions = [];
 	$scope.results;
-	this.searchUrl = "../../controller/search.php";
-	this.typeUrl = "../../controller/eventTypes.php";
-	this.createEventUrl = "../../controller/createEvent.php";
+	this.searchUrl = "/controller/search";
+	this.typeUrl = "/controller/eventTypes";
+	this.createEventUrl = "/controller/createEvent";
 	
 	this.searchTarget;
 	this.bounds;

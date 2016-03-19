@@ -29,6 +29,11 @@ class Restapi extends Rest{
 		 		$this->response('test works',200);
 		}
 	}
+
+	// private function createEvent(){
+	// 	include "createEvent.php";
+	// 	exit;
+	// }
 }
 
 $restApi = new Restapi();
