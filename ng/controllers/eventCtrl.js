@@ -18,6 +18,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
 	var userPosition;
 	var newEventLat; 
 	var newEventLng;
+	var createTab = false;
 
 	this.searchEvents = function searchEvents(){
 		var data = {
@@ -71,7 +72,6 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
 				var bounds = new google.maps.LatLngBounds();
 				drawUserPostion(bounds, map, userPosition);
 			});
-
 		});
 	}
 
@@ -97,21 +97,42 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
 		});
 	}
 
-	this.clearData = function clearData(){
-		$scope.positions = [];
+	this.clearSearchData = function clearSearchData(){
+		createTab = true;
 		$scope.results = null;
+		$scope.positions = [];
 		NgMap.getMap().then(function(map) {
 			var bounds = new google.maps.LatLngBounds();
 			drawUserPostion(bounds, map, userPosition);
 		});
 	}
 
-	this.mapClick = function mapClick(event){
-		$scope.positions = [];
-		newEventLat = event.latLng.lat();
-		newEventLng = event.latLng.lng();
-		$scope.positions.push({lat: newEventLat, lng: newEventLng})
+	this.clearCreateData = function clearCreateData(){
+		createTab = false;
+		NgMap.getMap().then(function(map) {
+			$scope.positions = [];
+			var bounds = new google.maps.LatLngBounds();
+			drawUserPostion(bounds, map, userPosition);
+		});
+	}
 
+	this.mapClick = function mapClick(event){
+		if(createTab){
+			$scope.positions = [];
+			newEventLat = event.latLng.lat();
+			newEventLng = event.latLng.lng();
+			$scope.positions.push({lat: newEventLat, lng: newEventLng})
+		}
+	}
+
+	this.redirect = function redirect(eventName, lat, lon, createdBy, timeStart, timeEnd){
+		console.log(eventName);
+		console.log(createdBy);
+		console.log(timeStart);
+		console.log(timeEnd);
+		console.log(lat);
+		console.log(lon);
+		$location.path('/GoesWith/' + eventName + '/' + lat + '/' + lon + '/' + timeStart +'/' + timeEnd + '/' + createdBy);
 	}
 
 	this.createEvent = function createEvent(){

@@ -26,6 +26,11 @@ app.config(function ($routeProvider) {
             controller: 'SignInCtrl',
             controllerAs: 'ctrl'
         })
+        .when("/GoesWith/:eventName/:lat/:lon/:timeStart/:timeEnd/:createdBy",
+        { 
+            templateUrl: "ng/views/goesWith.html",
+            
+        })
         .when("/Register",
         {
             templateUrl: 'ng/views/register.html',

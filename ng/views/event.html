@@ -4,8 +4,8 @@
 	<h2 class="title">Events</h2>
 	
 	<ul class="nav nav-tabs nav-justified">
-		<li ng-click="ctrl.clearData()" class="active"><a data-toggle="tab" data-target="#eventSearchBar">Event Search</a></li>
-		<li ng-click="ctrl.clearData()"><a data-toggle="tab" data-target="#createEvent">Create Event</a></li>
+		<li ng-click="ctrl.clearCreateData()" class="active"><a data-toggle="tab" data-target="#eventSearchBar">Event Search</a></li>
+		<li ng-click="ctrl.clearSearchData()"><a data-toggle="tab" data-target="#createEvent">Create Event</a></li>
 	</ul>
 
 	<div class="tab-content">
@@ -21,17 +21,15 @@
 						<th>Event Name</th>
 						<th>Created By</th>
 						<th>Description</th>
-						<th>Time Start</th>
-						<th>Time End</th>
 						<th>Cost</th>
+						<th></th>
 					</tr>
 					<tr ng-repeat="event in events">
 						<td>{{event.eventName}}</td>
 						<td>{{event.createdBy}}</td>
 						<td>{{event.description}}</td>
-						<td>{{event.timeStart}}</td>
-						<td>{{event.timeEnd}}</td>
 						<td>{{event.cost}}</td>
+						<td><button style="width:100%" ng-click="ctrl.redirect(event.eventName, event.lat, event.lon, event.createdBy, event.timeStart, event.timeEnd)">Create or Join Group</button></td>
 					</tr>
 				</table>
 			</form>
