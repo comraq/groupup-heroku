@@ -29,19 +29,23 @@
     <script type="text/javascript" src="./components/angular-1.5.0/angular-animate.js"></script>
     <script type="text/javascript" src="./components/angular-1.5.0/angular-sanitize.js"></script>
     <script type="text/javascript" src="./components/angular-1.5.0/angular-resource.js"></script>
+
     <script type="text/javascript" src="./ng/app.js"></script>
+    <script type="text/javascript" src="./ng/directives/alert.js"></script>
     <script type="text/javascript" src="components/angular-google-maps/ng-map.min.js"></script>
     <script type="text/javascript" src="./ng/controllers/newsCtrl.js"></script>
+
+
     <script type="text/javascript" src="./ng/controllers/eventCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/groupCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/signInCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/registerCtrl.js"></script>
+
     <script type="text/javascript" src="components/moment/moment.js"></script>
     <script type="text/javascript" src="components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
     <script type="text/javascript" src="components/angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js"></script>
     <title>GroupUp | Attend Events in a Group</title>
 </head>
-
 <body>
     <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -73,14 +77,16 @@
                     <li><a href="#/Register">Register</a></li>
                 </ul>
             </div>
-            <!-- /.navbar-collapse -->
         </div>
-        <!-- /.container-fluid -->
     </nav>
-    <div class="container-fluid">
-        <div data-ng-view>asdf</div>
-    </div>
-    <!-- /.container-fluid -->
+	<div ng-controller="alertCtrl as alert">
+      <div ng-repeat="alert in alert.alerts">
+        <alert ng-model="alert"></alert>
+      </div>
+	</div>	
+	<div class="container-fluid">
+		<div data-ng-view></div>
+	</div><!-- /.container-fluid -->
 </body>
 
 </html>

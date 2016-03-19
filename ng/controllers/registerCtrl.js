@@ -1,5 +1,5 @@
 var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scope, $http, $location){
-	this.url = "../../controller/authentication.php"
+	this.url;
 	this.scope = $scope;
 	this.dataLoading;
 
@@ -26,28 +26,11 @@ var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scop
 	this.aPhone;
 
 	this.test = function(){
-		var testUrl = "controller/test";
-		$http({
-			method: 'GET',
-			url: testUrl,
-		}).then(function successCallback(response){
-			if (response.status == 200){
-				alert(response.data);
-				console.log(response.data);
-			}else{
-				console.log("fail");
-			}
-			this.dataLoading = false;
-			
-		}.bind(this), function errorCallback(response){
-			this.dataLoading = false;
-			    // called asynchronously if an error occurs
-			    // or server returns response with an error status.
-		});
-
+		//alertCtrl.addAlert('success', 'test');
 	}
 
 	this.registerUser = function(){
+		this.url = "/controller/authentication/user"
 		this.dataLoading = true;
 		if (!validatePassword(this.password, this.rePassword)){
 			console.log("passowrd do not match");
@@ -55,8 +38,6 @@ var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scop
 			return;
 		};
 		var data = {
-			registerUser: 
-				{
 					email: this.email,
 					password: this.password,
 					rePassword: this.rePassword,
@@ -65,13 +46,11 @@ var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scop
 					phone: this.phone,
 					age: this.age
 				}
-		}
 
 		$http({
 			method: 'POST',
-			data: $.param(data),
+			data: data,
 			url: this.url,
-			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 		}).then(function successCallback(response){
 			alert(response.data);
 			if (response.data == true){
@@ -90,6 +69,7 @@ var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scop
 	};
 
 	this.registerEProvider = function(){
+		this.url = "/controller/authentication/eventProvider"
 		this.dataLoading = true;
 		if (!validatePassword(this.ePassword, this.eRePassword)){
 			console.log("passowrd do not match");
@@ -97,8 +77,6 @@ var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scop
 			return;
 		};
 		var data = {
-			registerEProvider: 
-				{
 					email: this.eEmail,
 					password: this.ePassword,
 					rePassword: this.eRePassword,
@@ -106,13 +84,11 @@ var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scop
 					lastName: this.eLastName,
 					phone: this.ePhone
 				}
-		}
 
 		$http({
 			method: 'POST',
 			data: data,
 			url: this.url,
-			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 		}).then(function successCallback(response){
 			alert(response.data);
 			if (response.data == true){
@@ -130,6 +106,7 @@ var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scop
 	}
 
 	this.registerAdmin = function(){
+		this.url = "/controller/authentication/admin"
 		this.dataLoading = true;
 		if (!validatePassword(this.aPassword, this.aRePassword)){
 			console.log("passowrd do not match");
@@ -137,8 +114,6 @@ var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scop
 			return;
 		};
 		var data = {
-			registerAdmin: 
-				{
 					email: this.aEmail,
 					password: this.aPassword,
 					rePassword: this.aRePassword,
@@ -146,13 +121,11 @@ var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scop
 					lastName: this.aLastName,
 					phone: this.aPhone
 				}
-		}
 
 		$http({
 			method: 'POST',
 			data: data,
 			url: this.url,
-			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 		}).then(function successCallback(response){
 			alert(response.data);
 			if (response.data == true){
