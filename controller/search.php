@@ -7,18 +7,21 @@ class Search extends Database{
 		parent::__construct();
 	}
 
-	function searchEvents(){
-		$data = $_POST["searchEvents"];
+	function searchEvents($data){		
+		//$data = $_POST["searchEvents"];
+		if (is_null($data))
+		{
+			$result = array(
+				'data' => "Emtpy Data"
+				);
+			$statusCode = 405;
+			$this->response($result, $statusCode);
+			exit;
+		}
 		$searchTarget = "%".$data["searchTarget"]."%";
 		
-		if (array_key_exists("lat", $data)){
-			$lat = $data["lat"];
-		}if (array_key_exists("lon", $data)){
-			$lon = $data["lon"];
-		}
-		
 		parent::connect();
-		
+
 		$searchEventsSQL = "SELECT * FROM `Event` WHERE eventName LIKE ?
 		UNION 
 		SELECT * FROM `Event` WHERE createdBy LIKE ?
@@ -30,14 +33,20 @@ class Search extends Database{
 		$stmt->execute();
 		//referenced http://stackoverflow.com/questions/11892699/how-do-i-properly-use-php-to-encode-mysql-object-into-json
 		$res = $stmt->get_result();
-		$data = $res->fetch_all( MYSQLI_ASSOC );
-		print json_encode( $data );
+		$result = $res->fetch_all( MYSQLI_ASSOC );
 		$stmt->close();
 		parent::disconnect();
-		return TRUE;
+		return json_encode($result);
+	}
+
+	function startSearchEvents(){
+		$reqMethod = $_SERVER['REQUEST_METHOD'];
+		if ($reqMethod == 'POST'){
+			$json = file_get_contents("php://input");
+			$data = json_decode($json, TRUE);
+			$result = $this->searchEvents($data);
+			$this->response($result, 200);
+		}
 	}
 }
-$search = new Search();
-$result = $search->searchEvents();
-return $result;
 ?>

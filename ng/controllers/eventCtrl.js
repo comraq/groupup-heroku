@@ -1,7 +1,7 @@
 var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, $window, $location, $http, NgMap) {
     $scope.positions = [];
     $scope.results;
-    this.searchUrl = "/controller/search/searchEvents";
+    this.searchUrl = "/controller/Search/startSearchEvents";
     this.typeUrl = "/controller/eventTypes/getTypes";
     this.createEventUrl = "/controller/createEvent/createEvent";
 
@@ -22,20 +22,14 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
 
     this.searchEvents = function searchEvents() {
         var data = {
-            searchEvents: {
-                searchTarget: this.searchTarget,
-                lat: $scope.lat,
-                lon: $scope.lon
-            }
+            searchTarget: this.searchTarget,
         }
-
         $http({
-            method: 'POST',
-            data: $.param(data),
+          method: 'POST',
+            data: data,
             url: this.searchUrl,
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).then(function successCallback(response) {
-            $scope.events = response.data;
+            $scope.events = JSON.parse(response.data);
             //https://ngmap.github.io/#/!map_fit_bounds.html
             if ($scope.events.length > 0) {
                 $scope.results = true;
@@ -158,7 +152,6 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
             if (response.data == true) {
                 console.log("event creation successful");
             } else {
-                console.log(response.data);
                 console.log("event creation unsuccessful");
             }
         });

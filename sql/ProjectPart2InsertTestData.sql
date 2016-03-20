@@ -1005,21 +1005,3 @@ VALUES
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
-
-/*
-SELECT * FROM Admin;
-SELECT * FROM EventProvider;
-SELECT * FROM `Event`;
-SELECT * FROM EventType;
-SELECT * FROM EventTypeHasEvent;
-SELECT * FROM `Group`;
-SELECT * FROM PrivateEvent;
-SELECT * FROM HasInvitation;
-SELECT * FROM EventProviderSendInvitation;
-SELECT * FROM User;
-SELECT * FROM UserGoesEvent;
-SELECT * FROM UserReadsInvitation;
-*/
-
-SELECT * FROM `With`;
-
