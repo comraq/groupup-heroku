@@ -1,15 +1,13 @@
 <?php
 require_once(__DIR__.'/database.php');
 
-class createEvent extends Database{
+class CreateEvent extends Database{
 
 	function __construct(){
 		parent::__construct();
 	}
 
-	function createEvent(){
-		date_default_timezone_set("America/Los_Angeles");
-		$data = $_POST["createEvent"];
+	function createEvent($data){
 		$eventName = $data["eventName"];
 		$timeStart = $data["timeStart"];
 		$timeEnd =  $data["timeEnd"];
@@ -29,13 +27,20 @@ class createEvent extends Database{
 		$stmt = $this->conn->prepare($insertEventSql);
 		$stmt->bind_param('sddssdss', $eventName, $lat, $lon, $timeStart, $timeEnd, $cost, $description, $createdBy);
 		$stmt->execute();
-		//referenced http://stackoverflow.com/questions/11892699/how-do-i-properly-use-php-to-encode-mysql-object-into-json
 		parent::disconnect();
-		print TRUE;
-		return TRUE;
+		return json_encode(TRUE);
+	}
+
+	function startCreateEvent(){
+		$reqMethod = $_SERVER['REQUEST_METHOD'];
+		if ($reqMethod == 'POST'){
+			$json = file_get_contents("php://input");
+			$data = json_decode($json, TRUE);
+			$result = $this->createEvent($data);
+			$this->response($result, 200);
+		}
 	}
 }
-$createEvent = new createEvent();
-$result = $createEvent->createEvent();
-return $result;
+
+
 ?>

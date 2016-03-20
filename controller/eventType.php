@@ -1,7 +1,7 @@
 <?php
 require_once(__DIR__.'/database.php');
 
-class eventType extends Database{
+class EventType extends Database{
 
 	function __construct(){
 		parent::__construct();
@@ -17,14 +17,18 @@ class eventType extends Database{
 		$stmt->execute();
 		//referenced http://stackoverflow.com/questions/11892699/how-do-i-properly-use-php-to-encode-mysql-object-into-json
 		$res = $stmt->get_result();
-		$data = $res->fetch_all( MYSQLI_ASSOC );
-		print json_encode( $data );
+		$data = $res->fetch_all(MYSQLI_ASSOC);
 		$stmt->close();
 		parent::disconnect();
-		return TRUE;
+		return json_encode($data);
+	}
+
+	function startGetTypes(){
+		$reqMethod = $_SERVER['REQUEST_METHOD'];
+		if ($reqMethod == 'GET'){
+			$result = $this->getTypes();
+			$this->response($result, 200);
+		}
 	}
 }
-$eventType = new eventType();
-$result = $eventType->getTypes();
-return $result;
 ?>

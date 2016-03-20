@@ -33,7 +33,7 @@ class Search extends Database{
 		$stmt->execute();
 		//referenced http://stackoverflow.com/questions/11892699/how-do-i-properly-use-php-to-encode-mysql-object-into-json
 		$res = $stmt->get_result();
-		$result = $res->fetch_all( MYSQLI_ASSOC );
+		$result = $res->fetch_all(MYSQLI_ASSOC);
 		$stmt->close();
 		parent::disconnect();
 		return json_encode($result);
