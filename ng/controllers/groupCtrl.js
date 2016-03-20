@@ -1,8 +1,7 @@
 var app = angular.module('groupUpApp')
                  .controller('GroupCtrl',
                  function($scope, $location, $http){
-  //this.url = 'controller/groupController.php';
-  this.url = 'controller/groupController';
+  this.url = "controller/groupController";
   this.scope = $scope;
   this.location = $location;
 
@@ -18,10 +17,10 @@ var app = angular.module('groupUpApp')
       }
     };
     $http({
-      method: 'POST',
+      method: "POST",
       data: $.param(data),
       url: this.url,
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      headers: {"Content-Type": "application/x-www-form-urlencoded"}
     }).then(function successCallback(res){
       alert(res.data);
       if (response.data == true)
@@ -40,10 +39,11 @@ var app = angular.module('groupUpApp')
     $http({
       method: "GET",
       url: this.url + "/queryGroups",
-      headers: {"Content-Type": "application/x-www-form-urlencoded" }
     }).then(function successCallback(res) {
-      console.log("got res: " + JSON.stringify(res));
-      this.scope.groups = res.data;
+//      console.log(res);
+//      console.log("got res: " + JSON.stringify(res));
+      console.log(JSON.parse(res.data));
+      this.scope.groups = JSON.parse(res.data);
     }.bind(this), function errorCallback(err) {
       console.log(err);
     });

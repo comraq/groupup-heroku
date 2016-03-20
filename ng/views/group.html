@@ -17,32 +17,30 @@
     <div id="group_list" class="tab-pane fade in active">  
       <div ng-repeat="group in groups" class="jumbotron">
         <div class="row">
-          <h1 class="col-md-9">{{ group.groupName }}</h1>
-          <h1 class="col-md-3">Events</h1>
+          <h1 class="col-md-8">{{ group.groupName }}</h1>
+          <h1 class="col-md-4">Events</h1>
         </div>
 
         <div class="row">
-          <div class="col-md-9">
-            <p class="group_contents">{{ group.description }}</p>
-            <p class="group_contents">
+          <div class="col-md-7">
+            <p>{{ group.description }}</p>
+            <p>
               <a class="btn btn-primary btn-lg" href="#" role="button">
                 Join Group</a>
             </p>
           </div>
 
-          <div class="col-md-3">
+          <div class="col-md-5">
             <table class="table table-condensed">
               <tr>
                 <th>Name</th>
+                <th>Email</th>
                 <th>Time Start</th>
               </tr>
-              <tr>
-                <td>Event1 Name</td>
-                <td>Timestring1</td>
-              </tr>
-              <tr>
-                <td>Event2 Name</td>
-                <td>Timestring2</td>
+              <tr ng-repeat="event in group.events">
+                <td>{{ event.eventName }}</td>
+                <td>{{ event.email }}</td>
+                <td>{{ event.timeStart }}</td>
               </tr>
             </table>
           </div>
