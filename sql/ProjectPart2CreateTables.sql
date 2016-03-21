@@ -100,15 +100,10 @@ CREATE TABLE HasInvitation (
     lon FLOAT,
     timeStart DATETIME,
     timeEnd DATETIME,
-    sendToEmail VARCHAR(225),
-    `read` TINYINT(1),
     message VARCHAR(255),
     PRIMARY KEY (invitationId , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (eventName , lat , lon , timeStart , timeEnd)
         REFERENCES PrivateEvent (eventName , lat , lon , timeStart , timeEnd)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (sendToEmail)
-        REFERENCES `User` (email)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -157,6 +152,7 @@ CREATE TABLE EventTypeHasEvent (
     lon FLOAT,
     timeStart DATETIME,
     timeEnd DATETIME,
+    `read` TINYINT(1)  DEFAULT 0,
     PRIMARY KEY (email , invitationId , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (email)
         REFERENCES `User` (email)
@@ -180,7 +176,8 @@ CREATE TABLE EventProviderSendInvitation (
     lon FLOAT,
     timeStart DATETIME,
     timeEnd DATETIME,
-    PRIMARY KEY (email , invitationId , eventName , lat , lon , timeStart , timeEnd),
+    sendToEmail VARCHAR(225),
+    PRIMARY KEY (email , invitationId , eventName , lat , lon , timeStart , timeEnd, sendToEmail),
     FOREIGN KEY (email)
         REFERENCES EventProvider (email)
         ON DELETE CASCADE
@@ -188,7 +185,10 @@ CREATE TABLE EventProviderSendInvitation (
     FOREIGN KEY (invitationId , eventName , lat , lon , timeStart , timeEnd)
         REFERENCES HasInvitation (invitationId , eventName , lat , lon , timeStart , timeEnd)
         ON DELETE CASCADE
-        ON UPDATE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (sendToEmail)
+        REFERENCES `User` (email)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 /*

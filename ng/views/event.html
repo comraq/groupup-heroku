@@ -1,9 +1,9 @@
-<div>Event Page</div>
 <div class="container">
-    <h2 class="title">Events</h2>
+    <title>Events</title>
     <ul class="nav nav-tabs nav-justified">
         <li ng-click="ctrl.clearCreateData()" class="active"><a data-toggle="tab" data-target="#eventSearchBar">Event Search</a></li>
         <li ng-click="ctrl.clearSearchData()"><a data-toggle="tab" data-target="#createEvent">Create Event</a></li>
+        <li ng-click="ctrl.clearSearchData()"><a data-toggle="tab" data-target="#createPrivateEvent">Create Private Event</a></li>
     </ul>
     <div class="tab-content">
         <div id="eventSearchBar" class="tab-pane fade in active">
@@ -53,21 +53,59 @@
                     </select>
                 </div>
                 <div style=" display: flex; align-items: center; justify-content: center;">
-                    Start Time
-                    <datetimepicker style="margin: auto;" data-ng-model="ctrl.timeStart"></datetimepicker>
-                    End Time
-                    <datetimepicker style="margin: auto;" data-ng-model="ctrl.timeEnd"></datetimepicker>
-                   </div>
+                    <div style="margin: auto;">Time Start</div>
+                    <div style="margin: auto;">Time End</div>
+                </div>
                 <div style=" display: flex; align-items: center; justify-content: center;">
+                    <datetimepicker style="width:45%; height: auto; margin: auto;" data-ng-model="ctrl.timeStart"></datetimepicker>
+                    <datetimepicker style="width:45%; height: auto; margin: auto;" data-ng-model="ctrl.timeEnd"></datetimepicker>
+                </div>
+                <button class="btn btn-lg btn-block btn-blog" type="submit">Create Event</button>
+            </form>
+        </div>
+        <div id="createPrivateEvent" class="tab-pane fade">
+            <form class="form-createEvent" ng-submit="ctrl.createEvent()" name="createEvent" role="form">
+                <div>
+                    <label for="eventName" class="sr-only">Event Name</label>
+                    <input type="text" name="eventName" data-ng-model="ctrl.eventName" id="eventName" class="form-control" placeholder="Event Name" required autofocus>
+                </div>
+                <div>
+                    <label for="eventDescription" class="sr-only">Event Description</label>
+                    <input type="text" name="eventDescription" data-ng-model="ctrl.eventDescription" id="eventDescription" class="form-control" placeholder="Event Description" required>
+                </div>
+                <div>
+                    <label for="eventCost" class="sr-only">Event Cost</label>
+                    <input type="number" name="eventCost" data-ng-model="ctrl.eventCost" id="eventCost" class="form-control" placeholder="Event Cost" required>
+                </div>
+                <div>
+                    <label for="invitees" class="sr-only">Invitees</label>
+                    <input type="text" name="invitees" data-ng-model="ctrl.invitees" id="invitees" class="form-control" placeholder="Emails comma seperated" ng-list required>
+                </div>
+                <div>
+                    <label for="message" class="sr-only">Invite Message</label>
+                    <input type="text" name="message" data-ng-model="ctrl.message" id="message" class="form-control" placeholder="Invite Message" required>
+                </div>
+                <div>
+                    <select id="eventType" name="eventType" data-ng-model="ctrl.eventType" class="form-control" required>
+                        <option ng-repeat="eventType in eventTypes" value="{{eventType.eventTypeId}}">{{eventType.category}}</option>
+                    </select>
+                </div>
+                <div style=" display: flex; align-items: center; justify-content: center;">
+                    <div style="margin: auto;">Time Start</div>
+                    <div style="margin: auto;">Time End</div>
+                </div>
+                <div style=" display: flex; align-items: center; justify-content: center;">
+                    <datetimepicker style="width:45%; height: auto; margin: auto;" data-ng-model="ctrl.timeStart"></datetimepicker>
+                    <datetimepicker style="width:45%; height: auto; margin: auto;" data-ng-model="ctrl.timeEnd"></datetimepicker>
                 </div>
                 <button class="btn btn-lg btn-block btn-blog" type="submit">Create Event</button>
             </form>
         </div>
         <!-- https://www.kevinhooke.com/2015/06/15/angularjs-and-google-maps-dynamic-marker-updates/ -->
         <ng-map style="height:100%" center="[0,0]" zoom="13" on-click="ctrl.mapClick()">
-            <marker ng-repeat="pos in positions" position="{{pos.lat}}, {{pos.lng}}"></marker>
-        </ng-map>
-    </div>
+        <marker ng-repeat="pos in positions" position="{{pos.lat}}, {{pos.lng}}"></marker>
+    </ng-map>
+</div>
 </div>
 <!-- /container -->
 <!-- ng-disabled="registerUser.$invalid || ctrl.dataLoading" -->

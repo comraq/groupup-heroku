@@ -570,8 +570,6 @@ INSERT INTO `GroupUpDebug`.`HasInvitation`
 `lon`,
 `timeStart`,
 `timeEnd`,
-`sendToEmail`,
-`read`,
 `message`)
 VALUES
 (1,
@@ -580,8 +578,6 @@ VALUES
 -123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
-"testUser1@test.com",
-0,
 "TestMessage");
 
 INSERT INTO `GroupUpDebug`.`HasInvitation`
@@ -591,8 +587,6 @@ INSERT INTO `GroupUpDebug`.`HasInvitation`
 `lon`,
 `timeStart`,
 `timeEnd`,
-`sendToEmail`,
-`read`,
 `message`)
 VALUES
 (2,
@@ -601,8 +595,6 @@ VALUES
 -123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
-"testUser2@test.com",
-0,
 "TestMessage");
 
 INSERT INTO `GroupUpDebug`.`HasInvitation`
@@ -612,8 +604,6 @@ INSERT INTO `GroupUpDebug`.`HasInvitation`
 `lon`,
 `timeStart`,
 `timeEnd`,
-`sendToEmail`,
-`read`,
 `message`)
 VALUES
 (3,
@@ -622,8 +612,6 @@ VALUES
 -123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
-"testUser3@test.com",
-0,
 "TestMessage");
 
 INSERT INTO `GroupUpDebug`.`HasInvitation`
@@ -633,8 +621,6 @@ INSERT INTO `GroupUpDebug`.`HasInvitation`
 `lon`,
 `timeStart`,
 `timeEnd`,
-`sendToEmail`,
-`read`,
 `message`)
 VALUES
 (4,
@@ -643,8 +629,6 @@ VALUES
 -123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
-"testUser4@test.com",
-0,
 "TestMessage");
 
 INSERT INTO `GroupUpDebug`.`HasInvitation`
@@ -654,8 +638,6 @@ INSERT INTO `GroupUpDebug`.`HasInvitation`
 `lon`,
 `timeStart`,
 `timeEnd`,
-`sendToEmail`,
-`read`,
 `message`)
 VALUES
 (5,
@@ -664,8 +646,6 @@ VALUES
 -123.2,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
-"testUser5@test.com",
-0,
 "TestMessage");
 
 INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
@@ -675,7 +655,8 @@ INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 `lat`,
 `lon`,
 `timeStart`,
-`timeEnd`)
+`timeEnd`,
+`sendToEmail`)
 VALUES
 ("testEP1@test.com",
 1,
@@ -683,7 +664,8 @@ VALUES
 3.33,
 -123.2,
 '2016-04-30 14:53:28',
-'2016-04-30 14:53:28');
+'2016-04-30 14:53:28',
+'testUser1@test.com');
 
 INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 (`email`,
@@ -692,7 +674,8 @@ INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 `lat`,
 `lon`,
 `timeStart`,
-`timeEnd`)
+`timeEnd`,
+`sendToEmail`)
 VALUES
 ("testEP1@test.com",
 2,
@@ -700,7 +683,8 @@ VALUES
 3.33,
 -123.2,
 '2016-04-30 14:53:28',
-'2016-04-30 14:53:28');
+'2016-04-30 14:53:28',
+'testUser2@test.com');
 
 INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 (`email`,
@@ -709,7 +693,8 @@ INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 `lat`,
 `lon`,
 `timeStart`,
-`timeEnd`)
+`timeEnd`,
+`sendToEmail`)
 VALUES
 ("testEP1@test.com",
 3,
@@ -717,7 +702,8 @@ VALUES
 3.33,
 -123.2,
 '2016-04-30 14:53:28',
-'2016-04-30 14:53:28');
+'2016-04-30 14:53:28',
+'testUser3@test.com');
 
 INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 (`email`,
@@ -726,7 +712,8 @@ INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 `lat`,
 `lon`,
 `timeStart`,
-`timeEnd`)
+`timeEnd`,
+`sendToEmail`)
 VALUES
 ("testEP1@test.com",
 4,
@@ -734,7 +721,8 @@ VALUES
 3.33,
 -123.2,
 '2016-04-30 14:53:28',
-'2016-04-30 14:53:28');
+'2016-04-30 14:53:28',
+'testUser4@test.com');
 
 INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 (`email`,
@@ -743,7 +731,8 @@ INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 `lat`,
 `lon`,
 `timeStart`,
-`timeEnd`)
+`timeEnd`,
+`sendToEmail`)
 VALUES
 ("testEP1@test.com",
 5,
@@ -751,7 +740,8 @@ VALUES
 3.33,
 -123.2,
 '2016-04-30 14:53:28',
-'2016-04-30 14:53:28');
+'2016-04-30 14:53:28',
+'testUser5@test.com');
 
 INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 (`email`,

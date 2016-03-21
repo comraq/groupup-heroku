@@ -14,6 +14,8 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.timeStart;
     this.timeEnd;
     this.eventType;
+    this.invitees;
+    this.message;
 
     var userPosition;
     var newEventLat;
@@ -128,7 +130,12 @@ this.redirect = function redirect(eventName, lat, lon, createdBy, timeStart, tim
 }
 
 this.createEvent = function createEvent() {
-    console.log(formatDate(this.timeStart));
+    var privateEvent = false;
+    if(this.invitees){
+        privateEvent = true;
+    }
+    console.log(this.invitees);
+        
     var data = {
         eventName: this.eventName,
         eventDescription: this.eventDescription,
@@ -137,14 +144,21 @@ this.createEvent = function createEvent() {
         timeEnd: formatDate(this.timeEnd),
         eventType: this.eventType,
         lat: newEventLat,
-        lng: newEventLng
+        lng: newEventLng,
+        invitees: this.invitees,
+        message: this.message,
+        privateEvent: privateEvent
     }
+    this.invitees = null;
+    console.log(data);
     $http({
         method: 'POST',
         data: data,
         url: this.createEventUrl,
     }).then(function successCallback(response) {
-        console.log(JSON.parse(response.data));
+        
+        console.log(response);
+
         if (JSON.parse(response.data)) {
             console.log("event creation successful");
         } else {
