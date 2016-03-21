@@ -1,4 +1,10 @@
-var app = angular.module('groupUpApp', ['ngAnimate', 'ngRoute', 'ngSanitize']);
+var app = angular.module('groupUpApp',
+                         [
+                           'ngAnimate',
+                           'ngRoute',
+                           'ngSanitize',
+                           'ngMap'
+                         ]);
 
 app.config(function ($routeProvider) {
     $routeProvider

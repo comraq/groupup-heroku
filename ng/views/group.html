@@ -1,14 +1,18 @@
-<!--link rel="stylesheet" type="text/css"
-  href="../../components/group_styles.css" /-->
-
 <div class="container">
   <h2 class="title">Groups</h2>
 
   <ul class="nav nav-tabs nav-justified">
+<!--
+    <li ng-repeat="pane in panes" class="{{ pane.active }}"
+      ng-click="ctrl.checkActiveTab()" active="{{ pane.active }}">
+      <a data-toggle="tab" data-target="{{ pane.target }}">
+        {{ pane.title }}</a>
+    </li>
+-->
     <li class="active">
       <a data-toggle="tab" data-target="#group_list">Join Groups</a>
     </li>
-    <li>
+    <li ng-click="ctrl.initMap('group-map')">
       <a data-toggle="tab" data-target="#group_create">Create Groups</a>
     </li>
   </ul>
@@ -46,7 +50,11 @@
           </div>
         </div>
       </div><!-- jumbotron -->
+
+
     </div><!-- tabpane -->
+
+
 
     <div id="group_create" class="tab-pane fade"> 
       <form class="form-signin" ng-submit="ctrl.createGroup()"
@@ -85,6 +93,12 @@
           Create</button>
 
       </form>
+
+        <ng-map id="group-map" center="[0,0]" zoom="13"
+          on-click="ctrl.mapClick()" lazy-init="true" default-style="true">
+            <marker ng-repeat="pos in positions" position="{{pos.lat}}, {{pos.lng}}"></marker>
+        </ng-map>
+
     </div>
   </div>
 </div>
