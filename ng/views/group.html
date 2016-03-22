@@ -101,7 +101,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="e in events | filter: eventsFilter"
+            <tr ng-repeat="e in events
+                           | filter: eventsFilter
+                           | orderBy: '-selected'"
               selection-model
               selection-model-type="checkbox"
               selection-model-mode="multiple-additive"
@@ -112,7 +114,7 @@
               <td>{{ e.eventName }}</td>
               <td>{{ e.timeStart }}</td>
               <td>{{ e.timeEnd }}</td>
-              <td>{{ e.cost }}</td>
+              <td>{{ e.cost | currency }}</td>
               <td>{{ e.category }} {{ e.remaining }}</td>
               <td><input type="checkbox" /></td>
             </tr>
@@ -121,8 +123,8 @@
 
         <ng-map id="create-group-events-map" center="[0,0]" zoom="13"
           lazy-init="true" default-style="true">
-            <marker ng-repeat="pos in positions"
-              position="{{pos.lat}}, {{pos.lng}}"></marker>
+            <marker ng-repeat="e in events | filter: {selected: 'true'}"
+              position="{{e.lat}}, {{e.lon}}"></marker>
         </ng-map>
 
         <button class="btn btn-lg btn-block btn-blog" type="submit"

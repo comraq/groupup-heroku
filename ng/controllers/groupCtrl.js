@@ -12,15 +12,10 @@ var app = angular.module('groupUpApp')
   this.location = $location;
   this.joinTab = true;
 
-  this.markPosition = function markPosition(userPosition) {
-    this.scope.positions.push(userPosition);
-    refreshMap(this.map, userPosition);
-  };
-
-  function refreshMap(map, userPosition) {
+  function refreshMap(map, position) {
     var bounds = new google.maps.LatLngBounds();
-    if (userPosition) {
-      var up = new google.maps.LatLng(userPosition.lat, userPosition.lng);
+    if (position) {
+      var up = new google.maps.LatLng(position.lat, position.lon);
       bounds.extend(up);
     }
     google.maps.event.trigger(map, "resize");
@@ -33,7 +28,6 @@ var app = angular.module('groupUpApp')
       return;
 
     this.joinTab = false;
-    this.scope.positions = [];
     if (!this.map)
       this.map = NgMap.initMap(mapId);
  
@@ -46,7 +40,7 @@ var app = angular.module('groupUpApp')
     $window.navigator.geolocation.getCurrentPosition(function(position) {
       var userPosition = {
                            lat: position.coords.latitude,
-                           lng: position.coords.longitude
+                           lon: position.coords.longitude
                          };
       refreshMap(ctrl.map, userPosition);
       $timeout(function() {
@@ -56,10 +50,11 @@ var app = angular.module('groupUpApp')
   };
 
   this.eventsChanged = function eventsChanged(e) {
-/*
-    console.log("eventsChanged")
-    console.log(e);
-*/
+    var eventPosition = {
+                         lat: e.lat,
+                         lon: e.lon
+                       };
+    refreshMap(this.map, eventPosition);
   }
 
   this.createGroup = function createGroup() {
@@ -115,7 +110,12 @@ var app = angular.module('groupUpApp')
         console.log("getEvents res: " + JSON.stringify(res));
         console.log(JSON.parse(res.data));
       }
-      this.scope.events = JSON.parse(res.data);
+      this.scope.events = JSON.parse(res.data).map(function (e, i, arr) {
+        e.selected = false;
+        e.lat = parseFloat(e.lat);
+        e.lon = parseFloat(e.lon);
+        return e;
+      });;
     }.bind(this), function errorCallback(err) {
       console.log(err);
     });

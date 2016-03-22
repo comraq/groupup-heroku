@@ -50,8 +50,7 @@ angular.module('selectionModel').directive('selectionModelIgnore', [
         };
 
         element.on('click', function(event) {
-         // if(!attrs.selectionModelIgnore || scope.$eval(attrs.selectionModelIgnore)) {
-          if(!attrs.selectionModelIgnore) {
+          if(!attrs.selectionModelIgnore || scope.$eval(attrs.selectionModelIgnore)) {
             ignore(event);
           }
         });
@@ -102,7 +101,10 @@ angular.module('selectionModel').directive('selectionModel', [
          * will be the checkbox.
          */
         //var smType = scope.$eval(attrs.selectionModelType) || defaultType;
-        var smType = attrs.selectionModelType || defaultType;
+        //var smType = attrs.selectionModelType || defaultType;
+        var smType = scope.$eval(attrs.selectionModelType)
+                     || attrs.selectionModelType
+                     || defaultType;
 
         /**
          * The selection mode
@@ -117,7 +119,9 @@ angular.module('selectionModel').directive('selectionModel', [
          * as turning every click into a ctrl-click.
          */
         //var smMode = scope.$eval(attrs.selectionModelMode) || defaultMode
-        var smMode = attrs.selectionModelMode || defaultMode
+        var smMode = scope.$eval(attrs.selectionModelMode)
+                     || attrs.selectionModelMode
+                     || defaultMode
           , isMultiMode = /^multi(ple)?(-additive)?$/.test(smMode)
           , isModeAdditive = /^multi(ple)?-additive/.test(smMode);
 
@@ -128,7 +132,10 @@ angular.module('selectionModel').directive('selectionModel', [
          * attribute.
          */
         //var selectedAttribute = scope.$eval(attrs.selectionModelSelectedAttribute) || defaultSelectedAttribute;
-        var selectedAttribute = attrs.selectionModelSelectedAttribute || defaultSelectedAttribute;
+        var selectedAttribute =
+          scope.$eval(attrs.selectionModelSelectedAttribute)
+          || attrs.selectionModelSelectedAttribute
+          || defaultSelectedAttribute;
 
         /**
          * The selected class name
@@ -138,7 +145,9 @@ angular.module('selectionModel').directive('selectionModel', [
          * default class name.
          */
         //var selectedClass = scope.$eval(attrs.selectionModelSelectedClass) || defaultSelectedClass;
-        var selectedClass = attrs.selectionModelSelectedClass || defaultSelectedClass;
+        var selectedClass = scope.$eval(attrs.selectionModelSelectedClass)
+                            || attrs.selectionModelSelectedClass 
+                            || defaultSelectedClass;
 
         /**
          * The cleanup strategy
@@ -149,7 +158,10 @@ angular.module('selectionModel').directive('selectionModel', [
          * otherwise no longer visible on the client.
          */
         //var cleanupStrategy = scope.$eval(attrs.selectionModelCleanupStrategy) || defaultCleanupStrategy;
-        var cleanupStrategy = attrs.selectionModelCleanupStrategy || defaultCleanupStrategy;
+        var cleanupStrategy =
+          scope.$eval(attrs.selectionModelCleanupStrategy)
+          || attrs.selectionModelCleanupStrategy
+          || defaultCleanupStrategy;
         /**
          * The change callback
          *
