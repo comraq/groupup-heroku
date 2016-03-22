@@ -41,6 +41,16 @@ class CreateEvent extends Database{
 		$insertHasInvitation ="INSERT INTO `HasInvitation`(`invitationId`, `eventName`,`lat`,`lon`,`timeStart`,`timeEnd`,`message`)
 		VALUES (?, ?, ?, ?,?, ?, ?)";
 
+		$insertEventTypeHasEvent = "INSERT INTO `EventTypeHasEvent`
+		(`eventTypeId`,
+		`eventName`,
+		`lat`,
+		`lon`,
+		`timeStart`,
+		`timeEnd`)
+		VALUES
+		(?,?,?,?,?,?)";
+
 		if(!$privateEvent){
 			$checkIfExists = "SELECT * FROM `Event` WHERE eventName=? AND lat= CAST(? AS DECIMAL(10,5)) AND lon=CAST(? AS DECIMAL(10,5)) AND timeStart=? AND timeEnd=?";
 			$checkIfExistsStmt = $this->conn->prepare($checkIfExists);
@@ -94,6 +104,14 @@ class CreateEvent extends Database{
 					print $this->conn->error;
 				}
 				$invStmt->close();
+
+				$insertEventTypeHasEventStmt = $this->conn->prepare($insertEventTypeHasEvent);
+				$insertEventTypeHasEventStmt->bind_param('dsddss', $eventType, $eventName, $lat, $lon, $timeStart, $timeEnd);
+				foreach ($eventType as $typeId) {
+					$insertEventTypeHasEventStmt->execute();
+					print $this->conn->error;
+				}
+				$insertEventTypeHasEventStmt->close();
 				$this->conn->query("COMMIT");
 				$result = TRUE;
 			}else{

@@ -5,7 +5,8 @@ var app = angular.module('groupUpApp',
                            'ngSanitize',
                            'ngMap',
                            'selectionModel',
-                           'anguFixedHeaderTable'
+                           'anguFixedHeaderTable',
+                           'ui.bootstrap.datetimepicker'
                          ]);
 
 app.config(function ($routeProvider) {
