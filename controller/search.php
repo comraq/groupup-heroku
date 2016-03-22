@@ -23,63 +23,63 @@ class Search extends Database{
 		parent::connect();
 
 		$searchEventsSQL = "SELECT 
-    eventName,
-    lat,
-    lon,
-    timeStart,
-    timeEnd,
-    cost,
-    description,
-        createdBy,
-    GROUP_CONCAT(category
-        SEPARATOR ', ') AS category
+    e.eventName as eventName,
+    e.lat as lat,
+    e.lon as lon,
+    e.timeStart as timeStart,
+    e.timeEnd as timeEnd,
+    e.cost as cost,
+    e.description as description,
+    e.createdBy as createdBy,
+    GROUP_CONCAT(et.category
+        SEPARATOR ', ') as category
 FROM
-    `Event`
+    `Event` e
         NATURAL LEFT JOIN
-    EventTypeHasEvent
+    EventTypeHasEvent eht
         NATURAL LEFT JOIN
-    EventType
+    EventType et
 WHERE
-    eventName LIKE ?
+    eventName LIKE ? AND NOT EXISTS (SELECT * FROM PrivateEvent pe WHERE pe.eventName = e.eventName AND  pe.lat = e.lat AND pe.lon =e.lon AND pe.timeStart = e.timeStart AND pe.timeEnd =e.timeEnd)
 GROUP BY eventName , lat, lon, timeStart, timeEnd 
 UNION (SELECT 
-    eventName,
-    lat,
-    lon,
-    timeStart,
-    timeEnd,
-    cost,
-    description,
-    createdBy,
-    GROUP_CONCAT(category
-        SEPARATOR ', ') AS category
+    e.eventName as eventName,
+    e.lat as lat,
+    e.lon as lon,
+    e.timeStart as timeStart,
+    e.timeEnd as timeEnd,
+    e.cost as cost,
+    e.description as description,
+    e.createdBy as createdBy,
+    GROUP_CONCAT(et.category
+        SEPARATOR ', ') as category
 FROM
-    EventTypeHasEvent
+    EventTypeHasEvent eht
         NATURAL LEFT JOIN
-    `Event`
+    `Event` e
         NATURAL LEFT JOIN
-    EventType
+    EventType et
 WHERE
-    createdBy LIKE ?
+    createdBy LIKE ? AND NOT EXISTS (SELECT * FROM PrivateEvent pe WHERE pe.eventName = e.eventName AND  pe.lat = e.lat AND pe.lon =e.lon AND pe.timeStart = e.timeStart AND pe.timeEnd =e.timeEnd)
 GROUP BY eventName , lat, lon, timeStart, timeEnd) UNION (SELECT 
-    eventName,
-    lat,
-    lon,
-    timeStart,
-    timeEnd,
-    cost,
-    description,
-    createdBy,
-    GROUP_CONCAT(category
-        SEPARATOR ', ') AS category
+    e.eventName as eventName,
+    e.lat as lat,
+    e.lon as lon,
+    e.timeStart as timeStart,
+    e.timeEnd as timeEnd,
+    e.cost as cost,
+    e.description as description,
+    e.createdBy as createdBy,
+    GROUP_CONCAT(et.category
+        SEPARATOR ', ') as category
 FROM
-    EventTypeHasEvent
+    EventTypeHasEvent eht
         NATURAL LEFT JOIN
-    `Event`
+    `Event` e
         NATURAL LEFT JOIN
-    EventType
+    EventType et
 WHERE
-    description LIKE ?
+    description LIKE ? AND NOT EXISTS (SELECT * FROM PrivateEvent pe WHERE pe.eventName = e.eventName AND  pe.lat = e.lat AND pe.lon =e.lon AND pe.timeStart = e.timeStart AND pe.timeEnd =e.timeEnd)
 GROUP BY eventName , lat, lon, timeStart, timeEnd)";
 
 		$stmt = $this->conn->prepare($searchEventsSQL);
