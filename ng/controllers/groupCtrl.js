@@ -3,34 +3,23 @@ var app = angular.module('groupUpApp')
                                                    $location,
                                                    $http,
                                                    $window,
+                                                   $timeout,
                                                    NgMap) {
   var verbose = false;
 
   this.url = "controller/groupController";
   this.scope = $scope;
   this.location = $location;
+  this.joinTab = true;
 
-  this.name;
-  this.description;
+  this.markPosition = function markPosition(userPosition) {
+    this.scope.positions.push(userPosition);
+    refreshMap(this.map, userPosition);
+  };
 
-
-  this.scope.positions = [];
-  var userPosition;
-  function getLocation(map) {
-    $window.navigator.geolocation.getCurrentPosition(function(position) {
-      userPosition = {
-                       lat: position.coords.latitude,
-                       lng: position.coords.longitude
-                     };
-      drawUserPostion(new google.maps.LatLngBounds(),
-                      map, userPosition);
-    });
-  }
-
-  function drawUserPostion(bounds, map, userPosition) {
+  function refreshMap(map, userPosition) {
+    var bounds = new google.maps.LatLngBounds();
     if (userPosition) {
-      $scope.positions = [];
-      $scope.positions.push(userPosition);
       var up = new google.maps.LatLng(userPosition.lat, userPosition.lng);
       bounds.extend(up);
     }
@@ -40,12 +29,38 @@ var app = angular.module('groupUpApp')
   }
   
   this.initCreateTab = function initCreateTab(mapId) {
+    if (!this.joinTab)
+      return;
+
+    this.joinTab = false;
+    this.scope.positions = [];
     if (!this.map)
       this.map = NgMap.initMap(mapId);
  
     this.getEvents();
-    getLocation(this.map);
+    this.newGroup = {
+      withEvents: []
+    };
+
+    var ctrl = this;
+    $window.navigator.geolocation.getCurrentPosition(function(position) {
+      var userPosition = {
+                           lat: position.coords.latitude,
+                           lng: position.coords.longitude
+                         };
+      refreshMap(ctrl.map, userPosition);
+      $timeout(function() {
+        refreshMap(ctrl.map, userPosition);
+      }, 1000);
+    });
   };
+
+  this.eventsChanged = function eventsChanged(e) {
+/*
+    console.log("eventsChanged")
+    console.log(e);
+*/
+  }
 
   this.createGroup = function createGroup() {
     this.dataloading = true;
@@ -89,6 +104,8 @@ var app = angular.module('groupUpApp')
     });
   };
 
+  this.joinTabActive = function() { this.joinTab = true; }
+
   this.getEvents = function getEvents() {
     $http({
       method: "GET",
@@ -106,4 +123,9 @@ var app = angular.module('groupUpApp')
   };
 
   this.getGroups();
+
+  this.testSubmit = function testSubmit() {
+    console.log("submitting form!");
+    console.log(this);
+  };
 });

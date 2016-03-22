@@ -11,9 +11,9 @@
 
       $allGroupsSql =
         'select G.groupName, G.description, G.groupId,
-                W.email, W.eventName, W.timeStart
-         from `With` W, `Group` G
-         where W.groupId = G.groupId
+                W.eventName, W.timeStart, W.timeEnd
+         from `With` W inner join `Group` G
+         on W.groupId = G.groupId
          order by G.groupId';
       $stmt = $this->conn->prepare($allGroupsSql);
       $stmt->execute();
@@ -27,7 +27,7 @@
 
     private static function aggregateByGroup($data) {
       $result = array();
-      $filter = array('email', 'eventName', 'timeStart');
+      $filter = array('eventName', 'timeStart', 'timeEnd');
       foreach ($data as $entry) {
         if (!isset($curGroup)
             || $curGroup['groupId'] != $entry['groupId']) {
@@ -64,29 +64,27 @@
       parent::connect();
 
       $allEventsSql =
-        'select eventName, cost, timeStart, timeEnd,
-                lat, lon, cost, createdBy as email
-         from Event';
+        'select E.eventName, E.timeStart, E.timeEnd, E.cost,
+                E.lat, E.lon, ifnull(T.category, "None") as category,
+                if(count(*) - 1 > 0, concat("+ ", count(*) - 1, " more"),
+                NULL) as remaining
+         from Event E
+           left join EventTypeHasEvent ET
+             on E.eventName = ET.eventName and
+                E.timeStart = ET.timeStart and
+                E.timeEnd = ET.timeEnd and
+                E.lat = ET.lat and
+                E.lon = ET.lon
+           left join EventType T
+             on ET.eventTypeId = T.eventTypeId
+         group by E.eventName, E.timeStart, E.timeEnd, E.lat, E.lon';
       $stmt = $this->conn->prepare($allEventsSql);
       $stmt->execute();
       $res = $stmt->get_result();
       $data = $res->fetch_all(MYSQLI_ASSOC);
 
-      //echo ($res);
-      //echo ($data);
-
       parent::disconnect();
       $this->response(json_encode($data), 200);
     }
   }
-
-/*
-  $groupController = new GroupController();
-  $reqMethod = $_SERVER['REQUEST_METHOD'];
-  if ($reqMethod == 'GET')
-    $response = $groupController->queryGroups();
-    
-  if (isset($response))
-    echo $response;
-*/
 ?>
