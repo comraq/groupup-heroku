@@ -389,7 +389,7 @@ VALUES
 "Test Group 5",
 "Test Group");
 
-INSERT INTO `GroupUpDebug`.`PrivateEvent`
+INSERT INTO `GroupUpDebug`.`Event`
 (`eventName`,
 `lat`,
 `lon`,
@@ -413,6 +413,19 @@ INSERT INTO `GroupUpDebug`.`PrivateEvent`
 `lat`,
 `lon`,
 `timeStart`,
+`timeEnd`)
+VALUES
+("Private Test Event 1",
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`Event`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
 `timeEnd`,
 `cost`,
 `description`,
@@ -427,8 +440,20 @@ VALUES
 "test description",
 "testEP2@test.com");
 
-
 INSERT INTO `GroupUpDebug`.`PrivateEvent`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("Private Test Event 2",
+49.3,
+-123.1,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`Event`
 (`eventName`,
 `lat`,
 `lon`,
@@ -447,8 +472,21 @@ VALUES
 "test description",
 "testEP3@test.com");
 
-
 INSERT INTO `GroupUpDebug`.`PrivateEvent`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("Private Test Event 3",
+3.99,
+-128.10,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+
+INSERT INTO `GroupUpDebug`.`Event`
 (`eventName`,
 `lat`,
 `lon`,
@@ -467,8 +505,20 @@ VALUES
 "test description",
 "testEP4@test.com");
 
-
 INSERT INTO `GroupUpDebug`.`PrivateEvent`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("Private Test Event 4",
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`Event`
 (`eventName`,
 `lat`,
 `lon`,
@@ -486,6 +536,20 @@ VALUES
 1827.77,
 "test description",
 "testEP5@test.com");
+
+INSERT INTO `GroupUpDebug`.`PrivateEvent`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("Private Test Event 5",
+3.33,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
 
 INSERT INTO `GroupUpDebug`.`User`
 (`email`,

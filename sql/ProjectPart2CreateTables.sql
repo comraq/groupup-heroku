@@ -52,15 +52,13 @@ CREATE TABLE PrivateEvent (
     lon DECIMAL(10,5),
     timeStart DATETIME,
     timeEnd DATETIME,
-    cost DECIMAL(10,2),
-    description VARCHAR(255),
-    createdBy VARCHAR(50),
     PRIMARY KEY (eventName , lat , lon , timeStart , timeEnd),
-    FOREIGN KEY (createdBy)
-        REFERENCES EventProvider (email)
+    FOREIGN KEY (eventName , lat , lon , timeStart , timeEnd)
+        REFERENCES Event (eventName , lat , lon , timeStart , timeEnd)
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
 
 /*
  * Admin(email: char, password: char, firstName: char, lastName: char, phone: int)

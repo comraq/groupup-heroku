@@ -31,8 +31,8 @@ class CreateEvent extends Database{
 		VALUES(?,?,?,?,?,?,?,?)";
 
 		$insertPrivateEventSQL = "INSERT INTO 
-		`PrivateEvent`(`eventName`,`lat`,`lon`,`timeStart`,`timeEnd`,`cost`,`description`,`createdBy`) 
-		VALUES(?,?,?,?,?,?,?,?)";
+		`PrivateEvent`(`eventName`,`lat`,`lon`,`timeStart`,`timeEnd`) 
+		VALUES(?,?,?,?,?)";
 
 		$insertEventProviderSendInvitation = "INSERT INTO 
 		`EventProviderSendInvitation`(`email`,`invitationId`,`eventName`,`lat`,`lon`,`timeStart`,`timeEnd`,`sendToEmail`) 
@@ -51,23 +51,23 @@ class CreateEvent extends Database{
 		VALUES
 		(?,?,?,?,?,?)";
 
-		if(!$privateEvent){
-			$checkIfExists = "SELECT * FROM `Event` WHERE eventName=? AND lat= CAST(? AS DECIMAL(10,5)) AND lon=CAST(? AS DECIMAL(10,5)) AND timeStart=? AND timeEnd=?";
-			$checkIfExistsStmt = $this->conn->prepare($checkIfExists);
-			$checkIfExistsStmt->bind_param('sddss', $eventName, $lat, $lon, $timeStart, $timeEnd);
-			$checkIfExistsStmt->execute();
-			$checkIfExistsStmt->store_result();
 
-			if ($checkIfExistsStmt->num_rows == 0){
-				$stmt = $this->conn->prepare($insertEventSql);
-				$stmt->bind_param('sddssdss', $eventName, $lat, $lon, $timeStart, $timeEnd, $cost, $description, $createdBy);
-				$stmt->execute();
-				$stmt->close();
-				$result = TRUE;
-			}else{
-				$result = FALSE;
-			}
+		$checkIfExists = "SELECT * FROM `Event` WHERE eventName=? AND lat= CAST(? AS DECIMAL(10,5)) AND lon=CAST(? AS DECIMAL(10,5)) AND timeStart=? AND timeEnd=?";
+		$checkIfExistsStmt = $this->conn->prepare($checkIfExists);
+		$checkIfExistsStmt->bind_param('sddss', $eventName, $lat, $lon, $timeStart, $timeEnd);
+		$checkIfExistsStmt->execute();
+		$checkIfExistsStmt->store_result();
+
+		if ($checkIfExistsStmt->num_rows == 0){
+			$stmt = $this->conn->prepare($insertEventSql);
+			$stmt->bind_param('sddssdss', $eventName, $lat, $lon, $timeStart, $timeEnd, $cost, $description, $createdBy);
+			$stmt->execute();
+			$stmt->close();
+			$result = TRUE;
 		}else{
+			$result = FALSE;
+		}
+		if($privateEvent){
 
 
 			$checkIfExists = "SELECT * FROM `PrivateEvent` WHERE eventName=? AND lat= CAST(? AS DECIMAL(10,5)) AND lon=CAST(? AS DECIMAL(10,5)) AND timeStart=? AND timeEnd=?";
@@ -86,7 +86,7 @@ class CreateEvent extends Database{
 				$idStmt->close();
 
 				$stmt = $this->conn->prepare($insertPrivateEventSQL);
-				$stmt->bind_param('sddssdss', $eventName, $lat, $lon, $timeStart, $timeEnd, $cost, $description, $createdBy);
+				$stmt->bind_param('sddss', $eventName, $lat, $lon, $timeStart, $timeEnd);
 				$stmt->execute();
 				$stmt->close();
 
@@ -107,7 +107,7 @@ class CreateEvent extends Database{
 
 				$insertEventTypeHasEventStmt = $this->conn->prepare($insertEventTypeHasEvent);
 				$insertEventTypeHasEventStmt->bind_param('dsddss', $eventType, $eventName, $lat, $lon, $timeStart, $timeEnd);
-				foreach ($eventType as $typeId) {
+				foreach ([$eventType] as $typeId) {
 					$insertEventTypeHasEventStmt->execute();
 					print $this->conn->error;
 				}
