@@ -3,7 +3,9 @@ var app = angular.module('groupUpApp',
                            'ngAnimate',
                            'ngRoute',
                            'ngSanitize',
-                           'ngMap'
+                           'ngMap',
+                           'selectionModel',
+                           'anguFixedHeaderTable'
                          ]);
 
 app.config(function ($routeProvider) {

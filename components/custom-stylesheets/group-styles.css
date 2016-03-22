@@ -1,0 +1,31 @@
+#create-group-button {
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+#create-group-events-map {
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+
+#create-group-events-table {
+  height: 15vh;
+
+  border: 1px solid #ccc;
+}
+
+#create-group-events-table th { width: 15vw; }
+
+#create-group-events-table td{
+  width: 15vw;
+
+  cursor: pointer;
+}
+
+#create-group-events-table tr.create-group-events-selected {
+  background-color: #edffed;
+}
+
+.events-filter {
+  width: 20vw;
+}

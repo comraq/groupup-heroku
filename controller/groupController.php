@@ -59,6 +59,25 @@
       }
       return $event;     
     }
+
+    function queryEvents() {
+      parent::connect();
+
+      $allEventsSql =
+        'select eventName, cost, timeStart, timeEnd,
+                lat, lon, cost, createdBy as email
+         from Event';
+      $stmt = $this->conn->prepare($allEventsSql);
+      $stmt->execute();
+      $res = $stmt->get_result();
+      $data = $res->fetch_all(MYSQLI_ASSOC);
+
+      //echo ($res);
+      //echo ($data);
+
+      parent::disconnect();
+      $this->response(json_encode($data), 200);
+    }
   }
 
 /*

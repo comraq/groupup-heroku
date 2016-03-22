@@ -10,26 +10,6 @@ var app = angular.module('groupUpApp')
   this.scope = $scope;
   this.location = $location;
 
-/*
-  this.scope.panes = [
-    {
-      title: "Join Groups",
-      target: "#group_list",
-      active: true
-    },
-    {
-      title: "Create Groups",
-      target: "#group_create",
-      active: false
-    }
-  ];
-
-  this.checkActiveTab = function checkActiveTab() {
-    //if (this.panes[1].active)
-    console.log(this.scope.panes[1].active);
-  };
-*/
-
   this.name;
   this.description;
 
@@ -59,10 +39,11 @@ var app = angular.module('groupUpApp')
     map.fitBounds(bounds);
   }
   
-  this.initMap = function initMap(mapId) {
+  this.initCreateTab = function initCreateTab(mapId) {
     if (!this.map)
       this.map = NgMap.initMap(mapId);
  
+    this.getEvents();
     getLocation(this.map);
   };
 
@@ -99,14 +80,29 @@ var app = angular.module('groupUpApp')
       url: this.url + "/queryGroups",
     }).then(function successCallback(res) {
       if (verbose) {
-        console.log(res);
-        console.log("got res: " + JSON.stringify(res));
+        console.log("getGroups res: " + JSON.stringify(res));
         console.log(JSON.parse(res.data));
       }
       this.scope.groups = JSON.parse(res.data);
     }.bind(this), function errorCallback(err) {
       console.log(err);
     });
+  };
+
+  this.getEvents = function getEvents() {
+    $http({
+      method: "GET",
+      url: this.url + "/queryEvents"
+    }).then(function successCallback(res) {
+      if (verbose) {
+        console.log("getEvents res: " + JSON.stringify(res));
+        console.log(JSON.parse(res.data));
+      }
+      this.scope.events = JSON.parse(res.data);
+    }.bind(this), function errorCallback(err) {
+      console.log(err);
+    });
+
   };
 
   this.getGroups();
