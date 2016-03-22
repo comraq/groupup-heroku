@@ -22,11 +22,65 @@ class Search extends Database{
 		
 		parent::connect();
 
-		$searchEventsSQL = "SELECT * FROM `Event` WHERE eventName LIKE ?
-		UNION 
-		SELECT * FROM `Event` WHERE createdBy LIKE ?
-		UNION 
-		SELECT * FROM `Event` WHERE description LIKE ?";
+		$searchEventsSQL = "SELECT 
+    eventName,
+    lat,
+    lon,
+    timeStart,
+    timeEnd,
+    cost,
+    description,
+        createdBy,
+    GROUP_CONCAT(category
+        SEPARATOR ', ') AS category
+FROM
+    `Event`
+        NATURAL LEFT JOIN
+    EventTypeHasEvent
+        NATURAL LEFT JOIN
+    EventType
+WHERE
+    eventName LIKE ?
+GROUP BY eventName , lat, lon, timeStart, timeEnd 
+UNION (SELECT 
+    eventName,
+    lat,
+    lon,
+    timeStart,
+    timeEnd,
+    cost,
+    description,
+    createdBy,
+    GROUP_CONCAT(category
+        SEPARATOR ', ') AS category
+FROM
+    EventTypeHasEvent
+        NATURAL LEFT JOIN
+    `Event`
+        NATURAL LEFT JOIN
+    EventType
+WHERE
+    createdBy LIKE ?
+GROUP BY eventName , lat, lon, timeStart, timeEnd) UNION (SELECT 
+    eventName,
+    lat,
+    lon,
+    timeStart,
+    timeEnd,
+    cost,
+    description,
+    createdBy,
+    GROUP_CONCAT(category
+        SEPARATOR ', ') AS category
+FROM
+    EventTypeHasEvent
+        NATURAL LEFT JOIN
+    `Event`
+        NATURAL LEFT JOIN
+    EventType
+WHERE
+    description LIKE ?
+GROUP BY eventName , lat, lon, timeStart, timeEnd)";
 
 		$stmt = $this->conn->prepare($searchEventsSQL);
 		$stmt->bind_param('sss', $searchTarget, $searchTarget, $searchTarget);

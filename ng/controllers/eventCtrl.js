@@ -16,6 +16,8 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.eventType;
     this.invitees;
     this.message;
+    this.private = false;
+
 
     var userPosition;
     var newEventLat;
@@ -39,6 +41,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
 
                 $scope.positions = [];
                 $scope.events.forEach(function(event) {
+                    console.log(event);
                     var position = { lat: event.lat, lng: event.lon };
                     var ps = new google.maps.LatLng(event.lat, event.lon);
                     $scope.positions.push(position);
@@ -130,12 +133,7 @@ this.redirect = function redirect(eventName, lat, lon, createdBy, timeStart, tim
 }
 
 this.createEvent = function createEvent() {
-    var privateEvent = false;
-    if(this.invitees){
-        privateEvent = true;
-    }
-    console.log(this.invitees);
-        
+       
     var data = {
         eventName: this.eventName,
         eventDescription: this.eventDescription,
@@ -147,10 +145,8 @@ this.createEvent = function createEvent() {
         lng: newEventLng,
         invitees: this.invitees,
         message: this.message,
-        privateEvent: privateEvent
+        privateEvent: this.private
     }
-    this.invitees = null;
-    console.log(data);
     $http({
         method: 'POST',
         data: data,
