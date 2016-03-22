@@ -1,4 +1,12 @@
-var app = angular.module('groupUpApp', ['ngAnimate', 'ngRoute', 'ngSanitize', 'ngMap', 'ui.bootstrap.datetimepicker']);
+var app = angular.module('groupUpApp',
+                         [
+                           'ngAnimate',
+                           'ngRoute',
+                           'ngSanitize',
+                           'ngMap',
+                           'selectionModel',
+                           'anguFixedHeaderTable'
+                         ]);
 
 app.config(function ($routeProvider) {
     $routeProvider
@@ -25,11 +33,6 @@ app.config(function ($routeProvider) {
             templateUrl: 'ng/views/signIn.html',
             controller: 'SignInCtrl',
             controllerAs: 'ctrl'
-        })
-        .when("/GoesWith/:eventName/:lat/:lon/:timeStart/:timeEnd/:createdBy",
-        { 
-            templateUrl: "ng/views/goesWith.html",
-            
         })
         .when("/Register",
         {
