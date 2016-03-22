@@ -65,7 +65,7 @@
 
       $allEventsSql =
         'select E.eventName, E.timeStart, E.timeEnd, E.cost,
-                E.lat, E.lon, ifnull(T.category, "None") as category,
+                E.lat, E.lon, ifnull(MAX(T.category), "None") as category,
                 if(count(*) - 1 > 0, concat("+ ", count(*) - 1, " more"),
                 NULL) as remaining
          from Event E
@@ -79,6 +79,7 @@
              on ET.eventTypeId = T.eventTypeId
          group by E.eventName, E.timeStart, E.timeEnd, E.lat, E.lon';
       $stmt = $this->conn->prepare($allEventsSql);
+      ECHO $this->conn->error;
       $stmt->execute();
       $res = $stmt->get_result();
       $data = $res->fetch_all(MYSQLI_ASSOC);
