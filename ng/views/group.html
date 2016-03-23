@@ -14,8 +14,12 @@
     <div id="group-list" class="tab-pane fade in active">  
       <div ng-repeat="group in groups" class="jumbotron">
         <div class="row">
-          <h1 class="col-md-8">{{ group.groupName }}</h1>
-          <h1 class="col-md-4">Events</h1>
+          <h1 class="col-md-7 join-group-group-title">
+            {{ group.groupName }}
+          </h1>
+          <h1 class="col-md-5 join-group-group-members-title">
+            Group Members
+          </h1>
         </div>
 
         <div class="row">
@@ -30,14 +34,14 @@
           <div class="col-md-5">
             <table class="table table-condensed">
               <tr>
-                <th>Name</th>
-                <th>Time Start</th>
-                <th>Time End</th>
+                <th>Email</th>
+                <th>Going to Event</th>
+                <th>Event Start</th>
               </tr>
               <tr ng-repeat="event in group.events">
+                <td>{{ event.email }}</td>
                 <td>{{ event.eventName }}</td>
                 <td>{{ event.timeStart }}</td>
-                <td>{{ event.timeEnd }}</td>
               </tr>
             </table>
           </div>
@@ -101,7 +105,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="e in events | filter: eventsFilter"
+            <tr ng-repeat="e in events
+                           | filter: eventsFilter
+                           | orderBy: '-selected'"
               selection-model
               selection-model-type="checkbox"
               selection-model-mode="multiple-additive"
@@ -112,7 +118,7 @@
               <td>{{ e.eventName }}</td>
               <td>{{ e.timeStart }}</td>
               <td>{{ e.timeEnd }}</td>
-              <td>{{ e.cost }}</td>
+              <td>{{ e.cost | currency }}</td>
               <td>{{ e.category }} {{ e.remaining }}</td>
               <td><input type="checkbox" /></td>
             </tr>
@@ -121,8 +127,8 @@
 
         <ng-map id="create-group-events-map" center="[0,0]" zoom="13"
           lazy-init="true" default-style="true">
-            <marker ng-repeat="pos in positions"
-              position="{{pos.lat}}, {{pos.lng}}"></marker>
+            <marker ng-repeat="e in events | filter: {selected: 'true'}"
+              position="{{e.lat}}, {{e.lon}}"></marker>
         </ng-map>
 
         <button class="btn btn-lg btn-block btn-blog" type="submit"

@@ -4,6 +4,7 @@ var app = angular.module('groupUpApp',
                            'ngRoute',
                            'ngSanitize',
                            'ngMap',
+                           'alertService',
                            'selectionModel',
                            'anguFixedHeaderTable',
                            'ui.bootstrap.datetimepicker'

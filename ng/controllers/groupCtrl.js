@@ -6,6 +6,8 @@ var app = angular.module('groupUpApp')
                                                    $timeout,
                                                    NgMap, 
                                                    $routeParams) {
+                                                   alertFactory,
+                                                   NgMap) {
   var verbose = false;
 
   this.url = "controller/GroupController";
@@ -27,10 +29,10 @@ var app = angular.module('groupUpApp')
     refreshMap(this.map, userPosition);
   };
 
-  function refreshMap(map, userPosition) {
+  function refreshMap(map, position) {
     var bounds = new google.maps.LatLngBounds();
-    if (userPosition) {
-      var up = new google.maps.LatLng(userPosition.lat, userPosition.lng);
+    if (position) {
+      var up = new google.maps.LatLng(position.lat, position.lon);
       bounds.extend(up);
     }
     google.maps.event.trigger(map, "resize");
@@ -43,12 +45,12 @@ var app = angular.module('groupUpApp')
       return;
 
     this.joinTab = false;
-    this.scope.positions = [];
     if (!this.map)
       this.map = NgMap.initMap(mapId);
  
     this.getEvents();
     this.newGroup = {
+      addUserToEvents: true, 
       withEvents: []
     };
 
@@ -56,7 +58,7 @@ var app = angular.module('groupUpApp')
     $window.navigator.geolocation.getCurrentPosition(function(position) {
       var userPosition = {
                            lat: position.coords.latitude,
-                           lng: position.coords.longitude
+                           lon: position.coords.longitude
                          };
       refreshMap(ctrl.map, userPosition);
       $timeout(function() {
@@ -66,43 +68,37 @@ var app = angular.module('groupUpApp')
   };
 
   this.eventsChanged = function eventsChanged(e) {
-/*
-    console.log("eventsChanged")
-    console.log(e);
-*/
+    var eventPosition = {
+                         lat: e.lat,
+                         lon: e.lon
+                       };
+    refreshMap(this.map, eventPosition);
   }
 
   this.createGroup = function createGroup() {
-    this.dataloading = true;
-    var data = {
-      createGroup: {
-        name: this.name,
-        description: this.description
-      }
-    };
+    this.dataLoading = true;
+    var data = this.newGroup
     $http({
       method: "POST",
-      data: $.param(data),
-      url: this.url,
-      headers: {"Content-Type": "application/x-www-form-urlencoded"}
+      data: data,
+      url: this.url + "/createGroup",
     }).then(function successCallback(res){
-      alert(res.data);
-      if (response.data == true)
-        console.log("Group Creation Successful!");
-      else
-        console.log("Could Not Create Group!");
+      alertFactory.add("success", res.data.data);
+      console.log(res);
+      this.dataLoading = false;
 
+    }.bind(this), function errorCallback(err){
+      alertFactory.add("danger", err.data.data);
+      console.log(err);
       this.dataLoading = false;
-    }.bind(this), function errorCallback(res){
-      this.dataLoading = false;
-      alert(res.data);
-    });
+
+    }.bind(this));
   };
 
   this.getGroups = function getGroups() {
     $http({
       method: "GET",
-      url: this.url + "/queryGroups",
+      url: this.url + "/getGroups",
     }).then(function successCallback(res) {
       if (verbose) {
         console.log("getGroups res: " + JSON.stringify(res));
@@ -110,6 +106,7 @@ var app = angular.module('groupUpApp')
       }
       this.scope.groups = JSON.parse(res.data);
     }.bind(this), function errorCallback(err) {
+      alertFactory.add("danger", err.data.data);
       console.log(err);
     });
   };
@@ -119,14 +116,20 @@ var app = angular.module('groupUpApp')
   this.getEvents = function getEvents() {
     $http({
       method: "GET",
-      url: this.url + "/queryEvents"
+      url: this.url + "/getEvents"
     }).then(function successCallback(res) {
       if (verbose) {
         console.log("getEvents res: " + JSON.stringify(res));
         console.log(JSON.parse(res.data));
       }
-      this.scope.events = JSON.parse(res.data);
+      this.scope.events = JSON.parse(res.data).map(function (e, i, arr) {
+        e.selected = false;
+        e.lat = parseFloat(e.lat);
+        e.lon = parseFloat(e.lon);
+        return e;
+      });;
     }.bind(this), function errorCallback(err) {
+      alertFactory.add("danger", err.data.data);
       console.log(err);
     });
 
@@ -137,5 +140,6 @@ var app = angular.module('groupUpApp')
   this.testSubmit = function testSubmit() {
     console.log("submitting form!");
     console.log(this);
+    this.createGroup();
   };
 });
