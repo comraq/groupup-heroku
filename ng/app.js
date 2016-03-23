@@ -23,6 +23,12 @@ app.config(function ($routeProvider) {
             controller: 'EventCtrl',
             controllerAs: 'ctrl'
         })
+        .when("/Group/:eventName?/:lat?/:lon?/:timeStart?/:timeEnd?/:createdBy?",
+        {
+            templateUrl: 'ng/views/group.html',
+            controller: 'GroupCtrl',
+            controllerAs: 'ctrl'
+        })
         .when("/Group",
         {
             templateUrl: 'ng/views/group.html',

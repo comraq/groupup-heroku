@@ -148,7 +148,7 @@ this.signUpForEvent = function signUpForEvent(eventName, lat, lon, createdBy, ti
             console.log("Unable to add user to event");
         }
     });
-    //$location.path('/GoesWith/' + eventName + '/' + lat + '/' + lon + '/' + timeStart + '/' + timeEnd + '/' + createdBy);
+    $location.path('/Group/' + eventName + '/' + lat + '/' + lon + '/' + timeStart + '/' + timeEnd + '/' + createdBy +'/');
 }
 
 this.cancelSignup = function cancelSignup(eventName, lat, lon, createdBy, timeStart, timeEnd){

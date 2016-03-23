@@ -4,13 +4,23 @@ var app = angular.module('groupUpApp')
                                                    $http,
                                                    $window,
                                                    $timeout,
-                                                   NgMap) {
+                                                   NgMap, 
+                                                   $routeParams) {
   var verbose = false;
 
   this.url = "controller/GroupController";
   this.scope = $scope;
   this.location = $location;
   this.joinTab = true;
+
+  this.routeEventName = $routeParams.eventName;
+  this.routeLat = $routeParams.lat;
+  this.routeLon = $routeParams.lon;
+  this.routeTimeStart = $routeParams.timeStart;
+  this.routeTimeEnd = $routeParams.timeEnd;
+  this.routeCreatedBy = $routeParams.createdBy;
+
+  console.log(this.routeEventName);
 
   this.markPosition = function markPosition(userPosition) {
     this.scope.positions.push(userPosition);
