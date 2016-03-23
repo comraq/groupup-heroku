@@ -7,11 +7,18 @@
     }
 
     function queryGroups() {
-      parent::connect();
+      $method = $_SERVER['REQUEST_METHOD'];
+      if ($method != 'GET') {
+        $res = array(
+                 'data' => "Invalid Request Type!"
+               );
+        $this.response($res, 400);
+      }
 
+      $this->connect();
       $allGroupsSql =
         'select G.groupName, G.description, G.groupId,
-                W.eventName, W.timeStart, W.timeEnd
+                W.eventName, W.timeStart, W.email
          from `With` W inner join `Group` G
          on W.groupId = G.groupId
          order by G.groupId';
@@ -21,13 +28,13 @@
       $data = GroupController::aggregateByGroup(
         $res->fetch_all(MYSQLI_ASSOC));
 
-      parent::disconnect();
+      $this->disconnect();
       $this->response(json_encode($data), 200);
     }
 
     private static function aggregateByGroup($data) {
       $result = array();
-      $filter = array('eventName', 'timeStart', 'timeEnd');
+      $filter = array('eventName', 'timeStart', 'email');
       foreach ($data as $entry) {
         if (!isset($curGroup)
             || $curGroup['groupId'] != $entry['groupId']) {
@@ -61,8 +68,15 @@
     }
 
     function queryEvents() {
-      parent::connect();
+      $method = $_SERVER['REQUEST_METHOD'];
+      if ($method != 'GET') {
+        $res = array(
+                 'data' => "Invalid Request Type!"
+               );
+        $this.response($res, 400);
+      }
 
+      $this->connect();
       $allEventsSql =
         'select E.eventName, E.timeStart, E.timeEnd, E.cost,
                 E.lat, E.lon, ifnull(T.category, "None") as category,
@@ -83,7 +97,52 @@
       $res = $stmt->get_result();
       $data = $res->fetch_all(MYSQLI_ASSOC);
 
-      parent::disconnect();
+      $this->disconnect();
+      $this->response(json_encode($data), 200);
+    }
+
+    private static function getUserEmail() {
+      return 'testUser4@test.com';
+    }
+ 
+    function insertGroup() {
+      $method = $_SERVER['REQUEST_METHOD'];
+      if ($method != 'POST') {
+        $res = array(
+                 'data' => "Invalid Request Type!"
+               );
+        $this.response($res, 400);
+      }
+
+      $data = json_decode(file_get_contents('php://input'), true);
+      if (is_null($data)) {
+        $res = array(
+                 'data' => "Invalid Data!"
+               );
+        $this.response($res, 400);
+      }
+
+      $insertGroupSql = "insert into `Group`
+                         (`groupId`, `groupName`, `description`)
+                         values (?, ?, ?)";
+      $this->connect();
+      if (!$data['userGoesEvent']) {
+        $escapeEmail = $this->conn->real_escape_string(
+                         GroupController::getUserEmail()
+                       );
+        $insertGroupsSql =
+          'select G.groupName, G.description, G.groupId,
+                  W.eventName, W.timeStart, W.timeEnd
+           from `With` W inner join `Group` G
+           on W.groupId = G.groupId
+           order by G.groupId';
+        $stmt = $this->conn->prepare($insertGroupSql);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $data = $res->fetch_all(MYSQLI_ASSOC));
+      }
+
+      $this->disconnect();
       $this->response(json_encode($data), 200);
     }
   }

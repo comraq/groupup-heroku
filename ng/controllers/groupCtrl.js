@@ -33,6 +33,7 @@ var app = angular.module('groupUpApp')
  
     this.getEvents();
     this.newGroup = {
+      userGoesEvent: false,
       withEvents: []
     };
 
@@ -58,29 +59,23 @@ var app = angular.module('groupUpApp')
   }
 
   this.createGroup = function createGroup() {
-    this.dataloading = true;
-    var data = {
-      createGroup: {
-        name: this.name,
-        description: this.description
-      }
-    };
+    this.dataLoading = true;
+    var data = this.newGroup
     $http({
       method: "POST",
-      data: $.param(data),
-      url: this.url,
-      headers: {"Content-Type": "application/x-www-form-urlencoded"}
+      data: data,
+      url: this.url + "/insertGroup",
     }).then(function successCallback(res){
-      alert(res.data);
       if (response.data == true)
         console.log("Group Creation Successful!");
       else
         console.log("Could Not Create Group!");
 
       this.dataLoading = false;
-    }.bind(this), function errorCallback(res){
+    }.bind(this), function errorCallback(err){
       this.dataLoading = false;
-      alert(res.data);
+      alert(err.data);
+      console.log(err);
     });
   };
 
@@ -95,6 +90,7 @@ var app = angular.module('groupUpApp')
       }
       this.scope.groups = JSON.parse(res.data);
     }.bind(this), function errorCallback(err) {
+      alert(err.data);
       console.log(err);
     });
   };
@@ -117,6 +113,7 @@ var app = angular.module('groupUpApp')
         return e;
       });;
     }.bind(this), function errorCallback(err) {
+      alert(err.data);
       console.log(err);
     });
 
