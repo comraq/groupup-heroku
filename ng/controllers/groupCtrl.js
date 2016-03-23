@@ -4,6 +4,7 @@ var app = angular.module('groupUpApp')
                                                    $http,
                                                    $window,
                                                    $timeout,
+                                                   alertFactory,
                                                    NgMap) {
   var verbose = false;
 
@@ -33,7 +34,7 @@ var app = angular.module('groupUpApp')
  
     this.getEvents();
     this.newGroup = {
-      userGoesEvent: false,
+      addUserToEvents: true, 
       withEvents: []
     };
 
@@ -64,25 +65,24 @@ var app = angular.module('groupUpApp')
     $http({
       method: "POST",
       data: data,
-      url: this.url + "/insertGroup",
+      url: this.url + "/createGroup",
     }).then(function successCallback(res){
-      if (response.data == true)
-        console.log("Group Creation Successful!");
-      else
-        console.log("Could Not Create Group!");
+      alertFactory.add("success", res.data.data);
+      console.log(res);
+      this.dataLoading = false;
 
-      this.dataLoading = false;
     }.bind(this), function errorCallback(err){
-      this.dataLoading = false;
-      alert(err.data);
+      alertFactory.add("danger", err.data.data);
       console.log(err);
-    });
+      this.dataLoading = false;
+
+    }.bind(this));
   };
 
   this.getGroups = function getGroups() {
     $http({
       method: "GET",
-      url: this.url + "/queryGroups",
+      url: this.url + "/getGroups",
     }).then(function successCallback(res) {
       if (verbose) {
         console.log("getGroups res: " + JSON.stringify(res));
@@ -90,7 +90,7 @@ var app = angular.module('groupUpApp')
       }
       this.scope.groups = JSON.parse(res.data);
     }.bind(this), function errorCallback(err) {
-      alert(err.data);
+      alertFactory.add("danger", err.data.data);
       console.log(err);
     });
   };
@@ -100,7 +100,7 @@ var app = angular.module('groupUpApp')
   this.getEvents = function getEvents() {
     $http({
       method: "GET",
-      url: this.url + "/queryEvents"
+      url: this.url + "/getEvents"
     }).then(function successCallback(res) {
       if (verbose) {
         console.log("getEvents res: " + JSON.stringify(res));
@@ -113,7 +113,7 @@ var app = angular.module('groupUpApp')
         return e;
       });;
     }.bind(this), function errorCallback(err) {
-      alert(err.data);
+      alertFactory.add("danger", err.data.data);
       console.log(err);
     });
 
@@ -124,5 +124,6 @@ var app = angular.module('groupUpApp')
   this.testSubmit = function testSubmit() {
     console.log("submitting form!");
     console.log(this);
+    this.createGroup();
   };
 });
