@@ -4,7 +4,7 @@ USE GroupUpDebug;
 
 -- EventType(eventTypeId: int, category: char)
 CREATE TABLE EventType (
-    eventTypeId INT,
+    eventTypeId INT AUTO_INCREMENT,
     category VARCHAR(50),
     PRIMARY KEY (eventTypeId)
 );
@@ -92,7 +92,7 @@ CREATE TABLE `User` (
  *				 timeStart: time, timeEnd: time, message: char)
  */
 CREATE TABLE HasInvitation (
-    invitationId INT,
+    invitationId INT AUTO_INCREMENT,
     eventName VARCHAR(50),
     lat DECIMAL(10,5),
     lon DECIMAL(10,5),
@@ -110,7 +110,7 @@ CREATE TABLE HasInvitation (
  * Group(groupId: int, groupName: char, description: char)
  */
  CREATE TABLE `Group` (
-    groupId INT,
+    groupId INT AUTO_INCREMENT,
     groupName VARCHAR(50),
     description VARCHAR(255),
     PRIMARY KEY (groupId)
