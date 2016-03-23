@@ -5,7 +5,7 @@ var app = angular.module('groupUpApp')
                                                    $window,
                                                    $timeout,
                                                    NgMap, 
-                                                   $routeParams) {
+                                                   $routeParams,
                                                    alertFactory,
                                                    NgMap) {
   var verbose = false;
