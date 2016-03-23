@@ -4,10 +4,10 @@ var app = angular.module('groupUpApp',
                            'ngRoute',
                            'ngSanitize',
                            'ngMap',
+                           'alertService',
                            'selectionModel',
                            'anguFixedHeaderTable'
                          ]);
-
 app.config(function ($routeProvider) {
     $routeProvider
         .when("/",

@@ -140,10 +140,10 @@ INSERT INTO `GroupUpDebug`.`Event`
 `createdBy`)
 VALUES
 ("Test Event 1",
--128.8,
-3.45,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'),
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
 10.89,
 "test description",
 "testEP1@test.com");
@@ -159,10 +159,10 @@ INSERT INTO `GroupUpDebug`.`Event`
 `createdBy`)
 VALUES
 ("Test Event 2",
--128.9,
-3.46,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'),
+49.46,
+-123.1,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
 10.90,
 "test description",
 "testEP2@test.com");
@@ -178,10 +178,10 @@ INSERT INTO `GroupUpDebug`.`Event`
 `createdBy`)
 VALUES
 ("Test Event 3",
--129.0,
-3.47,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'),
+49.3,
+-122.9,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
 10.96,
 "test description",
 "testEP3@test.com");
@@ -198,10 +198,10 @@ INSERT INTO `GroupUpDebug`.`Event`
 `createdBy`)
 VALUES
 ("Test Event 4",
+49.1,
 -128.7,
-3.2,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'),
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
 1000.08,
 "test description",
 "testEP4@test.com");
@@ -218,10 +218,10 @@ INSERT INTO `GroupUpDebug`.`Event`
 `createdBy`)
 VALUES
 ("Test Event 5",
--128.8,
-3.45,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'),
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
 1827.77,
 "test description",
 "testEP5@test.com");
@@ -272,10 +272,10 @@ INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
 VALUES
 (1,
 "Test Event 1",
--128.8,
-3.45,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28')
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28'
 );
 
 
@@ -289,10 +289,10 @@ INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
 VALUES
 (2,
 "Test Event 1",
--128.8,
-3.45,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28')
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28'
 );
 
 
@@ -306,10 +306,10 @@ INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
 VALUES
 (1,
 "Test Event 2",
--128.9,
-3.46,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28')
+49.46,
+-123.1,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28'
 );
 
 INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
@@ -322,10 +322,10 @@ INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
 VALUES
 (3,
 "Test Event 2",
--128.9,
-3.46,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28')
+49.46,
+-123.1,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28'
 );
 
 INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
@@ -338,10 +338,10 @@ INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
 VALUES
 (4,
 "Test Event 2",
--128.9,
-3.46,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28')
+49.46,
+-123.1,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28'
 );
 
 INSERT INTO `GroupUpDebug`.`Group`
@@ -389,7 +389,7 @@ VALUES
 "Test Group 5",
 "Test Group");
 
-INSERT INTO `GroupUpDebug`.`PrivateEvent`
+INSERT INTO `GroupUpDebug`.`Event`
 (`eventName`,
 `lat`,
 `lon`,
@@ -400,15 +400,28 @@ INSERT INTO `GroupUpDebug`.`PrivateEvent`
 `createdBy`)
 VALUES
 ("Private Test Event 1",
--128.8,
-3.45,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'),
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
 1827.77,
 "test description",
 "testEP1@test.com");
 
 INSERT INTO `GroupUpDebug`.`PrivateEvent`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("Private Test Event 1",
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`Event`
 (`eventName`,
 `lat`,
 `lon`,
@@ -419,16 +432,28 @@ INSERT INTO `GroupUpDebug`.`PrivateEvent`
 `createdBy`)
 VALUES
 ("Private Test Event 2",
--128.9,
-3.47,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'),
+49.3,
+-123.1,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
 1827.77,
 "test description",
 "testEP2@test.com");
 
-
 INSERT INTO `GroupUpDebug`.`PrivateEvent`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("Private Test Event 2",
+49.3,
+-123.1,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`Event`
 (`eventName`,
 `lat`,
 `lon`,
@@ -439,16 +464,29 @@ INSERT INTO `GroupUpDebug`.`PrivateEvent`
 `createdBy`)
 VALUES
 ("Private Test Event 3",
--128.10,
 3.99,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'),
+-128.10,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
 1827.77,
 "test description",
 "testEP3@test.com");
 
-
 INSERT INTO `GroupUpDebug`.`PrivateEvent`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("Private Test Event 3",
+3.99,
+-128.10,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+
+INSERT INTO `GroupUpDebug`.`Event`
 (`eventName`,
 `lat`,
 `lon`,
@@ -459,16 +497,28 @@ INSERT INTO `GroupUpDebug`.`PrivateEvent`
 `createdBy`)
 VALUES
 ("Private Test Event 4",
--128.8,
-3.45,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'),
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
 1827.77,
 "test description",
 "testEP4@test.com");
 
-
 INSERT INTO `GroupUpDebug`.`PrivateEvent`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("Private Test Event 4",
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`Event`
 (`eventName`,
 `lat`,
 `lon`,
@@ -479,13 +529,27 @@ INSERT INTO `GroupUpDebug`.`PrivateEvent`
 `createdBy`)
 VALUES
 ("Private Test Event 5",
--128.8,
 3.33,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'),
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
 1827.77,
 "test description",
 "testEP5@test.com");
+
+INSERT INTO `GroupUpDebug`.`PrivateEvent`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("Private Test Event 5",
+3.33,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
 
 INSERT INTO `GroupUpDebug`.`User`
 (`email`,
@@ -570,18 +634,14 @@ INSERT INTO `GroupUpDebug`.`HasInvitation`
 `lon`,
 `timeStart`,
 `timeEnd`,
-`sendToEmail`,
-`read`,
 `message`)
 VALUES
 (1,
 "Private Test Event 5",
--128.8,
 3.33,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'),
-"testUser1@test.com",
-0,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
 "TestMessage");
 
 INSERT INTO `GroupUpDebug`.`HasInvitation`
@@ -591,18 +651,14 @@ INSERT INTO `GroupUpDebug`.`HasInvitation`
 `lon`,
 `timeStart`,
 `timeEnd`,
-`sendToEmail`,
-`read`,
 `message`)
 VALUES
 (2,
 "Private Test Event 5",
--128.8,
 3.33,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'),
-"testUser2@test.com",
-0,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
 "TestMessage");
 
 INSERT INTO `GroupUpDebug`.`HasInvitation`
@@ -612,18 +668,14 @@ INSERT INTO `GroupUpDebug`.`HasInvitation`
 `lon`,
 `timeStart`,
 `timeEnd`,
-`sendToEmail`,
-`read`,
 `message`)
 VALUES
 (3,
 "Private Test Event 5",
--128.8,
 3.33,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'),
-"testUser3@test.com",
-0,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
 "TestMessage");
 
 INSERT INTO `GroupUpDebug`.`HasInvitation`
@@ -633,18 +685,14 @@ INSERT INTO `GroupUpDebug`.`HasInvitation`
 `lon`,
 `timeStart`,
 `timeEnd`,
-`sendToEmail`,
-`read`,
 `message`)
 VALUES
 (4,
 "Private Test Event 5",
--128.8,
 3.33,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'),
-"testUser4@test.com",
-0,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
 "TestMessage");
 
 INSERT INTO `GroupUpDebug`.`HasInvitation`
@@ -654,18 +702,14 @@ INSERT INTO `GroupUpDebug`.`HasInvitation`
 `lon`,
 `timeStart`,
 `timeEnd`,
-`sendToEmail`,
-`read`,
 `message`)
 VALUES
 (5,
 "Private Test Event 5",
--128.8,
 3.33,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'),
-"testUser5@test.com",
-0,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
 "TestMessage");
 
 INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
@@ -675,15 +719,17 @@ INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 `lat`,
 `lon`,
 `timeStart`,
-`timeEnd`)
+`timeEnd`,
+`sendToEmail`)
 VALUES
 ("testEP1@test.com",
 1,
 "Private Test Event 5",
--128.8,
 3.33,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
+'testUser1@test.com');
 
 INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 (`email`,
@@ -692,15 +738,17 @@ INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 `lat`,
 `lon`,
 `timeStart`,
-`timeEnd`)
+`timeEnd`,
+`sendToEmail`)
 VALUES
 ("testEP1@test.com",
 2,
 "Private Test Event 5",
--128.8,
 3.33,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
+'testUser2@test.com');
 
 INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 (`email`,
@@ -709,15 +757,17 @@ INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 `lat`,
 `lon`,
 `timeStart`,
-`timeEnd`)
+`timeEnd`,
+`sendToEmail`)
 VALUES
 ("testEP1@test.com",
 3,
 "Private Test Event 5",
--128.8,
 3.33,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
+'testUser3@test.com');
 
 INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 (`email`,
@@ -726,15 +776,17 @@ INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 `lat`,
 `lon`,
 `timeStart`,
-`timeEnd`)
+`timeEnd`,
+`sendToEmail`)
 VALUES
 ("testEP1@test.com",
 4,
 "Private Test Event 5",
--128.8,
 3.33,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
+'testUser4@test.com');
 
 INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 (`email`,
@@ -743,15 +795,17 @@ INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 `lat`,
 `lon`,
 `timeStart`,
-`timeEnd`)
+`timeEnd`,
+`sendToEmail`)
 VALUES
 ("testEP1@test.com",
 5,
 "Private Test Event 5",
--128.8,
 3.33,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
+'testUser5@test.com');
 
 INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 (`email`,
@@ -763,10 +817,10 @@ INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 VALUES
 ("testUser1@test.com",
 "Test Event 1",
--128.8,
-3.45,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
 
 INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 (`email`,
@@ -778,10 +832,10 @@ INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 VALUES
 ("testUser2@test.com",
 "Test Event 1",
--128.8,
-3.45,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
 
 INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 (`email`,
@@ -793,10 +847,10 @@ INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 VALUES
 ("testUser3@test.com",
 "Test Event 1",
--128.8,
-3.45,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
 
 INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 (`email`,
@@ -808,10 +862,10 @@ INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 VALUES
 ("testUser4@test.com",
 "Test Event 1",
--128.8,
-3.45,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
 
 INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 (`email`,
@@ -823,10 +877,10 @@ INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 VALUES
 ("testUser5@test.com",
 "Test Event 1",
--128.8,
-3.45,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
 
 
 INSERT INTO `GroupUpDebug`.`UserReadsInvitation`
@@ -841,10 +895,10 @@ VALUES
 ("testUser1@test.com",
 1,
 "Private Test Event 5",
--128.8,
 3.33,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
 
 INSERT INTO `GroupUpDebug`.`UserReadsInvitation`
 (`email`,
@@ -858,10 +912,10 @@ VALUES
 ("testUser2@test.com",
 2,
 "Private Test Event 5",
--128.8,
 3.33,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
 
 INSERT INTO `GroupUpDebug`.`UserReadsInvitation`
 (`email`,
@@ -875,10 +929,10 @@ VALUES
 ("testUser3@test.com",
 3,
 "Private Test Event 5",
--128.8,
 3.33,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
 
 
 INSERT INTO `GroupUpDebug`.`UserReadsInvitation`
@@ -893,10 +947,10 @@ VALUES
 ("testUser4@test.com",
 4,
 "Private Test Event 5",
--128.8,
 3.33,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
 
 
 INSERT INTO `GroupUpDebug`.`UserReadsInvitation`
@@ -911,10 +965,10 @@ VALUES
 ("testUser5@test.com",
 5,
 "Private Test Event 5",
--128.8,
 3.33,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
 
 
 INSERT INTO `GroupUpDebug`.`With`
@@ -929,10 +983,10 @@ VALUES
 (1,
 "testUser1@test.com",
 "Test Event 1",
--128.8,
-3.45,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
 
 
 INSERT INTO `GroupUpDebug`.`With`
@@ -947,10 +1001,10 @@ VALUES
 (1,
 "testUser2@test.com",
 "Test Event 1",
--128.8,
-3.45,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
 
 INSERT INTO `GroupUpDebug`.`With`
 (`groupId`,
@@ -964,10 +1018,10 @@ VALUES
 (1,
 "testUser3@test.com",
 "Test Event 1",
--128.8,
-3.45,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
 
 
 INSERT INTO `GroupUpDebug`.`With`
@@ -982,10 +1036,10 @@ VALUES
 (1,
 "testUser4@test.com",
 "Test Event 1",
--128.8,
-3.45,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
 
 
 INSERT INTO `GroupUpDebug`.`With`
@@ -1000,26 +1054,8 @@ VALUES
 (1,
 "testUser5@test.com",
 "Test Event 1",
--128.8,
-3.45,
-TIMESTAMP('2016-04-30 14:53:28'),
-TIMESTAMP('2016-04-30 14:53:28'));
-
-
-/*
-SELECT * FROM Admin;
-SELECT * FROM EventProvider;
-SELECT * FROM `Event`;
-SELECT * FROM EventType;
-SELECT * FROM EventTypeHasEvent;
-SELECT * FROM `Group`;
-SELECT * FROM PrivateEvent;
-SELECT * FROM HasInvitation;
-SELECT * FROM EventProviderSendInvitation;
-SELECT * FROM User;
-SELECT * FROM UserGoesEvent;
-SELECT * FROM UserReadsInvitation;
-*/
-
-SELECT * FROM `With`;
+49.2,
+-123.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
 
