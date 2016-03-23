@@ -13,7 +13,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.eventCost;
     this.timeStart;
     this.timeEnd;
-    this.eventType;
+    this.newEventType =[];
     this.invitees;
     this.message;
     this.private = false;
@@ -133,14 +133,17 @@ this.redirect = function redirect(eventName, lat, lon, createdBy, timeStart, tim
 }
 
 this.createEvent = function createEvent() {
-       
+       var eventTypes = [];
+       this.newEventType.forEach(function(event){
+        eventTypes.push(event.eventTypeId);
+       });
     var data = {
         eventName: this.eventName,
         eventDescription: this.eventDescription,
         eventCost: this.eventCost,
         timeStart: formatDate(this.timeStart),
         timeEnd: formatDate(this.timeEnd),
-        eventType: this.eventType,
+        eventType: eventTypes,
         lat: newEventLat,
         lng: newEventLng,
         invitees: this.invitees,

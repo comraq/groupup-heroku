@@ -33,7 +33,7 @@
                             </td>
                         </tr>
                     </table>
-                     <button class="btn btn-lg btn-block btn-blog" type="submit" autofocus>Search</button>
+                    <button class="btn btn-lg btn-block btn-blog" type="submit" autofocus>Search</button>
                 </form>
             </div>
             <div id="createEvent" class="tab-pane fade">
@@ -51,39 +51,51 @@
                         <input type="number" name="eventCost" data-ng-model="ctrl.eventCost" id="eventCost" class="form-control" placeholder="Event Cost" required>
                     </div>
                     <div>
-                        <select id="eventType" name="eventType" data-ng-model="ctrl.eventType" class="form-control" required>
+                       <!-- <select id="eventType" name="eventType" data-ng-model="ctrl.eventType" class="form-control" required>
                             <option ng-repeat="eventType in eventTypes" value="{{eventType.eventTypeId}}">{{eventType.category}}</option>
-                        </select>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="private" ng-model="ctrl.private">
-                        Private?
-                    </div>
-                    <div  class="check-element animate-show" ng-show="ctrl.private">
-                     <div>
-                        <label for="invitees" class="sr-only">Invitees</label>
-                        <input type="text" name="invitees" data-ng-model="ctrl.invitees" id="invitees" class="form-control" placeholder="Emails comma seperated" ng-list>
-                    </div>
-                    <div>
-                        <label for="message" class="sr-only">Invite Message</label>
-                        <input type="text" name="message" data-ng-model="ctrl.message" id="message" class="form-control" placeholder="Invite Message">
-                    </div>
+                        </select> -->
+                        <table style="width: 100%">
+                            <tr ng-repeat="eventType in eventTypes"
+                            selection-model
+                            selection-model-type="checkbox"
+                            selection-model-mode="multiple-additive"
+                            selection-model-selected-items="ctrl.newEventType"
+                            selection-model-selected-class= "create-group-events-selected">
+                            <td><input type="checkbox"/></td>
+                            <td>{{eventType.category}}</td>  
+                        </tr>
+                    </table>
                 </div>
-                <div style=" display: flex; align-items: center; justify-content: center;">
-                    <div style="margin: auto;">Time Start</div>
-                    <div style="margin: auto;">Time End</div>
+                {{ctrl.newEventType}}
+                <div>
+                    <input type="checkbox" name="private" ng-model="ctrl.private">
+                    Private?
                 </div>
-                <div style=" display: flex; align-items: center; justify-content: center;">
-                    <datetimepicker style="width:45%; height: auto; margin: auto;" data-ng-model="ctrl.timeStart"></datetimepicker>
-                    <datetimepicker style="width:45%; height: auto; margin: auto;" data-ng-model="ctrl.timeEnd"></datetimepicker>
+                <div  class="check-element animate-show" ng-show="ctrl.private">
+                   <div>
+                    <label for="invitees" class="sr-only">Invitees</label>
+                    <input type="text" name="invitees" data-ng-model="ctrl.invitees" id="invitees" class="form-control" placeholder="Emails comma seperated" ng-list>
                 </div>
-                <button class="btn btn-lg btn-block btn-blog" type="submit">Create Event</button>
-            </form>
-        </div>
+                <div>
+                    <label for="message" class="sr-only">Invite Message</label>
+                    <input type="text" name="message" data-ng-model="ctrl.message" id="message" class="form-control" placeholder="Invite Message">
+                </div>
+            </div>
+            <div style=" display: flex; align-items: center; justify-content: center;">
+                <div style="margin: auto;">Time Start</div>
+                <div style="margin: auto;">Time End</div>
+            </div>
+            <div style=" display: flex; align-items: center; justify-content: center;">
+                <datetimepicker style="width:45%; height: auto; margin: auto;" data-ng-model="ctrl.timeStart"></datetimepicker>
+                <datetimepicker style="width:45%; height: auto; margin: auto;" data-ng-model="ctrl.timeEnd"></datetimepicker>
+            </div>
+            <button class="btn btn-lg btn-block btn-blog" type="submit">Create Event</button>
+        </form>
     </div>
-    <!-- https://www.kevinhooke.com/2015/06/15/angularjs-and-google-maps-dynamic-marker-updates/ -->
-    <ng-map style="height:100%" center="[0,0]" zoom="13" on-click="ctrl.mapClick()">
-    <marker ng-repeat="pos in positions" position="{{pos.lat}}, {{pos.lng}}"></marker>
+</div>
+<!-- https://www.kevinhooke.com/2015/06/15/angularjs-and-google-maps-dynamic-marker-updates/ -->
+<ng-map style="height:100%" center="[0,0]" zoom="13" on-click="ctrl.mapClick()">
+<marker ng-repeat="pos in positions" position="{{pos.lat}}, {{pos.lng}}"></marker>
 </ng-map>
 </div>
 </div>
