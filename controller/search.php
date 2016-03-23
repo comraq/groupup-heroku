@@ -22,7 +22,8 @@ class Search extends Database{
 		
 		parent::connect();
 
-		$searchEventsSQL = "SELECT 
+	   $searchEventsSQL = 
+    "SELECT 
     e.eventName as eventName,
     e.lat as lat,
     e.lon as lon,
