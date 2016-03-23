@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS GroupUpDebug;
-CREATE DATABASE GroupUpDebug;
+CREATE DATABASE IF NOT EXISTS GroupUpDebug;
 USE GroupUpDebug;
 
 -- EventType(eventTypeId: int, category: char)
@@ -14,8 +14,8 @@ CREATE TABLE EventType (
  * 			     companyName: char, phone: int, password: char)
  */
  CREATE TABLE EventProvider (
-    email VARCHAR(50) NOT NULL,
-    password VARCHAR(50) NOT NULL,
+    email VARCHAR(50),
+    password VARCHAR(50),
     firstName VARCHAR(50),
     lastName VARCHAR(50),
     phone INT UNIQUE,
@@ -28,11 +28,11 @@ CREATE TABLE EventType (
  */
 CREATE TABLE `Event` (
     eventName VARCHAR(50),
-    lat FLOAT,
-    lon FLOAT,
-    timeStart TIME,
-    timeEnd TIME,
-    cost FLOAT,
+    lat DECIMAL(10,5),
+    lon DECIMAL(10,5),
+    timeStart DATETIME,
+    timeEnd DATETIME,
+    cost DECIMAL(10,2),
     description VARCHAR(255),
     createdBy VARCHAR(50),
     PRIMARY KEY (eventName , lat , lon , timeStart , timeEnd),
@@ -48,29 +48,27 @@ CREATE TABLE `Event` (
  */
 CREATE TABLE PrivateEvent (
     eventName VARCHAR(50),
-    lat FLOAT,
-    lon FLOAT,
-    timeStart TIME,
-    timeEnd TIME,
-    cost FLOAT,
-    description VARCHAR(255),
-    createdBy VARCHAR(50),
+    lat DECIMAL(10,5),
+    lon DECIMAL(10,5),
+    timeStart DATETIME,
+    timeEnd DATETIME,
     PRIMARY KEY (eventName , lat , lon , timeStart , timeEnd),
-    FOREIGN KEY (createdBy)
-        REFERENCES EventProvider (email)
+    FOREIGN KEY (eventName , lat , lon , timeStart , timeEnd)
+        REFERENCES Event (eventName , lat , lon , timeStart , timeEnd)
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
 
 /*
  * Admin(email: char, password: char, firstName: char, lastName: char, phone: int)
  */
 CREATE TABLE Admin (
-    email VARCHAR(50) NOT NULL,
-    password VARCHAR(50) NOT NULL,
-    firstName VARCHAR(50) NOT NULL,
-    lastName VARCHAR(50) NOT NULL,
-    phone INT UNIQUE NOT NULL,
+    email VARCHAR(50),
+    password VARCHAR(50),
+    firstName VARCHAR(50),
+    lastName VARCHAR(50),
+    phone INT UNIQUE,
     PRIMARY KEY (email)
 );
 
@@ -78,8 +76,8 @@ CREATE TABLE Admin (
  * User(email: char, password: char, firstName: char, lastName: char, phone: int, age: int)
  */
 CREATE TABLE `User` (
-    email VARCHAR(50) NOT NULL,
-    password VARCHAR(50) NOT NULL,
+    email VARCHAR(50),
+    password VARCHAR(50),
     firstName VARCHAR(50),
     lastName VARCHAR(50),
     phone INT UNIQUE,
@@ -96,19 +94,14 @@ CREATE TABLE `User` (
 CREATE TABLE HasInvitation (
     invitationId INT,
     eventName VARCHAR(50),
-    lat FLOAT,
-    lon FLOAT,
-    timeStart TIME,
-    timeEnd TIME,
-    sendToEmail VARCHAR(225),
-    `read` TINYINT(1),
+    lat DECIMAL(10,5),
+    lon DECIMAL(10,5),
+    timeStart DATETIME,
+    timeEnd DATETIME,
     message VARCHAR(255),
     PRIMARY KEY (invitationId , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (eventName , lat , lon , timeStart , timeEnd)
         REFERENCES PrivateEvent (eventName , lat , lon , timeStart , timeEnd)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (sendToEmail)
-        REFERENCES `User` (email)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -130,10 +123,10 @@ CREATE TABLE HasInvitation (
 CREATE TABLE EventTypeHasEvent (
     eventTypeId INT,
     eventName VARCHAR(50),
-    lat FLOAT,
-    lon FLOAT,
-    timeStart TIME,
-    timeEnd TIME,
+    lat DECIMAL(10,5),
+    lon DECIMAL(10,5),
+    timeStart DATETIME,
+    timeEnd DATETIME,
     PRIMARY KEY (eventTypeId , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (eventTypeId)
         REFERENCES EventType (eventTypeId)
@@ -153,10 +146,11 @@ CREATE TABLE EventTypeHasEvent (
     email VARCHAR(50),
     invitationId INT,
     eventName VARCHAR(50),
-    lat FLOAT,
-    lon FLOAT,
-    timeStart TIME,
-    timeEnd TIME,
+    lat DECIMAL(10,5),
+    lon DECIMAL(10,5),
+    timeStart DATETIME,
+    timeEnd DATETIME,
+    `read` TINYINT(1)  DEFAULT 0,
     PRIMARY KEY (email , invitationId , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (email)
         REFERENCES `User` (email)
@@ -176,11 +170,12 @@ CREATE TABLE EventProviderSendInvitation (
     email VARCHAR(50),
     invitationId INT,
     eventName VARCHAR(50),
-    lat FLOAT,
-    lon FLOAT,
-    timeStart TIME,
-    timeEnd TIME,
-    PRIMARY KEY (email , invitationId , eventName , lat , lon , timeStart , timeEnd),
+    lat DECIMAL(10,5),
+    lon DECIMAL(10,5),
+    timeStart DATETIME,
+    timeEnd DATETIME,
+    sendToEmail VARCHAR(225),
+    PRIMARY KEY (email , invitationId , eventName , lat , lon , timeStart , timeEnd, sendToEmail),
     FOREIGN KEY (email)
         REFERENCES EventProvider (email)
         ON DELETE CASCADE
@@ -188,7 +183,10 @@ CREATE TABLE EventProviderSendInvitation (
     FOREIGN KEY (invitationId , eventName , lat , lon , timeStart , timeEnd)
         REFERENCES HasInvitation (invitationId , eventName , lat , lon , timeStart , timeEnd)
         ON DELETE CASCADE
-        ON UPDATE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (sendToEmail)
+        REFERENCES `User` (email)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 /*
@@ -198,10 +196,10 @@ CREATE TABLE EventProviderSendInvitation (
  CREATE TABLE UserGoesEvent (
     email VARCHAR(50),
     eventName VARCHAR(50),
-    lat FLOAT,
-    lon FLOAT,
-    timeStart TIME,
-    timeEnd TIME,
+    lat DECIMAL(10,5),
+    lon DECIMAL(10,5),
+    timeStart DATETIME,
+    timeEnd DATETIME,
     PRIMARY KEY (email , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (email)
         REFERENCES `User` (email)
@@ -221,10 +219,10 @@ CREATE TABLE EventProviderSendInvitation (
     groupId INT,
     email VARCHAR(50),
     eventName VARCHAR(50),
-    lat FLOAT,
-    lon FLOAT,
-    timeStart TIME,
-    timeEnd TIME,
+    lat DECIMAL(10,5),
+    lon DECIMAL(10,5),
+    timeStart DATETIME,
+    timeEnd DATETIME,
     PRIMARY KEY (groupId , email , eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (groupId)
         REFERENCES `Group` (groupId)
