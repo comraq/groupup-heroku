@@ -105,6 +105,7 @@
       return 'testUser4@test.com';
     }
  
+/*
     function insertGroup() {
       $method = $_SERVER['REQUEST_METHOD'];
       if ($method != 'POST') {
@@ -145,5 +146,6 @@
       $this->disconnect();
       $this->response(json_encode($data), 200);
     }
+*/
   }
 ?>
