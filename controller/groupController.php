@@ -191,7 +191,7 @@
                                                 $data['withEvents']);
         if (!is_null($err)) {
           $this->disconnect();
-          $this->response($err['res'], $err['statusCode']);
+          $this->response($err['data'], $err['statusCode']);
         }
       }
 
@@ -225,7 +225,7 @@
         $stmt->execute();
         $stmt->close();
         $this->disconnect();
-        $this->response($err['res'], $err['statusCode']);
+        $this->response($err['data'], $err['statusCode']);
       }
 
       // New Group Successfully Inserted into Database!
