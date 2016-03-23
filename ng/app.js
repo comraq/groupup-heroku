@@ -47,6 +47,12 @@ app.config(function ($routeProvider) {
             templateUrl: 'ng/views/register.html',
             controller: 'RegisterCtrl',
             controllerAs: 'ctrl'
+        })
+        .when("/Account",
+        {
+            templateUrl: 'ng/views/userAccount.html',
+            controller: 'UserAccountCtrl',
+            controllerAs: 'ctrl'
         });
         //.otherwise({redirectTo: "/"});
 });

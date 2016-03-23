@@ -1,0 +1,119 @@
+<div class="container">
+	<h2 class="title">Account</h2>
+
+	<ul class="nav nav-tabs nav-justified">
+		<li class="active"><a data-toggle="tab" data-target="#userRegister">User</a></li>
+		<li><a data-toggle="tab" data-target="#profile">Profile</a></li>
+		<li><a data-toggle="tab" data-target="#password">Password</a></li>
+	</ul>
+
+	<div class="tab-content">
+		<div id="userRegister" class="tab-pane fade in active">
+			<!-- <form class="form-signin" ng-submit="ctrl.registerUser()" name="registerUser" role="form">
+				<div class="form-group" ng-class="{ 'has-error': registerUser.email.$dirty && (registerUser.email.$error.required || registerUser.email.$invalid)}">
+				    <label for="inputEmail" class="sr-only">Email address</label>
+				    <input type="email" name="email" data-ng-model="ctrl.email" id="inputEmail" class="form-control" placeholder="Email address"  required autofocus>
+				    <span ng-show="registerUser.email.$dirty && (registerUser.email.$error.required || registerUser.email.$invalid)" class="help-block">Valid Email is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': registerUser.password.$dirty && registerUser.password.$error.required}">
+				    <label for="inputPassword" class="sr-only">Password</label>
+				    <input type="password" name="password" data-ng-model="ctrl.password" id="inputPassword" class="form-control" placeholder="Password" required>
+					<span ng-show="registerUser.password.$dirty && registerUser.password.$error.required" class="help-block">Password is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': registerUser.rePassword.$dirty && registerUser.rePassword.$error.required }">
+				    <label for="inputRePassword" class="sr-only">Re-Password</label>
+				    <input type="password" name="rePassword" id="inputRePassword" data-ng-model="ctrl.rePassword" class="form-control" placeholder="Re-Password" required>
+				    <span ng-show="registerUser.rePassword.$dirty && registerUser.rePassword.$error.required" class="help-block">Re-Password is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': registerUser.firstName.$dirty && registerUser.firstName.$error.required }">
+				    <label for="inputFirstName" class="sr-only">First Name</label>
+				    <input type="text" name="firstName" id="inputFirstName" data-ng-model="ctrl.firstName" class="form-control" placeholder="First Name" required>
+				    <span ng-show="registerUser.firstName.$dirty && registerUser.firstName.$error.required" class="help-block">First Name is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': registerUser.lastName.$dirty && registerUser.lastName.$error.required }">
+				    <label for="inputLastName" class="sr-only">Last Name</label>
+				    <input type="text" name="lastName" id="inputLastName" data-ng-model="ctrl.lastName" class="form-control" placeholder="Last Name" required>
+				    <span ng-show="registerUser.lastName.$dirty && registerUser.lastName.$error.required" class="help-block">Last Name is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': registerUser.phone.$dirty && (registerUser.phone.$error.required||registerUser.phone.$invalid) }">
+				    <label for="inputPhone" class="sr-only">Phone Number</label>
+				    <input type="number" name="phone" id="inputPhone" data-ng-model="ctrl.phone" class="form-control" placeholder="Phone Number" required>
+				    <span ng-show="registerUser.phone.$dirty && (registerUser.phone.$error.required||registerUser.phone.$invalid)" class="help-block">Valid Phone Number is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': registerUser.age.$dirty && (registerUser.age.$error.required || registerUser.age.$invalid)}">
+				    <label for="inputAge" class="sr-only">Phone Number</label>
+				    <input type="number" name="age" id="inputAge" data-ng-model="ctrl.age" class="form-control" placeholder="Age" required>
+				    <span ng-show="registerUser.age.$dirty && (registerUser.age.$error.required || registerUser.age.$invalid)" class="help-block">Valid Age is required</span>
+				</div>
+
+				<button class="btn btn-lg btn-block btn-blog" type="submit" ng-disabled="ctrl.dataLoading">Register</button>
+
+				<hr class="href-divider">
+				<a href="#/SignIn"><p class="text-href">Already have an account?</p></a>
+			</form> -->
+		</div>
+	  
+		<div id="profile" class="tab-pane fade">
+			<form class="form-signin" ng-submit="ctrl.updateProfile()" name="userProfile" role="form">
+
+		        <div class="form-group" ng-class="{ 'has-error': userProfile.firstName.$dirty && userProfile.firstName.$error.required }">
+				    <label for="updateFirstName" class="sr-only">First Name</label>
+				    <input type="text" name="firstName" id="updateFirstName" data-ng-model="ctrl.firstName" class="form-control" placeholder="First Name" required>
+				    <span ng-show="userProfile.firstName.$dirty && userProfile.firstName.$error.required" class="help-block">First Name is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': userProfile.lastName.$dirty && userProfile.lastName.$error.required }">
+				    <label for="updateLastName" class="sr-only">Last Name</label>
+				    <input type="text" name="lastName" id="updateLastName" data-ng-model="ctrl.lastName" class="form-control" placeholder="Last Name" required>
+				    <span ng-show="userProfile.lastName.$dirty && userProfile.lastName.$error.required" class="help-block">Last Name is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': userProfile.phone.$dirty && (userProfile.phone.$error.required || userProfile.phone.$invalid) }">
+				    <label for="updatePhone" class="sr-only">Phone Number</label>
+				    <input type="tel" name="phone" id="updatePhone" data-ng-model="ctrl.phone" class="form-control" placeholder="Phone Number" required>
+				    <span ng-show="userProfile.phone.$dirty && userProfile.phone.$error.required" class="help-block">Valid Phone Number is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': userProfile.age.$dirty && (userProfile.age.$error.required || userProfile.age.$invalid)}">
+				    <label for="updateAge" class="sr-only">Age</label>
+				    <input type="number" name="age" id="updateAge" data-ng-model="ctrl.age" class="form-control" placeholder="Age" required>
+				    <span ng-show="userProfile.age.$dirty && (userProfile.age.$error.required || userProfile.age.$invalid)" class="help-block">Valid Age is required</span>
+				</div>
+		    	
+		    	<button class="btn btn-lg btn-block btn-blog" type="submit" ng-disabled="userProfile.$invalid || ctrl.dataLoading">Update Profile</button>
+		    	<hr class="href-divider">
+			</form>
+		</div>
+
+		<div id="password" class="tab-pane fade">
+			<form class="form-signin" ng-submit="ctrl.updatePassword()" name="userPassword" role="form">
+				<div class="form-group" ng-class="{ 'has-error': userPassword.oldPassword.$dirty && userPassword.oldPassword.$error.required}">
+				    <label for="updateOldPassword" class="sr-only">Old Password</label>
+				    <input type="password" name="oldPassword" data-ng-model="ctrl.oldPassword" id="updateOldPassword" class="form-control" placeholder="Old Password" required>
+					<span ng-show="userPassword.password.$dirty && userPassword.password.$error.required" class="help-block">Password is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': userPassword.newPassword.$dirty && userPassword.newPassword.$error.required}">
+				    <label for="updateNewPassword" class="sr-only">New Password</label>
+				    <input type="password" name="newPassword" data-ng-model="ctrl.newPassword" id="updateNewPassword" class="form-control" placeholder="New Password" required>
+					<span ng-show="userPassword.newPassword.$dirty && userPassword.newPassword.$error.required" class="help-block">Password is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': userPassword.rePassword.$dirty && userPassword.rePassword.$error.required }">
+				    <label for="updateRePassword" class="sr-only">Re New Password</label>
+				    <input type="password" name="rePassword" id="updateRePassword" data-ng-model="ctrl.rePassword" class="form-control" placeholder="Re-New Password" required>
+				    <span ng-show="userPassword.rePassword.$dirty && userPassword.rePassword.$error.required" class="help-block">Re-Password is required</span>
+				</div>
+		    	
+		    	<button class="btn btn-lg btn-block btn-blog" type="submit" ng-disabled="userPassword.$invalid || ctrl.dataLoading">Update Password</button>
+		    	<hr class="href-divider">
+			</form>
+		</div>
+	</div>
+</div> <!-- /container -->
