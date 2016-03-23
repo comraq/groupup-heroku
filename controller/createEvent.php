@@ -8,12 +8,14 @@ class CreateEvent extends Database{
 	}
 
 	function createEvent($data){
+		$this->connect();
 		$eventName = $data["eventName"];
 		$timeStart = $data["timeStart"];
-		$timeEnd =  $data["timeEnd"];
+		$timeEnd = $data["timeEnd"];
 		$cost = $data["eventCost"];
 		$description = $data["eventDescription"];
 		$eventType = $data["eventType"];
+		//TODO Change this
 		$createdBy = "testEP1@test.com";
 		$lat = $data["lat"];
 		$lon = $data["lng"];
@@ -23,8 +25,6 @@ class CreateEvent extends Database{
 			$message = $data["message"];
 			$invitees = $data["invitees"];
 		}
-
-		parent::connect();
 
 		$insertEventSql = "INSERT INTO 
 		`Event`(`eventName`,`lat`,`lon`,`timeStart`,`timeEnd`,`cost`,`description`,`createdBy`) 
@@ -38,8 +38,8 @@ class CreateEvent extends Database{
 		`EventProviderSendInvitation`(`email`,`invitationId`,`eventName`,`lat`,`lon`,`timeStart`,`timeEnd`,`sendToEmail`) 
 		VALUES(?,?,?,?,?,?,?,?)";
 
-		$insertHasInvitation ="INSERT INTO `HasInvitation`(`invitationId`, `eventName`,`lat`,`lon`,`timeStart`,`timeEnd`,`message`)
-		VALUES (?, ?, ?, ?,?, ?, ?)";
+		$insertHasInvitation ="INSERT INTO `HasInvitation`(`eventName`,`lat`,`lon`,`timeStart`,`timeEnd`,`message`)
+		VALUES (?, ?, ?,?, ?, ?)";
 
 		$insertEventTypeHasEvent = "INSERT INTO `EventTypeHasEvent` 
 		(`eventTypeId`, `eventName`, `lat`, `lon`, `timeStart`, `timeEnd`)
@@ -51,7 +51,10 @@ class CreateEvent extends Database{
 			$table = "PrivateEvent";
 		}
 
-		$checkIfExists = "SELECT * FROM " . $table . " WHERE eventName=? AND lat= CAST(? AS DECIMAL(10,5)) AND lon=CAST(? AS DECIMAL(10,5)) AND timeStart=? AND timeEnd=?";
+		//$checkIfExists = "SELECT * FROM " . $table . " WHERE eventName=? AND lat= CAST(? AS DECIMAL(10,5)) AND lon=CAST(? AS DECIMAL(10,5)) AND timeStart=? AND timeEnd=?";
+		
+		$checkIfExists = "SELECT * FROM `Event` WHERE eventName=? AND lat= CAST(? AS DECIMAL(10,5)) AND lon=CAST(? AS DECIMAL(10,5)) AND timeStart=? AND timeEnd=?";
+		
 		$checkIfExistsStmt = $this->conn->prepare($checkIfExists);
 		$checkIfExistsStmt->bind_param('sddss', $eventName, $lat, $lon, $timeStart, $timeEnd);
 		$checkIfExistsStmt->execute();
@@ -59,34 +62,30 @@ class CreateEvent extends Database{
 
 
 		if ($checkIfExistsStmt->num_rows == 0){
-			$stmt = $this->conn->prepare($insertEventSql);
-			$stmt->bind_param('sddssdss', $eventName, $lat, $lon, $timeStart, $timeEnd, $cost, $description, $createdBy);
-			$stmt->execute();
-			$stmt->close();
+			$this->conn->autocommit(FALSE);
+			$this->conn->query("START TRANSACTION");
+			
+			$insertEventStmt = $this->conn->prepare($insertEventSql);
+			$insertEventStmt->bind_param('sddssdss', $eventName, $lat, $lon, $timeStart, $timeEnd, $cost, $description, $createdBy);
+			$insertEventStmt->execute();
+			$insertEventStmt->close();
 
 			if($privateEvent){
 
-				$query = "SELECT MAX(invitationId) FROM HasInvitation";
-				$idStmt = $this->conn->prepare($query);
-				$idStmt->execute();
-				$idStmt->bind_result($id);
-				$idStmt->fetch();
-				$idStmt->close();
+				$insPEventStmt = $this->conn->prepare($insertPrivateEventSQL);
+				$insPEventStmt->bind_param('sddss', $eventName, $lat, $lon, $timeStart, $timeEnd);
+				$insPEventStmt->execute();
+				$insPEventStmt->close();
 
-				$stmt = $this->conn->prepare($insertPrivateEventSQL);
-				$stmt->bind_param('sddss', $eventName, $lat, $lon, $timeStart, $timeEnd);
-				$stmt->execute();
-				$stmt->close();
-
-				$stmt = $this->conn->prepare($insertHasInvitation);
-				$stmt->bind_param('dsddsss', $id, $eventName, $lat, $lon, $timeStart, $timeEnd, $message);
-				$stmt->execute();
-				$stmt->close();
-
+				$insHasInvStmt = $this->conn->prepare($insertHasInvitation);
+				$insHasInvStmt->bind_param('sddsss', $eventName, $lat, $lon, $timeStart, $timeEnd, $message);
+				$insHasInvStmt->execute();
+				$iID = $this->conn->insert_id;
+				$insHasInvStmt->close();
 
 				$invStmt = $this->conn->prepare($insertEventProviderSendInvitation);
-				$invStmt->bind_param('sdsddsss', $createdBy, $id, $eventName, $lat, $lon, $timeStart, $timeEnd, $sendToEmail);
-				$this->conn->query("START TRANSACTION");
+				$invStmt->bind_param('sdsddsss', $createdBy, $iID, $eventName, $lat, $lon, $timeStart, $timeEnd, $sendToEmail);
+				
 				foreach ($invitees as $sendToEmail) {
 					$invStmt->execute();
 				}
@@ -99,12 +98,19 @@ class CreateEvent extends Database{
 				$insertEventTypeHasEventStmt->execute();
 			}
 			$insertEventTypeHasEventStmt->close();
-			$this->conn->query("COMMIT");
-			$result = TRUE;
+
+			if($this->conn->error){
+				$this->conn->rollback();
+				$result = array('data' => $this->conn->error);
+			}else{
+				$this->conn->query("COMMIT");
+				$result = TRUE;
+			}
+			$this->conn->autocommit(TRUE);
 		}else{
 			$result = FALSE;
 		}
-		parent::disconnect();
+		$this->disconnect();
 		return json_encode($result);
 	}
 
@@ -115,6 +121,13 @@ class CreateEvent extends Database{
 			$data = json_decode($json, TRUE);
 			$result = $this->createEvent($data);
 			$this->response($result, 200);
+		}else{
+			$result = array(
+				'data' => "Emtpy Data"
+				);
+			$statusCode = 405;
+			$this->response($result, $statusCode);
+			exit;
 		}
 	}
 }

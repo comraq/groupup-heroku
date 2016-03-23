@@ -9,8 +9,7 @@ class EventType extends Database{
 
 	function getTypes(){
 		
-		parent::connect();
-		
+		$this->connect();
 		$searchEventsSQL = "SELECT * FROM `EventType`";
 
 		$stmt = $this->conn->prepare($searchEventsSQL);
@@ -19,7 +18,7 @@ class EventType extends Database{
 		$res = $stmt->get_result();
 		$data = $res->fetch_all(MYSQLI_ASSOC);
 		$stmt->close();
-		parent::disconnect();
+		$this->disconnect();
 		return json_encode($data);
 	}
 
@@ -28,7 +27,14 @@ class EventType extends Database{
 		if ($reqMethod == 'GET'){
 			$result = $this->getTypes();
 			$this->response($result, 200);
+		}else{
+			$result = array(
+				'data' => "Emtpy Data"
+				);
+			$statusCode = 405;
+			$this->response($result, $statusCode);
 		}
+		exit;
 	}
 }
 ?>

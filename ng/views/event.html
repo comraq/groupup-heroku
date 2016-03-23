@@ -29,11 +29,12 @@
                             <td>{{event.cost}}</td>
                             <td>{{event.category}}</td>
                             <td>
-                                <button style="width:100%" ng-click="ctrl.redirect(event.eventName, event.lat, event.lon, event.createdBy, event.timeStart, event.timeEnd)">Go!</button>
+                                <button ng-show="event.going==0" style="width:100%" ng-click="ctrl.signUpForEvent(event.eventName, event.lat, event.lon, event.createdBy, event.timeStart, event.timeEnd)">Go!</button>
+                                 <button ng-show="event.going==1" style="width:100%" ng-click="ctrl.cancelSignup(event.eventName, event.lat, event.lon, event.createdBy, event.timeStart, event.timeEnd)">Cancel Go!</button>
                             </td>
                         </tr>
                     </table>
-                    <button class="btn btn-lg btn-block btn-blog" type="submit" autofocus>Search</button>
+                    <button  ng-disabled="form.$invalid" class="btn btn-lg btn-block btn-blog" type="submit" autofocus>Search</button>
                 </form>
             </div>
             <div id="createEvent" class="tab-pane fade">
@@ -48,7 +49,7 @@
                     </div>
                     <div>
                         <label for="eventCost" class="sr-only">Event Cost</label>
-                        <input type="number" name="eventCost" data-ng-model="ctrl.eventCost" id="eventCost" class="form-control" placeholder="Event Cost" required>
+                        <input min="0" max="99999999" step="0.01" value="0" placeholder="Event Cost $" required="" type="number"  name="eventCost" data-ng-model="ctrl.eventCost" id="eventCost" class="form-control" placeholder="Event Cost" required>
                     </div>
                     <div>
                        <!-- <select id="eventType" name="eventType" data-ng-model="ctrl.eventType" class="form-control" required>
@@ -66,7 +67,6 @@
                         </tr>
                     </table>
                 </div>
-                {{ctrl.newEventType}}
                 <div>
                     <input type="checkbox" name="private" ng-model="ctrl.private">
                     Private?
@@ -74,11 +74,11 @@
                 <div  class="check-element animate-show" ng-show="ctrl.private">
                    <div>
                     <label for="invitees" class="sr-only">Invitees</label>
-                    <input type="text" name="invitees" data-ng-model="ctrl.invitees" id="invitees" class="form-control" placeholder="Emails comma seperated" ng-list>
+                    <input type="text" name="invitees" ng-required="ctrl.private" data-ng-model="ctrl.invitees" id="invitees" class="form-control" placeholder="Emails comma seperated" ng-list>
                 </div>
                 <div>
                     <label for="message" class="sr-only">Invite Message</label>
-                    <input type="text" name="message" data-ng-model="ctrl.message" id="message" class="form-control" placeholder="Invite Message">
+                    <input type="text" name="message" ng-required="ctrl.private" data-ng-model="ctrl.message" id="message" class="form-control" placeholder="Invite Message">
                 </div>
             </div>
             <div style=" display: flex; align-items: center; justify-content: center;">
@@ -89,7 +89,7 @@
                 <datetimepicker style="width:45%; height: auto; margin: auto;" data-ng-model="ctrl.timeStart"></datetimepicker>
                 <datetimepicker style="width:45%; height: auto; margin: auto;" data-ng-model="ctrl.timeEnd"></datetimepicker>
             </div>
-            <button class="btn btn-lg btn-block btn-blog" type="submit">Create Event</button>
+            <button  ng-disabled="form.$invalid || !ctrl.timeStart ||!ctrl.timeEnd"class="btn btn-lg btn-block btn-blog" type="submit">Create Event</button>
         </form>
     </div>
 </div>

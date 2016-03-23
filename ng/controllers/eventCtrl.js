@@ -1,13 +1,15 @@
 var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, $window, $location, $http, NgMap) {
     $scope.positions = [];
     $scope.results;
+    
     this.searchUrl = "/controller/Search/startSearchEvents";
     this.typeUrl = "/controller/EventType/startGetTypes";
     this.createEventUrl = "/controller/CreateEvent/startCreateEvent";
-
+    this.addUserUrl = "/controller/UserGoesEvent/startUserGoesEvent";
+    this.cancelURL = "/controller/UserGoesEvent/startCanceltUserGoesEvent";
+    
     this.searchTarget;
     this.bounds;
-
     this.eventName;
     this.eventDescription;
     this.eventCost;
@@ -122,48 +124,88 @@ this.mapClick = function mapClick(event) {
     }
 }
 
-this.redirect = function redirect(eventName, lat, lon, createdBy, timeStart, timeEnd) {
-    console.log(eventName);
-    console.log(createdBy);
-    console.log(timeStart);
-    console.log(timeEnd);
-    console.log(lat);
-    console.log(lon);
-    $location.path('/GoesWith/' + eventName + '/' + lat + '/' + lon + '/' + timeStart + '/' + timeEnd + '/' + createdBy);
-}
-
-this.createEvent = function createEvent() {
-       var eventTypes = [];
-       this.newEventType.forEach(function(event){
-        eventTypes.push(event.eventTypeId);
-       });
+this.signUpForEvent = function signUpForEvent(eventName, lat, lon, createdBy, timeStart, timeEnd) {
     var data = {
-        eventName: this.eventName,
-        eventDescription: this.eventDescription,
-        eventCost: this.eventCost,
-        timeStart: formatDate(this.timeStart),
-        timeEnd: formatDate(this.timeEnd),
-        eventType: eventTypes,
-        lat: newEventLat,
-        lng: newEventLng,
-        invitees: this.invitees,
-        message: this.message,
-        privateEvent: this.private
+        email: "testUser1@test.com",
+        eventName : eventName,
+        lat: lat,
+        lon: lon,
+        timeStart: timeStart,
+        timeEnd: timeEnd
     }
+
     $http({
         method: 'POST',
         data: data,
-        url: this.createEventUrl,
+        url: this.addUserUrl
     }).then(function successCallback(response) {
-        
+
         console.log(response);
 
         if (JSON.parse(response.data)) {
-            console.log("event creation successful");
+            console.log("Added user to event");
         } else {
-            console.log("event creation unsuccessful");
+            console.log("Unable to add user to event");
         }
     });
+    //$location.path('/GoesWith/' + eventName + '/' + lat + '/' + lon + '/' + timeStart + '/' + timeEnd + '/' + createdBy);
+}
+
+this.cancelSignup = function cancelSignup(eventName, lat, lon, createdBy, timeStart, timeEnd){
+    var data = {
+        email: "testUser1@test.com",
+        eventName : eventName,
+        lat: lat,
+        lon: lon,
+        timeStart: timeStart,
+        timeEnd: timeEnd
+    }
+
+    $http({
+        method: 'POST',
+        data: data,
+        url: this.cancelURL
+    }).then(function successCallback(response) {
+
+        console.log(response);
+
+        if (JSON.parse(response.data)) {
+            console.log("Removed user from event");
+        } else {
+            console.log("Unable to removed user to event");
+        }
+    });
+}
+
+this.createEvent = function createEvent() {
+ var eventTypes = [];
+ this.newEventType.forEach(function(event){
+    eventTypes.push(event.eventTypeId);
+});
+ var data = {
+    eventName: this.eventName,
+    eventDescription: this.eventDescription,
+    eventCost: this.eventCost,
+    timeStart: formatDate(this.timeStart),
+    timeEnd: formatDate(this.timeEnd),
+    eventType: eventTypes,
+    lat: newEventLat,
+    lng: newEventLng,
+    invitees: this.invitees,
+    message: this.message,
+    privateEvent: this.private
+}
+$http({
+    method: 'POST',
+    data: data,
+    url: this.createEventUrl,
+}).then(function successCallback(response) {
+  if (JSON.parse(response.data)) {
+    console.log("event creation successful");
+} else {
+    console.log("event creation unsuccessful");
+}
+});
 
 }
 
