@@ -182,6 +182,12 @@ this.createEvent = function createEvent() {
  this.newEventType.forEach(function(event){
     eventTypes.push(event.eventTypeId);
 });
+
+if(this.timeStart >= this.timeEnd){
+    window.alert("Time Start must be before Time End");
+    return;
+}
+
  var data = {
     eventName: this.eventName,
     eventDescription: this.eventDescription,

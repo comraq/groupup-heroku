@@ -10,7 +10,7 @@ var app = angular.module('groupUpApp')
                                                    NgMap) {
   var verbose = false;
 
-  this.url = "controller/GroupController";
+  this.url = "controller/groupController";
   this.scope = $scope;
   this.location = $location;
   this.joinTab = true;
