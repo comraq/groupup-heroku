@@ -124,14 +124,15 @@ this.mapClick = function mapClick(event) {
     }
 }
 
-this.signUpForEvent = function signUpForEvent(eventName, lat, lon, createdBy, timeStart, timeEnd) {
+this.signUpForEvent = function signUpForEvent(event) {
+    event.going = 1;
     var data = {
         email: "testUser1@test.com",
-        eventName : eventName,
-        lat: lat,
-        lon: lon,
-        timeStart: timeStart,
-        timeEnd: timeEnd
+        eventName : event.eventName,
+        lat: event.lat,
+        lon: event.lon,
+        timeStart: event.timeStart,
+        timeEnd: event.timeEnd
     }
 
     $http({
@@ -148,17 +149,18 @@ this.signUpForEvent = function signUpForEvent(eventName, lat, lon, createdBy, ti
             console.log("Unable to add user to event");
         }
     });
-    $location.path('/Group/' + eventName + '/' + lat + '/' + lon + '/' + timeStart + '/' + timeEnd + '/' + createdBy +'/');
+    $location.path('/Group/' + event.eventName + '/' + event.lat + '/' +event.lon + '/' + event.timeStart + '/' + event.timeEnd + '/' + event.createdBy +'/');
 }
 
-this.cancelSignup = function cancelSignup(eventName, lat, lon, createdBy, timeStart, timeEnd){
+this.cancelSignup = function cancelSignup(event){
+    event.going=0;
     var data = {
         email: "testUser1@test.com",
-        eventName : eventName,
-        lat: lat,
-        lon: lon,
-        timeStart: timeStart,
-        timeEnd: timeEnd
+        eventName : event.eventName,
+        lat: event.lat,
+        lon: event.lon,
+        timeStart: event.timeStart,
+        timeEnd: event.timeEnd
     }
 
     $http({
