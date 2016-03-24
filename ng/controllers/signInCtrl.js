@@ -21,12 +21,10 @@ var app = angular.module('groupUpApp').controller('SignInCtrl', function($scope,
 			data: data,
 			url: this.url,
 		}).then(function successCallback(response){
-			alertFactory.add('success', 'login successful');
 			$location.path('/');
 			
 		}.bind(this), function errorCallback(response){
 			var message = response.data.data;
-			alertFactory.add('danger', message);
 
 		}.bind(this));
 	};
