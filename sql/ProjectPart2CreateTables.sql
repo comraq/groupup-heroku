@@ -40,6 +40,7 @@ CREATE TABLE `Event` (
         REFERENCES EventProvider (email)
         ON DELETE CASCADE
         ON UPDATE CASCADE
+	-- ,CONSTRAINT checkTime CHECK (timeStart <= timeEnd)
 );
 
 /*
