@@ -6,28 +6,14 @@ var app = angular.module('groupUpApp')
                                                    $timeout,
                                                    NgMap, 
                                                    $routeParams,
-                                                   alertFactory,
-                                                   NgMap) {
+                                                   $uibModal,
+                                                   alertFactory) {
   var verbose = false;
 
-  this.url = "controller/GroupController";
+  this.url = "controller/groupController";
   this.scope = $scope;
   this.location = $location;
   this.joinTab = true;
-
-  this.routeEventName = $routeParams.eventName;
-  this.routeLat = $routeParams.lat;
-  this.routeLon = $routeParams.lon;
-  this.routeTimeStart = $routeParams.timeStart;
-  this.routeTimeEnd = $routeParams.timeEnd;
-  this.routeCreatedBy = $routeParams.createdBy;
-
-  console.log(this.routeEventName);
-
-  this.markPosition = function markPosition(userPosition) {
-    this.scope.positions.push(userPosition);
-    refreshMap(this.map, userPosition);
-  };
 
   function refreshMap(map, position) {
     var bounds = new google.maps.LatLngBounds();
@@ -48,7 +34,6 @@ var app = angular.module('groupUpApp')
     if (!this.map)
       this.map = NgMap.initMap(mapId);
  
-    this.getEvents();
     this.newGroup = {
       addUserToEvents: true, 
       withEvents: []
@@ -65,13 +50,20 @@ var app = angular.module('groupUpApp')
         refreshMap(ctrl.map, userPosition);
       }, 1000);
     });
+    this.getEvents();
+
+    if (Object.keys($routeParams).length == 0)
+      this.scope.createButton = "Join Event and Go With Created Group";
+    else
+      this.scope.createButton = "Go With Created Group";
+
   };
 
   this.eventsChanged = function eventsChanged(e) {
     var eventPosition = {
-                         lat: e.lat,
-                         lon: e.lon
-                       };
+                          lat: e.lat,
+                          lon: e.lon
+                        };
     refreshMap(this.map, eventPosition);
   }
 
@@ -84,8 +76,11 @@ var app = angular.module('groupUpApp')
       url: this.url + "/createGroup",
     }).then(function successCallback(res){
       alertFactory.add("success", res.data.data);
-      console.log(res);
       this.dataLoading = false;
+      $routeParams = {};
+
+      // Clear the groups model so Join Groups tab can query for new data
+      delete this.scope.groups;
 
     }.bind(this), function errorCallback(err){
       alertFactory.add("danger", err.data.data);
@@ -111,7 +106,12 @@ var app = angular.module('groupUpApp')
     });
   };
 
-  this.joinTabActive = function() { this.joinTab = true; }
+  this.joinTabActive = function() {
+    if (!this.scope.groups)
+      this.getGroups();
+
+    this.joinTab = true;
+  }
 
   this.getEvents = function getEvents() {
     $http({
@@ -123,11 +123,22 @@ var app = angular.module('groupUpApp')
         console.log(JSON.parse(res.data));
       }
       this.scope.events = JSON.parse(res.data).map(function (e, i, arr) {
-        e.selected = false;
+        if ($routeParams.eventName == e.eventName
+            && $routeParams.lat == e.lat
+            && $routeParams.lon == e.lon
+            && $routeParams.timeStart == e.timeStart
+            && $routeParams.timeEnd == e.timeEnd) {
+          // Route Params Matches an Event!
+          // User already added to UserGoesEvent Prior to Route
+          e.selected = true;
+          this.newGroup.addUserToEvents = false;
+        } else
+          e.selected = false;
+
         e.lat = parseFloat(e.lat);
         e.lon = parseFloat(e.lon);
         return e;
-      });;
+      }.bind(this));
     }.bind(this), function errorCallback(err) {
       alertFactory.add("danger", err.data.data);
       console.log(err);
@@ -135,11 +146,19 @@ var app = angular.module('groupUpApp')
 
   };
 
-  this.getGroups();
+  this.joinGroup = function joinGroup(groupId) {
+    console.log("here: " + groupId);
+  }
 
-  this.testSubmit = function testSubmit() {
-    console.log("submitting form!");
-    console.log(this);
-    this.createGroup();
-  };
+  if (Object.keys($routeParams).length == 0)
+    this.getGroups();
+  else {
+    if (verbose) {
+      console.log("Got Route Params!")
+      console.log($routeParams);
+    }
+    $timeout(function() {
+      angular.element('#create-group-tab a').trigger('click');
+    });
+  }
 });

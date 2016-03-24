@@ -7,7 +7,7 @@
     }
 
     private static function getUserEmail() {
-      return 'testUser4@test.com';
+      return 'testUser1@test.com';
     }
 
     function getGroups() {

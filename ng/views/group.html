@@ -5,7 +5,8 @@
     <li class="active" ng-click="ctrl.joinTabActive()">
       <a data-toggle="tab" data-target="#group-list">Join Groups</a>
     </li>
-    <li ng-click="ctrl.initCreateTab('create-group-events-map')">
+    <li ng-click="ctrl.initCreateTab('create-group-events-map')"
+      id="create-group-tab">
       <a data-toggle="tab" data-target="#group-create">Create Groups</a>
     </li>
   </ul>
@@ -26,7 +27,8 @@
           <div class="col-md-7">
             <p>{{ group.description }}</p>
             <p>
-              <a class="btn btn-primary btn-lg" href="#" role="button">
+              <a class="btn btn-primary btn-lg" href=""
+                role="button" ng-click="ctrl.joinGroup(group.groupId)">
                 Join Group</a>
             </p>
           </div>
@@ -50,7 +52,7 @@
     </div><!-- tabpane -->
 
     <div id="group-create" class="tab-pane fade"> 
-      <form class="form-signin" ng-submit="ctrl.testSubmit()"
+      <form class="form-signin" ng-submit="ctrl.createGroup()"
         name="createGroup" role="form">
 
         <div class="form-group" ng-class="{
@@ -82,13 +84,15 @@
             class="help-block">Group Description is Required</span>
         </div>
 
+        <label for="eventsFilter">
+          Select Events to Attend to Create Group For</label>
         <div class="form-group events-filter">
           <label for="eventsFilter" class="sr-only">
             Filter Events
           </label>
           <input type="filter" name="eventsFilter"
             data-ng-model="eventsFilter"
-            id="events-filter" class="form-control"
+            id="events-filter-input" class="form-control"
             placeholder="Filter Events" autofocus>
         </div>
  
@@ -125,16 +129,17 @@
           </tbody>
         </table>
 
-        <ng-map id="create-group-events-map" center="[0,0]" zoom="13"
+        <ng-map id="create-group-events-map"
+          center="[0,0]" zoom="13"
           lazy-init="true" default-style="true">
             <marker ng-repeat="e in events | filter: {selected: 'true'}"
               position="{{e.lat}}, {{e.lon}}"></marker>
         </ng-map>
 
         <button class="btn btn-lg btn-block btn-blog" type="submit"
-          id="create-group-button" 
+          id="create-group-button" ng-bind="createButton"
           ng-disabled="createGroup.$invalid || ctrl.dataLoading">
-          Create</button>
+        </button>
 
       </form>
     </div> <!-- tabpane -->

@@ -24,10 +24,14 @@
 
 #create-group-events-table th { width: 15vw; }
 
-#create-group-events-table td{
+#create-group-events-table td {
   width: 15vw;
 
   cursor: pointer;
+}
+
+#create-group-events-table tbody tr {
+  background-color: #fff;
 }
 
 #create-group-events-table tr.create-group-events-selected {
@@ -35,5 +39,6 @@
 }
 
 .events-filter {
+  float: right;
   width: 20vw;
 }

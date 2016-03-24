@@ -2,11 +2,11 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     $scope.positions = [];
     $scope.results;
     
-    this.searchUrl = "/controller/Search/startSearchEvents";
-    this.typeUrl = "/controller/EventType/startGetTypes";
-    this.createEventUrl = "/controller/CreateEvent/startCreateEvent";
-    this.addUserUrl = "/controller/UserGoesEvent/startUserGoesEvent";
-    this.cancelURL = "/controller/UserGoesEvent/startCanceltUserGoesEvent";
+    this.searchUrl = "/controller/search/startSearchEvents";
+    this.typeUrl = "/controller/eventType/startGetTypes";
+    this.createEventUrl = "/controller/createEvent/startCreateEvent";
+    this.addUserUrl = "/controller/userGoesEvent/startUserGoesEvent";
+    this.cancelURL = "/controller/userGoesEvent/startCanceltUserGoesEvent";
     
     this.searchTarget;
     this.bounds;

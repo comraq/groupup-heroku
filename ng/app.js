@@ -7,7 +7,8 @@ var app = angular.module('groupUpApp',
                            'alertService',
                            'selectionModel',
                            'anguFixedHeaderTable',
-                           'ui.bootstrap.datetimepicker'
+                           'ui.bootstrap.datetimepicker',
+                           'ui.bootstrap'
                          ]);
 
 app.config(function ($routeProvider) {
@@ -24,7 +25,7 @@ app.config(function ($routeProvider) {
             controller: 'EventCtrl',
             controllerAs: 'ctrl'
         })
-        .when("/Group/:eventName?/:lat?/:lon?/:timeStart?/:timeEnd?/:createdBy?",
+        .when("/Group/:eventName/:lat/:lon/:timeStart/:timeEnd/:createdBy",
         {
             templateUrl: 'ng/views/group.html',
             controller: 'GroupCtrl',
