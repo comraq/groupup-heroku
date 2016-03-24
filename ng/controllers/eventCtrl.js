@@ -1,4 +1,4 @@
-var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, $window, $location, $http, NgMap) {
+var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, $window, $location, $http, NgMap, alertFactory) {
     $scope.positions = [];
     $scope.results;
     
@@ -56,7 +56,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
             }
 
         }.bind(this), function errorCallback(response) {
-            alert(response.data);
+            alertFactory.add('success', response.data);
         });
   };
 
@@ -92,7 +92,7 @@ this.getEventTypes = function getEventTypes() {
     }).then(function successCallback(response) {
         $scope.eventTypes = JSON.parse(response.data);
     }.bind(this), function errorCallback(response) {
-        alert(response.data);
+        alertFactory.add('danger', response.data);
     });
 }
 
@@ -180,17 +180,17 @@ this.cancelSignup = function cancelSignup(event){
 }
 
 this.createEvent = function createEvent() {
- var eventTypes = [];
- this.newEventType.forEach(function(event){
+   var eventTypes = [];
+   this.newEventType.forEach(function(event){
     eventTypes.push(event.eventTypeId);
 });
 
-if(this.timeStart >= this.timeEnd){
-    window.alert("Time Start must be before Time End");
+   if(this.timeStart >= this.timeEnd){
+    alertFactory.add('danger', 'Time Start must be before time end');
     return;
 }
 
- var data = {
+var data = {
     eventName: this.eventName,
     eventDescription: this.eventDescription,
     eventCost: this.eventCost,
@@ -209,9 +209,9 @@ $http({
     url: this.createEventUrl,
 }).then(function successCallback(response) {
   if (JSON.parse(response.data)) {
-    console.log("event creation successful");
+    alertFactory.add('success', 'Event creation successful');
 } else {
-    console.log("event creation unsuccessful");
+    alertFactory.add('danger', 'Event creation not successful');
 }
 });
 
