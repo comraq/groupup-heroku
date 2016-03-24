@@ -8,12 +8,10 @@ var app = angular.module('groupUpApp').controller('SignInCtrl', function($scope,
 	this.signin = function(){
 		this.url = "/controller/login/account"
 		
-		var data = {
-					email: this.email,
-					password: this.password,
-					}
-		alert(this.email);
-		alert(this.password);
+		var data = { email: this.email, password: this.password, }
+		
+		// alert(this.email);
+		// alert(this.password);
 		
 
 		$http({

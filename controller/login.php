@@ -21,6 +21,7 @@ class Login extends Database {
         
         $email = $this->conn->real_escape_string($pre_email);
         $password = $this->conn->real_escape_string($pre_password);
+        $hashPass = password_hash($password, PASSWORD_BCRYPT);
 
         // database query, getting all the info of the selected user (allows login via email address in the
         // username field)
@@ -35,7 +36,7 @@ class Login extends Database {
             // get result row (as an object)
             $result_row = $result_of_user_login_check->fetch_object();
 
-            if (strcmp($password, $result_row->password) == 0) {
+            if (password_verify($result_row->password, $hashPass)) {
 
                 // write user data into PHP SESSION (a file on your server)
                 $_SESSION['email'] = $result_row->email;
@@ -55,7 +56,7 @@ class Login extends Database {
 
         if ($result_of_eventprovider_login_check->num_rows == 1) {
             $result_row = $result_of_eventprovider_login_check->fetch_object();
-            if (strcmp($password, $result_row->password) == 0) {
+            if (password_verify($result_row->password, $hashPass)) {
                 $_SESSION['email'] = $result_row->email;
                 $_SESSION['login_status'] = 1;
                 $_SESSION['account_type'] = 1;
@@ -73,7 +74,7 @@ class Login extends Database {
 
         if ($result_of_admin_login_check->num_rows == 1) {
             $result_row = $result_of_admin_login_check->fetch_object();
-            if (strcmp($password, $result_row->password) == 0) {
+            if (password_verify($result_row->password, $hashPass)) {
 
                 $_SESSION['email'] = $result_row->email;
                 $_SESSION['login_status'] = 1;
