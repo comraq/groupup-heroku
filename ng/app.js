@@ -52,7 +52,10 @@ app.config(function ($routeProvider) {
         {
             templateUrl: 'ng/views/userAccount.html',
             controller: 'UserAccountCtrl',
-            controllerAs: 'ctrl'
+            controllerAs: 'ctrl',
+            resolve:{
+                email: function(){ return "testUser1@test.com";}
+            }
         });
         //.otherwise({redirectTo: "/"});
 });
