@@ -10,9 +10,6 @@ var app = angular.module('groupUpApp').controller('SignInCtrl', function($scope,
 		
 		var data = { email: this.email, password: this.password, }
 		
-		// alert(this.email);
-		// alert(this.password);
-		
 
 		$http({
 			method: 'POST',

@@ -13,9 +13,6 @@ class Login extends Database {
 
         session_start();
 
-        if (isset($_GET["logout"])) {
-            $this->doLogout();
-        }
 	}
 
 	private function dologinWithPostData($data) {

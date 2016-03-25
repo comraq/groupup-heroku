@@ -39,6 +39,7 @@
     <script type="text/javascript" src="./ng/controllers/eventCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/groupCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/signInCtrl.js"></script>
+    <script type="text/javascript" src="./ng/controllers/signOutCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/registerCtrl.js"></script>
     
 
@@ -100,7 +101,6 @@
 				?>
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="#/SignOut">Sign Out</a></li>
-						<!-- <li><a href="index.php?logout">Logout</a></li> -->
 					</ul>
 				<?php 
 					} 
