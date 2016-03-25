@@ -106,6 +106,13 @@ var app = angular.module('groupUpApp')
                           lat: e.lat,
                           lon: e.lon
                         };
+    if (!e.attending) {
+      if (e.selected)
+        e.attendPreference = "true (was false)";
+      else
+        e.attendPreference = false;
+    }
+
     if (this.joinTab)
       refreshMap(this.joinGroupsMap, eventPosition)
     else
@@ -182,8 +189,14 @@ var app = angular.module('groupUpApp')
 
         e.lat = parseFloat(e.lat);
         e.lon = parseFloat(e.lon);
+        e.attendPreference = (e.attending)? true : false;
         return e;
       }.bind(this));
+
+// Testing
+      console.log(this.scope.events);
+// End Testing Log Statement
+
     }.bind(this), function errorCallback(err) {
       alertFactory.add("danger", err.data.data);
       console.log(err);

@@ -88,15 +88,15 @@
         $this->response($res, 400);
       }
 
-      $escEmail = $conn->real_escape_string(
-                 GroupController::getUserEmail());
 
       $this->connect();
+      $escEmail = $this->conn->real_escape_string(
+                 GroupController::getUserEmail());
       $allEventsSql =
         'select E.eventName, E.timeStart, E.timeEnd, E.cost,
                 E.lat, E.lon, ifnull(T.category, "None") as category,
                 if(count(*) - 1 > 0, concat("+ ", count(*) - 1, " more"),
-                NULL) as remaining
+                NULL) as remaining, ifnull(U.attending, false) as attending
          from Event E
            left join EventTypeHasEvent ET
              on E.eventName = ET.eventName and
@@ -106,6 +106,17 @@
                 E.lon = ET.lon
            left join EventType T
              on ET.eventTypeId = T.eventTypeId
+           left join (
+             select eventName, lat, lon, timeStart, timeEnd,
+                    true as attending
+             from UserGoesEvent
+             where email = "' . $escEmail . '"
+           ) as U
+             on E.eventName = U.eventName and
+                E.timeStart = U.timeStart and
+                E.timeEnd = U.timeEnd and
+                E.lat = U.lat and
+                E.lon = U.lon
          group by E.eventName, E.timeStart, E.timeEnd, E.lat, E.lon';
       $stmt = $this->conn->prepare($allEventsSql);
       if (!$stmt->execute()) {

@@ -1,3 +1,6 @@
+/*
+ * Shared Styles
+ */
 .jumbotron .join-group-group-title {
   font-size: 4.5vw;
 }
@@ -5,6 +8,54 @@
 .jumbotron .join-group-group-members-title {
   font-size: 3vw;
 }
+
+.events-filter {
+  float: right;
+  width: 20vw;
+}
+
+.group-events-table {
+  height: 30vh;
+
+  border: 1px solid #ccc;
+}
+
+.group-events-table tbody tr { height: 10vh; }
+
+.group-events-table td { cursor: pointer; }
+
+.group-events-table tr.group-events-selected { background-color: #cfc; }
+
+.group-events-table-user-attend-event { background-color: #dfdfff }
+
+/*
+ * Join Groups Tab Styles
+ */
+
+#join-group-map-modal-container {
+  margin: 2%;
+}
+
+#join-group-events-table th { width: 15vw; }
+
+#join-group-events-table td { width: 15vw; }
+
+#join-group-events-map {
+  margin-left: 20%;
+
+  width: 60%;
+  height: 50%;
+}
+
+#join-group-map-modal-button { margin-top: 1%; }
+
+/*
+ * Create Groups Tab Styles
+ */
+
+#create-group-events-table th { width: 15vw; }
+
+#create-group-events-table td { width: 15vw; }
 
 #create-group-button {
   margin-top: 2%;
@@ -16,46 +67,3 @@
   margin-bottom: 1%;
 }
 
-.group-events-table td { cursor: pointer; }
-
-.group-events-table tr.group-events-selected {
-  background-color: #edffed;
-}
-
-.group-events-table tbody tr {
-  background-color: #fff;
-}
-
-#create-group-events-table {
-  height: 15vh;
-
-  border: 1px solid #ccc;
-}
-
-#create-group-events-table th { width: 15vw; }
-
-
-#create-group-events-table td { width: 15vw; }
-
-.events-filter {
-  float: right;
-  width: 20vw;
-}
-
-#join-group-events-map {
-  margin-left: 20%;
-
-  width: 60%;
-  height: 50%;
-}
-
-#join-group-events-table {
-  height: 30vh;
-
-  border: 1px solid #ccc;
-}
-
-#join-group-events-table th { width: 15vw; }
-
-
-#join-group-events-table td { width: 15vw; }
