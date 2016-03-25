@@ -1,4 +1,4 @@
-var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, $window, $location, $http, NgMap) {
+var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, $window, $location, $http, NgMap, alertFactory) {
     $scope.positions = [];
     $scope.results;
     
@@ -6,7 +6,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.typeUrl = "/controller/eventType/startGetTypes";
     this.createEventUrl = "/controller/createEvent/startCreateEvent";
     this.addUserUrl = "/controller/userGoesEvent/startUserGoesEvent";
-    this.cancelURL = "/controller/userGoesEvent/startCanceltUserGoesEvent";
+    this.cancelURL = "/controller/userGoesEvent/startCancelUserGoesEvent";
     
     this.searchTarget;
     this.bounds;
@@ -56,7 +56,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
             }
 
         }.bind(this), function errorCallback(response) {
-            alert(response.data);
+            alertFactory.add('success', response.data);
         });
   };
 
@@ -92,7 +92,7 @@ this.getEventTypes = function getEventTypes() {
     }).then(function successCallback(response) {
         $scope.eventTypes = JSON.parse(response.data);
     }.bind(this), function errorCallback(response) {
-        alert(response.data);
+        alertFactory.add('danger', response.data);
     });
 }
 
@@ -124,14 +124,15 @@ this.mapClick = function mapClick(event) {
     }
 }
 
-this.signUpForEvent = function signUpForEvent(eventName, lat, lon, createdBy, timeStart, timeEnd) {
+this.signUpForEvent = function signUpForEvent(event) {
+    event.going = 1;
     var data = {
         email: "testUser1@test.com",
-        eventName : eventName,
-        lat: lat,
-        lon: lon,
-        timeStart: timeStart,
-        timeEnd: timeEnd
+        eventName : event.eventName,
+        lat: event.lat,
+        lon: event.lon,
+        timeStart: event.timeStart,
+        timeEnd: event.timeEnd
     }
 
     $http({
@@ -148,17 +149,18 @@ this.signUpForEvent = function signUpForEvent(eventName, lat, lon, createdBy, ti
             console.log("Unable to add user to event");
         }
     });
-    $location.path('/Group/' + eventName + '/' + lat + '/' + lon + '/' + timeStart + '/' + timeEnd + '/' + createdBy +'/');
+    $location.path('/Group/' + event.eventName + '/' + event.lat + '/' +event.lon + '/' + event.timeStart + '/' + event.timeEnd + '/' + event.createdBy +'/');
 }
 
-this.cancelSignup = function cancelSignup(eventName, lat, lon, createdBy, timeStart, timeEnd){
+this.cancelSignup = function cancelSignup(event){
+    event.going=0;
     var data = {
         email: "testUser1@test.com",
-        eventName : eventName,
-        lat: lat,
-        lon: lon,
-        timeStart: timeStart,
-        timeEnd: timeEnd
+        eventName : event.eventName,
+        lat: event.lat,
+        lon: event.lon,
+        timeStart: event.timeStart,
+        timeEnd: event.timeEnd
     }
 
     $http({
@@ -178,11 +180,17 @@ this.cancelSignup = function cancelSignup(eventName, lat, lon, createdBy, timeSt
 }
 
 this.createEvent = function createEvent() {
- var eventTypes = [];
- this.newEventType.forEach(function(event){
+   var eventTypes = [];
+   this.newEventType.forEach(function(event){
     eventTypes.push(event.eventTypeId);
 });
- var data = {
+
+   if(this.timeStart >= this.timeEnd){
+    alertFactory.add('danger', 'Time Start must be before time end');
+    return;
+}
+
+var data = {
     eventName: this.eventName,
     eventDescription: this.eventDescription,
     eventCost: this.eventCost,
@@ -201,9 +209,9 @@ $http({
     url: this.createEventUrl,
 }).then(function successCallback(response) {
   if (JSON.parse(response.data)) {
-    console.log("event creation successful");
+    alertFactory.add('success', 'Event creation successful');
 } else {
-    console.log("event creation unsuccessful");
+    alertFactory.add('danger', 'Event creation not successful');
 }
 });
 

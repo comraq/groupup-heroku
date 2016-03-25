@@ -18,23 +18,27 @@
                             <th>Event Name</th>
                             <th>Created By</th>
                             <th>Description</th>
+                            <th>Time Start</th>
+                            <th>Time End</th>
                             <th>Cost</th>
                             <th>Category</th>
                             <th></th>
                         </tr>
                         <tr ng-repeat="event in events">
-                            <td>{{event.eventName}}</td>
-                            <td>{{event.createdBy}}</td>
-                            <td>{{event.description}}</td>
-                            <td>{{event.cost}}</td>
-                            <td>{{event.category}}</td>
-                            <td>
-                                <button ng-show="event.going==0" style="width:100%" ng-click="ctrl.signUpForEvent(event.eventName, event.lat, event.lon, event.createdBy, event.timeStart, event.timeEnd)">Go!</button>
-                                 <button ng-show="event.going==1" style="width:100%" ng-click="ctrl.cancelSignup(event.eventName, event.lat, event.lon, event.createdBy, event.timeStart, event.timeEnd)">Cancel Go!</button>
+                            <td style="padding: 1em;">{{event.eventName}}</td>
+                            <td style="padding: 1em;">{{event.createdBy}}</td>
+                            <td style="padding: 1em;">{{event.timeStart}}</td>
+                            <td style="padding: 1em;">{{event.timeEnd}}</td>
+                            <td style="padding: 1em;">{{event.description}}</td>
+                            <td style="padding: 1em;">{{event.cost}}</td>
+                            <td style="padding: 1em;">{{event.category}}</td>
+                            <td style="padding: 1em;">
+                                <button type="button" ng-show="event.going==0" style="width:100%" ng-click="ctrl.signUpForEvent(event)">Go!</button>
+                                <button type="button" ng-show="event.going==1" style="width:100%" ng-click="ctrl.cancelSignup(event)">Cancel Go!</button>
                             </td>
                         </tr>
                     </table>
-                    <button  ng-disabled="form.$invalid" class="btn btn-lg btn-block btn-blog" type="submit" autofocus>Search</button>
+                    <button  ng-disabled="form.$invalid" class="btn btn-lg btn-block btn-blog" type="submit">Search</button>
                 </form>
             </div>
             <div id="createEvent" class="tab-pane fade">
@@ -72,7 +76,7 @@
                     Private?
                 </div>
                 <div  class="check-element animate-show" ng-show="ctrl.private">
-                   <div>
+                 <div>
                     <label for="invitees" class="sr-only">Invitees</label>
                     <input type="text" name="invitees" ng-required="ctrl.private" data-ng-model="ctrl.invitees" id="invitees" class="form-control" placeholder="Emails comma seperated" ng-list>
                 </div>

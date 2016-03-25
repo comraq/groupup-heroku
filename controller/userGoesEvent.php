@@ -74,7 +74,7 @@ function cancelUserGoesEvent($data){
 		}
 	}
 
-	function startCanceltUserGoesEvent(){
+	function startCancelUserGoesEvent(){
 		$reqMethod = $_SERVER['REQUEST_METHOD'];
 		if ($reqMethod == 'POST'){
 			$json = file_get_contents("php://input");

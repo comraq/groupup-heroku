@@ -88,6 +88,9 @@
         $this->response($res, 400);
       }
 
+      $escEmail = $conn->real_escape_string(
+                 GroupController::getUserEmail());
+
       $this->connect();
       $allEventsSql =
         'select E.eventName, E.timeStart, E.timeEnd, E.cost,
