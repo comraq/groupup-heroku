@@ -10,6 +10,7 @@ class Login extends Database {
 
 	function __construct(){
 		parent::__construct();
+
 	}
 
 	private function dologinWithPostData($data) {
@@ -36,13 +37,12 @@ class Login extends Database {
             $result_row = $result_of_user_login_check->fetch_object();
             $hashPass = $result_row->password;
 
+            
             if (password_verify($password, $hashPass)) {
                 // write user data into PHP SESSION (a file on your server)
                 $_SESSION['email'] = $result_row->email;
                 $_SESSION['login_status'] = 1;
                 $_SESSION['account_type'] = 0;
-                echo("password_hashing_matched_for_user" . "<br />");
-
             } else {
                 $this->errors[] = "Wrong password. Try again.";
             }
@@ -55,6 +55,7 @@ class Login extends Database {
         $result_of_eventprovider_login_check = $this->conn->query($sql_EventProvider);
 
         if ($result_of_eventprovider_login_check->num_rows == 1) {
+
             $result_row = $result_of_eventprovider_login_check->fetch_object();
             $hashPass = $result_row->password;
 
@@ -62,8 +63,6 @@ class Login extends Database {
                 $_SESSION['email'] = $result_row->email;
                 $_SESSION['login_status'] = 1;
                 $_SESSION['account_type'] = 1;
-                echo("password_hashing_matched_for_user" . "<br />");
-
             } else {
                 $this->errors[] = "Wrong password. Try again.";
             }
@@ -76,6 +75,7 @@ class Login extends Database {
         $result_of_admin_login_check = $this->conn->query($sql_Admin);
 
         if ($result_of_admin_login_check->num_rows == 1) {
+
             $result_row = $result_of_admin_login_check->fetch_object();
             $hashPass = $result_row->password;
 
@@ -83,7 +83,6 @@ class Login extends Database {
                 $_SESSION['email'] = $result_row->email;
                 $_SESSION['login_status'] = 1;
                 $_SESSION['account_type'] = 2;
-                echo("password_hashing_matched_for_user" . "<br />");
             } else {
                 $this->errors[] = "Wrong password. Try again.";
             }

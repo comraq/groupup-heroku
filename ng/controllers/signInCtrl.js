@@ -6,7 +6,7 @@ var app = angular.module('groupUpApp').controller('SignInCtrl', function($scope,
 	this.password;
 
 	this.signin = function(){
-		this.url = "/controller/login/account"
+		this.url = "/controller/database/account"
 		
 		var data = { email: this.email, password: this.password, }
 		
@@ -23,6 +23,7 @@ var app = angular.module('groupUpApp').controller('SignInCtrl', function($scope,
 			
 		}.bind(this), function errorCallback(response){
 			var message = response.data.data;
+			console.log(response.data);
 
 		}.bind(this));
 	};
