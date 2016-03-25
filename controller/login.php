@@ -130,6 +130,14 @@ class Login extends Database {
         return -1;
     }
 
+    public function getEmail() {
+        if (isset($_SESSION['login_status']) AND $_SESSION['login_status'] == 1) {
+            return $_SESSION['email'];
+        }
+        // default return
+        return -1;
+    }
+
     public function account() {
 		$method = $_SERVER['REQUEST_METHOD'];
 		if ($method == 'POST') {

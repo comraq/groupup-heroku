@@ -51,10 +51,10 @@
 	$login = new Login();
 
 	if ($login->isUserLoggedIn() == true) {
-	    echo "Status message: logged in" . "<br />" . $login->getAccountType();
+	    echo "Status message: logged in" . "<br />" . "Account type: " . $login->getAccountType() . "<br />" . "Email: " . $login->getEmail();
 
 	} else {
-	    echo "Status message: not logged in" . "<br />" . $login->getAccountType();
+	    echo "Status message: not logged in" . "<br />" . "Account type: " . $login->getAccountType() . "<br />" . "Email: " . $login->getEmail();;
 	}
 ?>
 
@@ -90,17 +90,6 @@
 				?>
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="#/SignIn">Sign In</a></li>
-						<!-- <form method="post" action="/" name="loginform">
-
-						    <label for="login_input_email">Email</label>
-						    <input id="login_input_email" class="login_input" type="text" name="email" required />
-
-						    <label for="login_input_password">Password</label>
-						    <input id="login_input_password" class="login_input" type="password" name="password" autocomplete="off" required />
-
-						    <input type="submit"  name="login" value="Log in" />
-
-						</form> -->
 						<li><a href="#/Register">Register</a></li>
 					</ul>
 				<?php 
@@ -110,8 +99,8 @@
 					if ($login->isUserLoggedIn() == true) { 
 				?>
 					<ul class="nav navbar-nav navbar-right">
-						<!-- <li><a href="#/SignOut">Sign Out</a></li> -->
-						<li><a href="index.php?logout">Logout</a></li>
+						<li><a href="#/SignOut">Sign Out</a></li>
+						<!-- <li><a href="index.php?logout">Logout</a></li> -->
 					</ul>
 				<?php 
 					} 
