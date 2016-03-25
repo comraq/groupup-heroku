@@ -8,12 +8,15 @@
     <div class="tab-content">
         <div id="eventSearchBar" class="tab-pane fade in active">
             <form class="form-signin" ng-submit="ctrl.searchEvents()" name="searchEvents" role="form">
-                <div>
+                <div class="input-group">
                     <label for="inputSearch" class="sr-only">Search</label>
                     <input type="text" name="search" data-ng-model="ctrl.searchTarget" id="inputSearch" class="form-control" placeholder="Find an Event" required autofocus>
+                    <span class="input-group-btn">
+         <button ng-disabled="form.$invalid" class="btn btn-primary" type="submit">Search</button>
+   </span>
                 </div>
                 <!-- referenced: http://jsfiddle.net/mjaric/pj5br/ -->
-                <table id="event-table" border="1" style="width:100%" ng-if="results">
+                <table id="event-table" class="table-hover" border="1" ng-if="results">
                     <tr>
                         <th>Event Name</th>
                         <th>Created By</th>
@@ -22,25 +25,24 @@
                         <th>Time End</th>
                         <th>Cost</th>
                         <th>Category</th>
+                        <th>Options</th>
                     </tr>
-                    <tr ng-repeat="event in events">
-                        <td style="padding: .5em;">{{event.eventName}}</td>
-                        <td style="padding: .5em;">{{event.createdBy}}</td>
-                        <td style="padding: .5em;">{{event.timeStart}}</td>
-                        <td style="padding: .5em;">{{event.timeEnd}}</td>
-                        <td style="padding: .5em;">{{event.description}}</td>
-                        <td style="padding: .5em;">{{event.cost}}</td>
-                        <td style="padding: .5em;">{{event.category}}</td>
-                        <td style="padding: .5em;">
-                            <button type="button" ng-show="event.going==0" style="width:100%" ng-click="ctrl.signUpForEvent(event)">Go!</button>
-                            <button type="button" ng-show="event.going==1" style="width:100%" ng-click="ctrl.cancelSignup(event)">Cancel Go!</button>
-                        </td>
-                        <td style="padding: .5em;">
-                            <button type="button" ng-show="event.going==0" style="width:100%" ng-click="ctrl.deleteEvent(event)">Delete Event</button>
+                    <tr ng-hide="event.delete" ng-repeat="event in events">
+                        <td>{{event.eventName}}</td>
+                        <td>{{event.createdBy}}</td>
+                        <td>{{event.timeStart}}</td>
+                        <td>{{event.timeEnd}}</td>
+                        <td>{{event.description}}</td>
+                        <td>{{event.cost}}</td>
+                        <td>{{event.category}}</td>
+                        <td>
+                            <button class="table-button btn-success" type="button" ng-show="event.going==0" ng-click="ctrl.signUpForEvent(event)">Go!</button>
+                            <button class="table-button btn-danger" type="button" ng-show="event.going==1" ng-click="ctrl.cancelSignup(event)">Cancel</button>
+                            <button class="table-button btn-warning" type="button" ng-click="ctrl.deleteEvent(event)">Modify</button>
+                            <button class="table-button btn-danger" type="button" ng-click="ctrl.deleteEvent(event)">Delete</button>
                         </td>
                     </tr>
                 </table>
-                <button ng-disabled="form.$invalid" class="btn btn-lg btn-block btn-blog" type="submit">Search</button>
             </form>
         </div>
         <div id="createEvent" class="tab-pane fade">
@@ -53,45 +55,61 @@
                     <label for="eventDescription" class="sr-only">Event Description</label>
                     <input type="text" name="eventDescription" data-ng-model="ctrl.eventDescription" id="eventDescription" class="form-control" placeholder="Event Description" required>
                 </div>
-                <div>
+                <div class="input-group">
                     <label for="eventCost" class="sr-only">Event Cost</label>
-                    <input min="0" max="99999999" step="0.01" value="0" placeholder="Event Cost $" required="" type="number" name="eventCost" data-ng-model="ctrl.eventCost" id="eventCost" class="form-control" placeholder="Event Cost" required>
+                    <div class="input-group-addon">$</div>
+                    <input min="0" max="99999999" step="0.01" value="0" placeholder="Event Cost" required="" type="number" name="eventCost" data-ng-model="ctrl.eventCost" id="eventCost" class="form-control" placeholder="Event Cost" required>
                 </div>
                 <div>
-                    <!-- <select id="eventType" name="eventType" data-ng-model="ctrl.eventType" class="form-control" required>
-                            <option ng-repeat="eventType in eventTypes" value="{{eventType.eventTypeId}}">{{eventType.category}}</option>
-                        </select> -->
-                    <table style="width: 100%">
-                        <tr ng-repeat="eventType in eventTypes" selection-model selection-model-type="checkbox" selection-model-mode="multiple-additive" selection-model-selected-items="ctrl.newEventType" selection-model-selected-class="create-group-events-selected">
+                    <table id="date-table" class="table">
+                        <th>
+                            Event Type
+                        </th>
+                        <th>
+                            Time Start
+                        </th>
+                        <th>
+                            Time End
+                        </th>
+                        <tr>
                             <td>
-                                <input type="checkbox" />
+                                <table id="event-type-table" class="table-hover">
+                                    <th>Event Type</th>
+                                    <tr ng-repeat="eventType in eventTypes" selection-model selection-model-type="checkbox" selection-model-mode="multiple-additive" selection-model-selected-items="ctrl.newEventType" selection-model-selected-class="create-group-events-selected">
+                                        <td>
+                                            <input type="checkbox" />
+                                        </td>
+                                        <td>{{eventType.category}}</td>
+                                    </tr>
+                                </table>
                             </td>
-                            <td>{{eventType.category}}</td>
+                            <td>
+                                <datetimepicker class="dateTimePicker" data-ng-model="ctrl.timeStart"></datetimepicker>
+                            </td>
+                            <td>
+                                <datetimepicker class="dateTimePicker" data-ng-model="ctrl.timeEnd"></datetimepicker>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <toggle-switch ng-model="ctrl.private" on-label="Private" off-label="Public">
+                                </toggle-switch>
+                            </td>
                         </tr>
                     </table>
                 </div>
-                <div>
-                    <input type="checkbox" name="private" ng-model="ctrl.private"> Private?
-                </div>
                 <div class="check-element animate-show" ng-show="ctrl.private">
-                    <div>
+                    <div class="input-group">
                         <label for="invitees" class="sr-only">Invitees</label>
+                        <span class="input-group-addon">@</span>
                         <input type="text" name="invitees" ng-required="ctrl.private" data-ng-model="ctrl.invitees" id="invitees" class="form-control" placeholder="Emails comma seperated" ng-list>
                     </div>
                     <div>
                         <label for="message" class="sr-only">Invite Message</label>
-                        <input type="text" name="message" ng-required="ctrl.private" data-ng-model="ctrl.message" id="message" class="form-control" placeholder="Invite Message">
+                        <textarea class="form-control" ng-required="ctrl.private" ata-ng-model="ctrl.message" placeholder="Invite Message" rows="3"></textarea>
                     </div>
                 </div>
-                <div style=" display: flex; align-items: center; justify-content: center;">
-                    <div style="margin: auto;">Time Start</div>
-                    <div style="margin: auto;">Time End</div>
-                </div>
-                <div style=" display: flex; align-items: center; justify-content: center;">
-                    <datetimepicker style="width:45%; height: auto; margin: auto;" data-ng-model="ctrl.timeStart"></datetimepicker>
-                    <datetimepicker style="width:45%; height: auto; margin: auto;" data-ng-model="ctrl.timeEnd"></datetimepicker>
-                </div>
-                <button ng-disabled="form.$invalid || !ctrl.timeStart ||!ctrl.timeEnd" class="btn btn-lg btn-block btn-blog" type="submit">Create Event</button>
+                <button ng-disabled="form.$invalid || !ctrl.timeStart ||!ctrl.timeEnd" class="btn btn-lg btn btn-primary btn-block btn-blog" type="submit">Create Event</button>
             </form>
         </div>
     </div>

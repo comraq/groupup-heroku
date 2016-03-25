@@ -5,7 +5,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.searchUrl = "/controller/search/startSearchEvents";
     this.typeUrl = "/controller/eventType/startGetTypes";
     this.createEventUrl = "/controller/createEvent/startCreateEvent";
-    this.deleteEventUrl = "/controller/createEvent/startDeleteEvent";
+    this.deleteEventUrl = "/controller/deleteEvent/startDeleteEvent";
     this.addUserUrl = "/controller/userGoesEvent/startUserGoesEvent";
     this.cancelURL = "/controller/userGoesEvent/startCancelUserGoesEvent";
 
@@ -213,15 +213,15 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
         });
     };
 
-    this.deleteEvent = function deleteEvent(){
+    this.deleteEvent = function deleteEvent(event){
          var data = {
-            eventName: this.eventName,
-            timeStart: formatDate(this.timeStart),
-            timeEnd: formatDate(this.timeEnd),
-            lat: newEventLat,
-            lng: newEventLng,
+            eventName: event.eventName,
+            timeStart: event.timeStart,
+            timeEnd: event.timeEnd,
+            lat: event.lat,
+            lng: event.lon,
         }
-
+        event.delete = true;
         $http({
             method: 'POST',
             data: data,

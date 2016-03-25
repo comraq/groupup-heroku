@@ -1,0 +1,41 @@
+#event-table {
+    table-layout: fixed;
+}
+
+#event-table tr th {
+    padding: 2%;
+    text-align: center;
+    width: 10%;
+}
+
+#event-table tr td {
+    word-wrap: break-word padding: 2%;
+    text-align: center;
+    width: 10%;
+}
+
+.table-button {
+    width: 100%;
+}
+
+#date-table {
+    table-layout: fixed;
+}
+
+#date-table th {
+    vertical-align: center;
+    text-align: center;
+}
+
+#date-table td {
+    vertical-align: center;
+    text-align: center;
+}
+
+.dateTimePicker {
+    width: 100%;
+}
+
+#event-type-table {
+    width: 100%;
+}

@@ -12,24 +12,21 @@ class DeleteEvent extends Database{
 		$eventName = $data["eventName"];
 		$timeStart = $data["timeStart"];
 		$timeEnd = $data["timeEnd"];
-		$eventType = $data["eventType"];
 		$lat = $data["lat"];
 		$lon = $data["lng"];
 		
 		$deleteEventSQL = "DELETE FROM `Event` 
-		WHERE eventName=? AND lat=? AND lon=? AND timeStart=? AND timeEnd=? AND eventType=?";
+		WHERE eventName=? AND lat=? AND lon=? AND timeStart=? AND timeEnd=?";
 
-		$deleteEventSQL = $this->conn->prepare($deleteEventSQL);
-		$deleteEventSQL->bind_param('sddss', $eventName, $lat, $lon, $timeStart, $timeEnd);
-		$deleteEventSQL->execute();
-		if(!$deleteEventSQL->execute()){
+		$deleteEventSTMT = $this->conn->prepare($deleteEventSQL);
+		$deleteEventSTMT->bind_param('sddss', $eventName, $lat, $lon, $timeStart, $timeEnd);
+		if(!$deleteEventSTMT->execute()){
 			$result = array('data' => "Event could not be deleted", "code"=> 500);
 		}else{
-				$result = array('data' => TRUE, "code"=> 200);
+			$result = array('data' => TRUE, "code"=> 200);
 		
 		}
-		
-		$deleteEventSQL->close();
+		$deleteEventSTMT->close();
 		$this->disconnect();
 		return $result;
 	}
