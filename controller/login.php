@@ -21,7 +21,6 @@ class Login extends Database {
         
         $email = $this->conn->real_escape_string($pre_email);
         $password = $this->conn->real_escape_string($pre_password);
-        $hashPass = password_hash($password, PASSWORD_BCRYPT);
 
         // database query, getting all the info of the selected user (allows login via email address in the
         // username field)
@@ -35,13 +34,15 @@ class Login extends Database {
 
             // get result row (as an object)
             $result_row = $result_of_user_login_check->fetch_object();
+            $hashPass = $result_row->password;
 
-            if (password_verify($result_row->password, $hashPass)) {
 
+            if (password_verify($password, $hashPass)) {
                 // write user data into PHP SESSION (a file on your server)
                 $_SESSION['email'] = $result_row->email;
                 $_SESSION['login_status'] = 1;
                 $_SESSION['account_type'] = 0;
+                echo("password_hashing_matched" . "<br />");
 
             } else {
                 $this->errors[] = "Wrong password. Try again.";

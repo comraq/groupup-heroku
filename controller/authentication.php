@@ -66,6 +66,8 @@ class Authentication extends Database
 		$escapePhone = $this->conn->real_escape_string($phone);
 
 		$hashPass = password_hash($escapePass, PASSWORD_BCRYPT);
+		echo("escapeRePass: " . $escapeRePass . "<br />");
+        echo("hashPass: " . $hashPass . "<br />");
 		if (!password_verify($escapeRePass, $hashPass))
 		{ 
 			$this->disconnect(); 
