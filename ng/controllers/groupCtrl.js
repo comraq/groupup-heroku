@@ -23,7 +23,9 @@ var app = angular.module('groupUpApp')
   this.scope.userGoesEventsPerGroupLimit = 3;
 
   function refreshMap(map, position) {
-    console.log("refreshing map");
+    if (verbose)
+      console.log("refreshMap, mapId: " + map.id);
+
     var bounds = new google.maps.LatLngBounds();
     if (position) {
       var up = new google.maps.LatLng(position.lat, position.lon);
@@ -35,7 +37,6 @@ var app = angular.module('groupUpApp')
   }
 
   this.joinGroupsShowMap = function joinGroupsShowMap(mapId, groupId) {
-    console.log("joinGroupsShowMap, groupId: " + groupId);
     this.joinGroupId = groupId;
     var modalInstance = $uibModal.open({
       animation: true,
@@ -44,16 +45,12 @@ var app = angular.module('groupUpApp')
       size: "lg"
     });
 
-    if (!this.joinGroupsMap) {
-      NgMap.getMap({ id: mapId }).then(function(map) {
-        console.log("inside getMap");
-        this.joinGroupsMap = map;
-        prepareMap.call(this);
-      }.bind(this));
-      console.log("before joinGroupsShowMap return");
-      return;
-    }
-    prepareMap.call(this);
+    // this.joinGroupsMap always loses the original joinGroupsMap obj
+    // Must use NgMap.getMap with explicit mapId to fetch the correct map
+    NgMap.getMap({ id: mapId }).then(function(map) {
+      this.joinGroupsMap = map;
+      prepareMap.call(this);
+    }.bind(this));
   }
 
   function prepareMap() {
@@ -62,14 +59,15 @@ var app = angular.module('groupUpApp')
       withEvents: []
     };
 
-    var map, timeoutDuration;
-    if (this.joinTab) {
+    var map;
+    if (this.joinTab)
       map = this.joinGroupsMap;
-      timeoutDuration = 5000;
-    } else {
+    else
       map = this.createGroupsMap;
-      timeoutDuration = 1000;
-    }
+ 
+    if (verbose)
+      console.log("prepareMap, joinTab = " + this.joinTab + ", mapId: "
+                  + this.joinGroupsMap.id);
 
     $window.navigator.geolocation.getCurrentPosition(function(position) {
       var userPosition = {
@@ -79,7 +77,7 @@ var app = angular.module('groupUpApp')
       refreshMap(map, userPosition);
       $timeout(function() {
         refreshMap(map, userPosition);
-      }, timeDuration);
+      }, 1000);
     });
     this.getEvents();
   }
@@ -88,6 +86,8 @@ var app = angular.module('groupUpApp')
     if (!this.joinTab)
       return;
 
+    // For reasons unknown,
+    // this.joinGroupsMap repoints to this.createGroupsMap at this point
     this.joinTab = false;
     
     if (!this.createGroupsMap)
@@ -184,7 +184,6 @@ var app = angular.module('groupUpApp')
         e.lon = parseFloat(e.lon);
         return e;
       }.bind(this));
-      console.log(this.scope.events);
     }.bind(this), function errorCallback(err) {
       alertFactory.add("danger", err.data.data);
       console.log(err);
