@@ -3,104 +3,102 @@
     <ul class="nav nav-tabs nav-justified">
         <li ng-click="ctrl.clearCreateData()" class="active">
             <a data-toggle="tab" data-target="#eventSearchBar">Event Search</a></li>
-            <li ng-click="ctrl.clearSearchData()"><a data-toggle="tab" data-target="#createEvent">Create Event</a></li>
-        </ul>
-        <div class="tab-content">
-            <div id="eventSearchBar" class="tab-pane fade in active">
-                <form class="form-signin" ng-submit="ctrl.searchEvents()" name="searchEvents" role="form">
-                    <div>
-                        <label for="inputSearch" class="sr-only">Search</label>
-                        <input type="text" name="search" data-ng-model="ctrl.searchTarget" id="inputSearch" class="form-control" placeholder="Find an Event" required autofocus>
-                    </div>
-                    <!-- referenced: http://jsfiddle.net/mjaric/pj5br/ -->
-                    <table id="event-table" border="1" style="width:100%" ng-if="results">
-                        <tr>
-                            <th>Event Name</th>
-                            <th>Created By</th>
-                            <th>Description</th>
-                            <th>Time Start</th>
-                            <th>Time End</th>
-                            <th>Cost</th>
-                            <th>Category</th>
-                            <th></th>
-                        </tr>
-                        <tr ng-repeat="event in events">
-                            <td style="padding: 1em;">{{event.eventName}}</td>
-                            <td style="padding: 1em;">{{event.createdBy}}</td>
-                            <td style="padding: 1em;">{{event.timeStart}}</td>
-                            <td style="padding: 1em;">{{event.timeEnd}}</td>
-                            <td style="padding: 1em;">{{event.description}}</td>
-                            <td style="padding: 1em;">{{event.cost}}</td>
-                            <td style="padding: 1em;">{{event.category}}</td>
-                            <td style="padding: 1em;">
-                                <button type="button" ng-show="event.going==0" style="width:100%" ng-click="ctrl.signUpForEvent(event)">Go!</button>
-                                <button type="button" ng-show="event.going==1" style="width:100%" ng-click="ctrl.cancelSignup(event)">Cancel Go!</button>
-                            </td>
-                        </tr>
-                    </table>
-                    <button  ng-disabled="form.$invalid" class="btn btn-lg btn-block btn-blog" type="submit">Search</button>
-                </form>
-            </div>
-            <div id="createEvent" class="tab-pane fade">
-                <form class="form-createEvent" ng-submit="ctrl.createEvent()" name="createEvent" role="form">
-                    <div>
-                        <label for="eventName" class="sr-only">Event Name</label>
-                        <input type="text" name="eventName" data-ng-model="ctrl.eventName" id="eventName" class="form-control" placeholder="Event Name" required autofocus>
-                    </div>
-                    <div>
-                        <label for="eventDescription" class="sr-only">Event Description</label>
-                        <input type="text" name="eventDescription" data-ng-model="ctrl.eventDescription" id="eventDescription" class="form-control" placeholder="Event Description" required>
-                    </div>
-                    <div>
-                        <label for="eventCost" class="sr-only">Event Cost</label>
-                        <input min="0" max="99999999" step="0.01" value="0" placeholder="Event Cost $" required="" type="number"  name="eventCost" data-ng-model="ctrl.eventCost" id="eventCost" class="form-control" placeholder="Event Cost" required>
-                    </div>
-                    <div>
-                       <!-- <select id="eventType" name="eventType" data-ng-model="ctrl.eventType" class="form-control" required>
+        <li ng-click="ctrl.clearSearchData()"><a data-toggle="tab" data-target="#createEvent">Create Event</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="eventSearchBar" class="tab-pane fade in active">
+            <form class="form-signin" ng-submit="ctrl.searchEvents()" name="searchEvents" role="form">
+                <div>
+                    <label for="inputSearch" class="sr-only">Search</label>
+                    <input type="text" name="search" data-ng-model="ctrl.searchTarget" id="inputSearch" class="form-control" placeholder="Find an Event" required autofocus>
+                </div>
+                <!-- referenced: http://jsfiddle.net/mjaric/pj5br/ -->
+                <table id="event-table" border="1" style="width:100%" ng-if="results">
+                    <tr>
+                        <th>Event Name</th>
+                        <th>Created By</th>
+                        <th>Description</th>
+                        <th>Time Start</th>
+                        <th>Time End</th>
+                        <th>Cost</th>
+                        <th>Category</th>
+                    </tr>
+                    <tr ng-repeat="event in events">
+                        <td style="padding: .5em;">{{event.eventName}}</td>
+                        <td style="padding: .5em;">{{event.createdBy}}</td>
+                        <td style="padding: .5em;">{{event.timeStart}}</td>
+                        <td style="padding: .5em;">{{event.timeEnd}}</td>
+                        <td style="padding: .5em;">{{event.description}}</td>
+                        <td style="padding: .5em;">{{event.cost}}</td>
+                        <td style="padding: .5em;">{{event.category}}</td>
+                        <td style="padding: .5em;">
+                            <button type="button" ng-show="event.going==0" style="width:100%" ng-click="ctrl.signUpForEvent(event)">Go!</button>
+                            <button type="button" ng-show="event.going==1" style="width:100%" ng-click="ctrl.cancelSignup(event)">Cancel Go!</button>
+                        </td>
+                        <td style="padding: .5em;">
+                            <button type="button" ng-show="event.going==0" style="width:100%" ng-click="ctrl.deleteEvent(event)">Delete Event</button>
+                        </td>
+                    </tr>
+                </table>
+                <button ng-disabled="form.$invalid" class="btn btn-lg btn-block btn-blog" type="submit">Search</button>
+            </form>
+        </div>
+        <div id="createEvent" class="tab-pane fade">
+            <form class="form-createEvent" ng-submit="ctrl.createEvent()" name="createEvent" role="form">
+                <div>
+                    <label for="eventName" class="sr-only">Event Name</label>
+                    <input type="text" name="eventName" data-ng-model="ctrl.eventName" id="eventName" class="form-control" placeholder="Event Name" required autofocus>
+                </div>
+                <div>
+                    <label for="eventDescription" class="sr-only">Event Description</label>
+                    <input type="text" name="eventDescription" data-ng-model="ctrl.eventDescription" id="eventDescription" class="form-control" placeholder="Event Description" required>
+                </div>
+                <div>
+                    <label for="eventCost" class="sr-only">Event Cost</label>
+                    <input min="0" max="99999999" step="0.01" value="0" placeholder="Event Cost $" required="" type="number" name="eventCost" data-ng-model="ctrl.eventCost" id="eventCost" class="form-control" placeholder="Event Cost" required>
+                </div>
+                <div>
+                    <!-- <select id="eventType" name="eventType" data-ng-model="ctrl.eventType" class="form-control" required>
                             <option ng-repeat="eventType in eventTypes" value="{{eventType.eventTypeId}}">{{eventType.category}}</option>
                         </select> -->
-                        <table style="width: 100%">
-                            <tr ng-repeat="eventType in eventTypes"
-                            selection-model
-                            selection-model-type="checkbox"
-                            selection-model-mode="multiple-additive"
-                            selection-model-selected-items="ctrl.newEventType"
-                            selection-model-selected-class= "create-group-events-selected">
-                            <td><input type="checkbox"/></td>
-                            <td>{{eventType.category}}</td>  
+                    <table style="width: 100%">
+                        <tr ng-repeat="eventType in eventTypes" selection-model selection-model-type="checkbox" selection-model-mode="multiple-additive" selection-model-selected-items="ctrl.newEventType" selection-model-selected-class="create-group-events-selected">
+                            <td>
+                                <input type="checkbox" />
+                            </td>
+                            <td>{{eventType.category}}</td>
                         </tr>
                     </table>
                 </div>
                 <div>
-                    <input type="checkbox" name="private" ng-model="ctrl.private">
-                    Private?
+                    <input type="checkbox" name="private" ng-model="ctrl.private"> Private?
                 </div>
-                <div  class="check-element animate-show" ng-show="ctrl.private">
-                 <div>
-                    <label for="invitees" class="sr-only">Invitees</label>
-                    <input type="text" name="invitees" ng-required="ctrl.private" data-ng-model="ctrl.invitees" id="invitees" class="form-control" placeholder="Emails comma seperated" ng-list>
+                <div class="check-element animate-show" ng-show="ctrl.private">
+                    <div>
+                        <label for="invitees" class="sr-only">Invitees</label>
+                        <input type="text" name="invitees" ng-required="ctrl.private" data-ng-model="ctrl.invitees" id="invitees" class="form-control" placeholder="Emails comma seperated" ng-list>
+                    </div>
+                    <div>
+                        <label for="message" class="sr-only">Invite Message</label>
+                        <input type="text" name="message" ng-required="ctrl.private" data-ng-model="ctrl.message" id="message" class="form-control" placeholder="Invite Message">
+                    </div>
                 </div>
-                <div>
-                    <label for="message" class="sr-only">Invite Message</label>
-                    <input type="text" name="message" ng-required="ctrl.private" data-ng-model="ctrl.message" id="message" class="form-control" placeholder="Invite Message">
+                <div style=" display: flex; align-items: center; justify-content: center;">
+                    <div style="margin: auto;">Time Start</div>
+                    <div style="margin: auto;">Time End</div>
                 </div>
-            </div>
-            <div style=" display: flex; align-items: center; justify-content: center;">
-                <div style="margin: auto;">Time Start</div>
-                <div style="margin: auto;">Time End</div>
-            </div>
-            <div style=" display: flex; align-items: center; justify-content: center;">
-                <datetimepicker style="width:45%; height: auto; margin: auto;" data-ng-model="ctrl.timeStart"></datetimepicker>
-                <datetimepicker style="width:45%; height: auto; margin: auto;" data-ng-model="ctrl.timeEnd"></datetimepicker>
-            </div>
-            <button  ng-disabled="form.$invalid || !ctrl.timeStart ||!ctrl.timeEnd"class="btn btn-lg btn-block btn-blog" type="submit">Create Event</button>
-        </form>
+                <div style=" display: flex; align-items: center; justify-content: center;">
+                    <datetimepicker style="width:45%; height: auto; margin: auto;" data-ng-model="ctrl.timeStart"></datetimepicker>
+                    <datetimepicker style="width:45%; height: auto; margin: auto;" data-ng-model="ctrl.timeEnd"></datetimepicker>
+                </div>
+                <button ng-disabled="form.$invalid || !ctrl.timeStart ||!ctrl.timeEnd" class="btn btn-lg btn-block btn-blog" type="submit">Create Event</button>
+            </form>
+        </div>
     </div>
-</div>
-<!-- https://www.kevinhooke.com/2015/06/15/angularjs-and-google-maps-dynamic-marker-updates/ -->
-<ng-map style="height:100%" center="[0,0]" zoom="13" on-click="ctrl.mapClick()">
-<marker ng-repeat="pos in positions" position="{{pos.lat}}, {{pos.lng}}"></marker>
-</ng-map>
+    <!-- https://www.kevinhooke.com/2015/06/15/angularjs-and-google-maps-dynamic-marker-updates/ -->
+    <ng-map style="height:100%" center="[0,0]" zoom="13" on-click="ctrl.mapClick()">
+        <marker ng-repeat="pos in positions" position="{{pos.lat}}, {{pos.lng}}"></marker>
+    </ng-map>
 </div>
 </div>
 <!-- /container -->
