@@ -27,8 +27,8 @@
           <div class="col-md-7">
             <p>{{ group.description }}</p>
             <p>
-              <a class="btn btn-primary btn-lg" href=""
-                role="button" ng-click="ctrl.joinGroup(group.groupId)">
+              <a class="btn btn-primary btn-lg" href="" role="button"
+                ng-click="ctrl.joinGroupsShowMap('join-group-events-map', group.groupId)">
                 Join Group</a>
             </p>
           </div>
@@ -40,12 +40,18 @@
                 <th>Going to Event</th>
                 <th>Event Start</th>
               </tr>
-              <tr ng-repeat="event in group.events">
+              <tr ng-repeat="event in group.events |
+                limitTo: userGoesEventsPerGroupLimit">
                 <td>{{ event.email }}</td>
                 <td>{{ event.eventName }}</td>
                 <td>{{ event.timeStart }}</td>
               </tr>
             </table>
+            <div
+              ng-if="group.events.length - userGoesEventsPerGroupLimit > 0">
+              and {{ group.events.length - userGoesEventsPerGroupLimit }}
+              more...
+            </div>
           </div>
         </div>
       </div><!-- jumbotron -->
@@ -85,7 +91,7 @@
         </div>
 
         <label for="eventsFilter">
-          Select Events to Attend to Create Group For</label>
+          Select Events to Attend and Create Group For</label>
         <div class="form-group events-filter">
           <label for="eventsFilter" class="sr-only">
             Filter Events
@@ -96,7 +102,7 @@
             placeholder="Filter Events" autofocus>
         </div>
  
-        <table fixed-header class="table"
+        <table fixed-header class="table group-events-table"
          id="create-group-events-table">
           <thead>
             <tr>
@@ -117,8 +123,7 @@
               selection-model-mode="multiple-additive"
               selection-model-selected-items="ctrl.newGroup.withEvents"
               selection-model-on-change="ctrl.eventsChanged(e)"
-              selection-model-selected-class=
-                "create-group-events-selected">
+              selection-model-selected-class="group-events-selected">
               <td>{{ e.eventName }}</td>
               <td>{{ e.timeStart }}</td>
               <td>{{ e.timeEnd }}</td>

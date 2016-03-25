@@ -14,8 +14,16 @@ var app = angular.module('groupUpApp')
   this.scope = $scope;
   this.location = $location;
   this.joinTab = true;
+  this.scope.joinGroupMapModalButton = "Join Group For Attending Events";
+
+  /*
+  /* Restricts the max number of UserGoesEvent instances per group
+   * displayed in the Join Group Tab 
+   */
+  this.scope.userGoesEventsPerGroupLimit = 3;
 
   function refreshMap(map, position) {
+    console.log("refreshing map");
     var bounds = new google.maps.LatLngBounds();
     if (position) {
       var up = new google.maps.LatLng(position.lat, position.lon);
@@ -25,38 +33,72 @@ var app = angular.module('groupUpApp')
     map.setCenter(bounds.getCenter());
     map.fitBounds(bounds);
   }
+
+  this.joinGroupsShowMap = function joinGroupsShowMap(mapId, groupId) {
+    console.log("joinGroupsShowMap, groupId: " + groupId);
+    this.joinGroupId = groupId;
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: "ng/views/groupMap.html",
+      scope: this.scope,
+      size: "lg"
+    });
+
+    if (!this.joinGroupsMap) {
+      NgMap.getMap({ id: mapId }).then(function(map) {
+        console.log("inside getMap");
+        this.joinGroupsMap = map;
+        prepareMap.call(this);
+      }.bind(this));
+      console.log("before joinGroupsShowMap return");
+      return;
+    }
+    prepareMap.call(this);
+  }
+
+  function prepareMap() {
+    this.newGroup = {
+      addUserToEvents: true, 
+      withEvents: []
+    };
+
+    var map, timeoutDuration;
+    if (this.joinTab) {
+      map = this.joinGroupsMap;
+      timeoutDuration = 5000;
+    } else {
+      map = this.createGroupsMap;
+      timeoutDuration = 1000;
+    }
+
+    $window.navigator.geolocation.getCurrentPosition(function(position) {
+      var userPosition = {
+                           lat: position.coords.latitude,
+                           lon: position.coords.longitude
+                         };
+      refreshMap(map, userPosition);
+      $timeout(function() {
+        refreshMap(map, userPosition);
+      }, timeDuration);
+    });
+    this.getEvents();
+  }
   
   this.initCreateTab = function initCreateTab(mapId) {
     if (!this.joinTab)
       return;
 
     this.joinTab = false;
-    if (!this.map)
-      this.map = NgMap.initMap(mapId);
+    
+    if (!this.createGroupsMap)
+      this.createGroupsMap = NgMap.initMap(mapId);
  
-    this.newGroup = {
-      addUserToEvents: true, 
-      withEvents: []
-    };
-
-    var ctrl = this;
-    $window.navigator.geolocation.getCurrentPosition(function(position) {
-      var userPosition = {
-                           lat: position.coords.latitude,
-                           lon: position.coords.longitude
-                         };
-      refreshMap(ctrl.map, userPosition);
-      $timeout(function() {
-        refreshMap(ctrl.map, userPosition);
-      }, 1000);
-    });
-    this.getEvents();
-
     if (Object.keys($routeParams).length == 0)
       this.scope.createButton = "Join Event and Go With Created Group";
     else
       this.scope.createButton = "Go With Created Group";
 
+    prepareMap.call(this);
   };
 
   this.eventsChanged = function eventsChanged(e) {
@@ -64,7 +106,10 @@ var app = angular.module('groupUpApp')
                           lat: e.lat,
                           lon: e.lon
                         };
-    refreshMap(this.map, eventPosition);
+    if (this.joinTab)
+      refreshMap(this.joinGroupsMap, eventPosition)
+    else
+      refreshMap(this.createGroupsMap, eventPosition);
   }
 
   this.createGroup = function createGroup() {
@@ -106,7 +151,7 @@ var app = angular.module('groupUpApp')
     });
   };
 
-  this.joinTabActive = function() {
+  this.joinTabActive = function joinTabActive() {
     if (!this.scope.groups)
       this.getGroups();
 
@@ -139,16 +184,13 @@ var app = angular.module('groupUpApp')
         e.lon = parseFloat(e.lon);
         return e;
       }.bind(this));
+      console.log(this.scope.events);
     }.bind(this), function errorCallback(err) {
       alertFactory.add("danger", err.data.data);
       console.log(err);
     });
 
   };
-
-  this.joinGroup = function joinGroup(groupId) {
-    console.log("here: " + groupId);
-  }
 
   if (Object.keys($routeParams).length == 0)
     this.getGroups();

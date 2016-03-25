@@ -1,0 +1,58 @@
+      <form class="form-signin" ng-submit="ctrl.joinGroup()"
+        name="joinGroup" role="form">
+        <label for="modalEventsFilter">
+          Select Events to Attend and Create Group For</label>
+        <div class="form-group events-filter">
+          <label for="modalEventsFilter" class="sr-only">
+            Filter Events
+          </label>
+          <input type="filter" name="modalEventsFilter"
+            data-ng-model="modalEventsFilter"
+            id="modal-events-filter-input" class="form-control"
+            placeholder="Filter Events" autofocus>
+        </div>
+ 
+        <table fixed-header class="table group-events-table"
+         id="join-group-events-table">
+          <thead>
+            <tr>
+              <th>Event Name</th>
+              <th>Time Start</th>
+              <th>Time End</th>
+              <th>Cost</th>
+              <th>Category(ies)</th>
+              <th>Going With Event?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="e in events
+                           | filter: modalEventsFilter
+                           | orderBy: '-selected'"
+              selection-model
+              selection-model-type="checkbox"
+              selection-model-mode="multiple-additive"
+              selection-model-selected-items="ctrl.newGroup.withEvents"
+              selection-model-on-change="ctrl.eventsChanged(e)"
+              selection-model-selected-class="group-events-selected">
+              <td>{{ e.eventName }}</td>
+              <td>{{ e.timeStart }}</td>
+              <td>{{ e.timeEnd }}</td>
+              <td>{{ e.cost | currency }}</td>
+              <td>{{ e.category }} {{ e.remaining }}</td>
+              <td><input type="checkbox" /></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <ng-map id="join-group-events-map"
+          center="[0,0]" zoom="13"
+          default-style="true">
+            <marker ng-repeat="e in events | filter: {selected: 'true'}"
+              position="{{e.lat}}, {{e.lon}}"></marker>
+        </ng-map>
+
+        <button class="btn btn-lg btn-block btn-blog" type="submit"
+          id="join-group-map-modal-button" ng-bind="joinGroupMapModalButton"
+          ng-disabled="events.length < 1">
+        </button>
+      </form>
