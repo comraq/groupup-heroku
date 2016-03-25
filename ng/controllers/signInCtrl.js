@@ -6,7 +6,7 @@ var app = angular.module('groupUpApp').controller('SignInCtrl', function($scope,
 	this.password;
 
 	this.signin = function(){
-		this.url = "/controller/database/account"
+		this.url = "/controller/login/account"
 		
 		var data = { email: this.email, password: this.password, }
 		

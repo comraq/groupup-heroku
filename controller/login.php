@@ -11,6 +11,11 @@ class Login extends Database {
 	function __construct(){
 		parent::__construct();
 
+        session_start();
+
+        if (isset($_GET["logout"])) {
+            $this->doLogout();
+        }
 	}
 
 	private function dologinWithPostData($data) {
@@ -128,7 +133,6 @@ class Login extends Database {
     public function account() {
 		$method = $_SERVER['REQUEST_METHOD'];
 		if ($method == 'POST') {
-			session_start();
 			$json = file_get_contents("php://input");
 			$data = json_decode($json,TRUE);
 			$result = $this->dologinWithPostData($data);

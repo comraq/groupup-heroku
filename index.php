@@ -45,6 +45,19 @@
 	<title>GroupUp | Attend Events in a Group</title>
 </head>
 
+<?php
+	require_once("controller/login.php");
+
+	$login = new Login();
+
+	if ($login->isUserLoggedIn() == true) {
+	    echo "Status message: logged in" . "<br />" . $login->getAccountType();
+
+	} else {
+	    echo "Status message: not logged in" . "<br />" . $login->getAccountType();
+	}
+?>
+
 <body>
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
@@ -72,11 +85,37 @@
 					</div>
 					<button type="submit" class="btn btn-default">Submit</button>
 				</form>
+				<?php 
+					if ($login->isUserLoggedIn() == false) { 
+				?>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#/SignIn">Sign In</a></li>
+						<!-- <form method="post" action="/" name="loginform">
 
-				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#/SignIn">Sign In</a></li>
-					<li><a href="#/Register">Register</a></li>
-				</ul>
+						    <label for="login_input_email">Email</label>
+						    <input id="login_input_email" class="login_input" type="text" name="email" required />
+
+						    <label for="login_input_password">Password</label>
+						    <input id="login_input_password" class="login_input" type="password" name="password" autocomplete="off" required />
+
+						    <input type="submit"  name="login" value="Log in" />
+
+						</form> -->
+						<li><a href="#/Register">Register</a></li>
+					</ul>
+				<?php 
+					} 
+				?>
+				<?php 
+					if ($login->isUserLoggedIn() == true) { 
+				?>
+					<ul class="nav navbar-nav navbar-right">
+						<!-- <li><a href="#/SignOut">Sign Out</a></li> -->
+						<li><a href="index.php?logout">Logout</a></li>
+					</ul>
+				<?php 
+					} 
+				?>
 			</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->
 	</nav>
@@ -89,6 +128,3 @@
 </body>
 </html>
 
-<?php
-echo "My first PHP script!";
-?>
