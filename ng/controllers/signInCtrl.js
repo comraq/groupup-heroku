@@ -16,7 +16,7 @@ var app = angular.module('groupUpApp').controller('SignInCtrl', function($scope,
 			data: data,
 			url: this.url,
 		}).then(function successCallback(response){
-			$location.path('/');
+			window.location.replace("/");
 			
 		}.bind(this), function errorCallback(response){
 			var message = response.data.data;

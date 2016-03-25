@@ -10,7 +10,7 @@ var app = angular.module('groupUpApp').controller('SignOutCtrl', function($scope
 			method: 'GET',
 			url: this.url,
 		}).then(function successCallback(response){
-			$location.path('/');
+			window.location.replace("/");
 			
 		}.bind(this), function errorCallback(response){
 			var message = response.data.data;

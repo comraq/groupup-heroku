@@ -12,7 +12,6 @@ class Login extends Database {
 		parent::__construct();
 
         session_start();
-
 	}
 
 	private function dologinWithPostData($data) {
