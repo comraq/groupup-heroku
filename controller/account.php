@@ -4,6 +4,7 @@ require_once(__DIR__.'/database.php');
 
 class Account extends Database
 {
+	public $LIMIT = 10;
 
 	function __construct(){
 		parent::__construct();
@@ -185,12 +186,114 @@ class Account extends Database
 		}
 		$table = $db;
 		$email = $data["email"];
+		$page = $data["page"];
 		$result;
 		$statusCode;
 		
 		$this->connect();
 		$escapeEmail = $this->conn->real_escape_string($email);
-		$getInvitationSql = "select email, invitationid, eventName, lat, lon, timeStart, timeEnd from " . $table . " where sendToEmail = ?";
+		// $getInvitationSql = "select email, invitationId, eventName, lat, lon, timeStart, timeEnd from ".$table." where sendToEmail = ? LIMIT ".$this->LIMIT; //." OFFSET ".$page;
+		$getInvitationSql= "SELECT 
+        R.eventName AS eventName,
+        R.lat AS lat,
+        R.lon AS lon,
+        R.timeStart AS timeStart,
+        R.timeEnd AS timeEnd,
+        R.cost AS cost,
+        R.description AS description,
+        R.createdBy AS createdBy,
+        R.category AS category,
+        SUM(CASE
+        WHEN uge.email = ? THEN 1
+        ELSE 0
+        END) AS going
+        FROM
+        (SELECT 
+        e.eventName AS eventName,
+        e.lat AS lat,
+        e.lon AS lon,
+        e.timeStart AS timeStart,
+        e.timeEnd AS timeEnd,
+        e.cost AS cost,
+        e.description AS description,
+        e.createdBy AS createdBy,
+        GROUP_CONCAT(et.category
+        SEPARATOR ', ') AS category
+        FROM
+        `Event` e
+        NATURAL LEFT JOIN EventTypeHasEvent eht
+        NATURAL LEFT JOIN EventType et
+        WHERE
+        eventName LIKE ?
+        AND NOT EXISTS( SELECT 
+                *
+        FROM
+        PrivateEvent pe
+        WHERE
+        pe.eventName = e.eventName
+        AND pe.lat = e.lat
+        AND pe.lon = e.lon
+        AND pe.timeStart = e.timeStart
+        AND pe.timeEnd = e.timeEnd)
+        GROUP BY eventName , lat , lon , timeStart , timeEnd UNION (SELECT 
+        e.eventName AS eventName,
+        e.lat AS lat,
+        e.lon AS lon,
+        e.timeStart AS timeStart,
+        e.timeEnd AS timeEnd,
+        e.cost AS cost,
+        e.description AS description,
+        e.createdBy AS createdBy,
+        GROUP_CONCAT(et.category
+        SEPARATOR ', ') AS category
+        FROM
+        EventTypeHasEvent eht
+        NATURAL LEFT JOIN `Event` e
+        NATURAL LEFT JOIN EventType et
+        WHERE
+        createdBy LIKE ?
+        AND NOT EXISTS( SELECT 
+                *
+        FROM
+        PrivateEvent pe
+        WHERE
+        pe.eventName = e.eventName
+        AND pe.lat = e.lat
+        AND pe.lon = e.lon
+        AND pe.timeStart = e.timeStart
+        AND pe.timeEnd = e.timeEnd)
+        GROUP BY eventName , lat , lon , timeStart , timeEnd) UNION (SELECT 
+        e.eventName AS eventName,
+        e.lat AS lat,
+        e.lon AS lon,
+        e.timeStart AS timeStart,
+        e.timeEnd AS timeEnd,
+        e.cost AS cost,
+        e.description AS description,
+        e.createdBy AS createdBy,
+        GROUP_CONCAT(et.category
+        SEPARATOR ', ') AS category
+        FROM
+        EventTypeHasEvent eht
+        NATURAL LEFT JOIN `Event` e
+        NATURAL LEFT JOIN EventType et
+        WHERE
+        description LIKE ?
+        AND NOT EXISTS( SELECT 
+                *
+        FROM
+        PrivateEvent pe
+        WHERE
+        pe.eventName = e.eventName
+        AND pe.lat = e.lat
+        AND pe.lon = e.lon
+        AND pe.timeStart = e.timeStart
+        AND pe.timeEnd = e.timeEnd)
+        GROUP BY eventName , lat , lon , timeStart , timeEnd)) R
+        NATURAL LEFT JOIN
+        UserGoesEvent uge
+        GROUP BY R.eventName , R.lat , R.lon , R.timeStart , R.timeEnd , R.cost , R.description , R.createdBy , R.category";
+
 		$stmt = $this->conn->prepare($getInvitationSql);
 		$stmt->bind_param('s', $escapeEmail);
 		$stmt->execute();
@@ -203,8 +306,9 @@ class Account extends Database
 		$statusCode = 200;
 
 		$this->response($result, $statusCode);
-
 	}
+
+
 
 	public function user()
 	{
@@ -270,8 +374,6 @@ class Account extends Database
 			$this->response($result, 200);
 		}
 	}
-
-	
 }
 
 ?>

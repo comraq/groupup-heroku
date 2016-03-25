@@ -2,7 +2,6 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 	this.url;
 	this.scope = $scope;
 	this.dataLoading;
-
 	this.email = email;
 
 	// for updating password
@@ -15,9 +14,26 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 	this.lastName;
 	this.phone;
 	this.age;
-	this.invitations;
+	this.invitations = [];
+	this.busy = false;
+	this.page = 0;
 
 
+	function loadInvitations(invJson){
+		var invs = [];
+		for(var i = 0; i < invJson.length; i++){
+		    var invitation = {
+				email: invJson[i]["email"],
+				eventName: invJson[i]["eventName"],
+				lat: invJson[i]["lat"],
+				lon: invJson[i]["lon"],
+				timeStart: invJson[i]["timeStart"],
+				timeEnd: invJson[i]["timeEnd"]
+			};
+		    invs.push(invitation);
+		}
+		return invs;
+	}
 
 	this.getInvitation = function(){
 		this.url = "/controller/account/user";
@@ -25,28 +41,26 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 		var data = {
 					invitation: {
 						email: this.email,
+						page: this.page
 					}
 				};
-
 		$http({
 			method: 'POST',
 			data: data,
 			url: this.url,
 		}).then(function successCallback(response){
-			console.log(response.data);
-			this.invitations = response.data;
+			this.endOfResult = (!response.data || response.data.length == 0);
+			this.invitations.push.apply(this.invitations, loadInvitations(response.data));
+			this.busy = false;
+			this.page++;
 
 		}.bind(this), function errorCallback(response){
 			var message = response.data.data;
 			alertFactory.add('danger', message);
 			this.dataLoading = false;
-
 		}.bind(this));
 	};
 	this.getInvitation();
-
-
-
 
 	this.updateProfile = function(){
 		this.url = "/controller/account/user";
@@ -55,7 +69,6 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 			this.dataLoading = false;
 			return;
 		}
-
 		var data = {
 					profile: {
 						email: this.email,
@@ -125,5 +138,35 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 		}
 		return result;
 	}
+
+
+	
+	this.signUpForEvent = function signUpForEvent(event) {
+    event.going = 1;
+    var data = {
+        email: this.email,
+        eventName : event.eventName,
+        lat: event.lat,
+        lon: event.lon,
+        timeStart: event.timeStart,
+        timeEnd: event.timeEnd
+    }
+
+    $http({
+        method: 'POST',
+        data: data,
+        url: this.addUserUrl
+    }).then(function successCallback(response) {
+
+        console.log(response);
+
+        if (JSON.parse(response.data)) {
+            console.log("Added user to event");
+        } else {
+            console.log("Unable to add user to event");
+        }
+    });
+    $location.path('/Group/' + event.eventName + '/' + event.lat + '/' +event.lon + '/' + event.timeStart + '/' + event.timeEnd + '/' + event.createdBy +'/');
+}
 
 })
