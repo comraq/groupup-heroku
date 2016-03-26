@@ -7,8 +7,8 @@ var app = angular.module('groupUpApp',
                            'alertService',
                            'selectionModel',
                            'anguFixedHeaderTable',
-                           'ui.bootstrap.datetimepicker', 
-                           'toggle-switch'
+                           'ui.bootstrap.datetimepicker',
+                           'ui.bootstrap'
                          ]);
 
 app.config(function ($routeProvider) {
@@ -25,7 +25,7 @@ app.config(function ($routeProvider) {
             controller: 'EventCtrl',
             controllerAs: 'ctrl'
         })
-        .when("/Group/:eventName?/:lat?/:lon?/:timeStart?/:timeEnd?/:createdBy?",
+        .when("/Group/:eventName/:lat/:lon/:timeStart/:timeEnd/:createdBy",
         {
             templateUrl: 'ng/views/group.html',
             controller: 'GroupCtrl',
@@ -39,14 +39,8 @@ app.config(function ($routeProvider) {
         })
         .when("/SignIn",
         {
-            templateUrl: 'ng/views/signIn.php',
+            templateUrl: 'ng/views/signIn.html',
             controller: 'SignInCtrl',
-            controllerAs: 'ctrl'
-        })
-        .when("/SignOut",
-        {
-            templateUrl: 'ng/views/signOut.html',
-            controller: 'SignOutCtrl',
             controllerAs: 'ctrl'
         })
         .when("/Register",
