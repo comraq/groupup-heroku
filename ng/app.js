@@ -39,8 +39,14 @@ app.config(function ($routeProvider) {
         })
         .when("/SignIn",
         {
-            templateUrl: 'ng/views/signIn.html',
+            templateUrl: 'ng/views/signIn.php',
             controller: 'SignInCtrl',
+            controllerAs: 'ctrl'
+        })
+        .when("/SignOut",
+        {
+            templateUrl: 'ng/views/signOut.html',
+            controller: 'SignOutCtrl',
             controllerAs: 'ctrl'
         })
         .when("/Register",

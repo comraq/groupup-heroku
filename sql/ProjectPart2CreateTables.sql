@@ -15,7 +15,7 @@ CREATE TABLE EventType (
  */
  CREATE TABLE EventProvider (
     email VARCHAR(50),
-    password VARCHAR(50),
+    password VARCHAR(60),
     firstName VARCHAR(50),
     lastName VARCHAR(50),
     phone INT UNIQUE,
@@ -66,7 +66,7 @@ CREATE TABLE PrivateEvent (
  */
 CREATE TABLE Admin (
     email VARCHAR(50),
-    password VARCHAR(50),
+    password VARCHAR(60),
     firstName VARCHAR(50),
     lastName VARCHAR(50),
     phone INT UNIQUE,
@@ -78,7 +78,7 @@ CREATE TABLE Admin (
  */
 CREATE TABLE `User` (
     email VARCHAR(50),
-    password VARCHAR(50),
+    password VARCHAR(60),
     firstName VARCHAR(50),
     lastName VARCHAR(50),
     phone INT UNIQUE,
