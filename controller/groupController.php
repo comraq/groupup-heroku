@@ -138,6 +138,13 @@
                 E.timeEnd = G.timeEnd and
                 E.lat = G.lat and
                 E.lon = G.lon
+           left join PrivateEvent PE
+             on E.eventName = PE.eventName and
+                E.lat = PE.lat and
+                E.lon = PE.lon and
+                E.timeStart = PE.timeStart and
+                E.timeEnd = PE.timeEnd
+             where PE.eventName is null
          group by E.eventName, E.timeStart, E.timeEnd, E.lat, E.lon';
       $stmt = $this->conn->prepare($allEventsSql);
       $stmt->bind_param('ss', $escEmail, $escEmail);
@@ -206,7 +213,8 @@
                                   $escLat, $escLon,
                                   $escTimeStart, $escTimeEnd);
 
-      // Loop through POST Body to insert into DB
+      // Loop through POST Body to insert UserGoesEvent into `With`
+      // While also keeping track of the entries to remove from `With`
       $delIndices = array();
       for ($i = 0, $size = sizeof($data['withEvents']);
              $i < $size; ++$i) {
@@ -244,7 +252,7 @@
                           timeStart = ? and
                           timeEnd = ?";
 
-      // Prepare the delWithSql statment
+      // Prepare the deleteWithSql statment
       $stmt = $this->conn->prepare($deleteWithSql);
       $stmt->bind_param('dssddss', $escGroupId, $escEmail, $escEventName,
                                   $escLat, $escLon,
@@ -264,16 +272,13 @@
           $stmt->close();
           $this->conn->rollback();
           $this->disconnect();
-          $res= array(
+          $res = array(
                   'data' => 'Error Removing User from Group!'
                 );
           $this->response($res, 500);
         };
       }
 
-      /*
-       * TODO: Can this be aggregated with the previous deleteWith query?
-       */
       $deleteGroupIfNotInWithSql = "delete from `Group`
                                       where groupId
                                         not in (
@@ -285,7 +290,7 @@
         $stmt->close();
         $this->conn->rollback();
         $this->disconnect();
-        $res= array(
+        $res = array(
                 'data' => 'Error Deleting Empty Group!'
               );
         $this->response($res, 500);
