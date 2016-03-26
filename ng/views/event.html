@@ -34,27 +34,46 @@
         </div>
         <!-- Referencing http://www.w3schools.com/bootstrap/bootstrap_modal.asp-->
         <div id="viewDetailModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">{{ctrl.detailEvent.eventName}}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>{{ctrl.detailEvent.createdBy}}</p>
-                        <p>{{ctrl.detailEvent.timeStart}}</p>
-                        <p>{{ctrl.detailEvent.timeEnd}}</p>
-                        <p>{{ctrl.detailEvent.description}}</p>
-                        <p>{{ctrl.detailEvent.cost}}</p>
-                        <p>{{ctrl.detailEvent.category}}</p>
-                        <button class="table-button btn-success" type="button" ng-show="ctrl.detailEvent.going==0" ng-click="ctrl.signUpForEvent(ctrl.detailEvent)">Go!</button>
-                        <button class="table-button btn-danger" type="button" ng-show="ctrl.detailEvent.going==1" ng-click="ctrl.cancelSignup(ctrl.detailEvent)">Cancel</button>
-                        <button class="table-button btn-warning" data-toggle="modal" data-target="#modifyModal" type="button" ng-click="ctrl.modifyEvent(ctrl.detailEvent)">Modify</button>
-                        <button class="table-button btn-danger" type="button" ng-click="ctrl.deleteEvent(ctrl.detailEvent)">Delete</button>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+            <div class="modal-dialog modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{{ctrl.detailEvent.eventName}}</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div>
+                            <input ng-readonly="!ctrl.editing" type="text" data-ng-model="ctrl.detailEvent.eventName" class="form-control" required>
+                        </div>
+                        <div>
+                            <input ng-readonly="!ctrl.editing" type="text" data-ng-model="ctrl.detailEvent.timeStart" class="form-control" required>
+                        </div>
+                        <div>
+                            <input ng-readonly="!ctrl.editing" type="text" data-ng-model="ctrl.detailEvent.timeEnd" class="form-control" required>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-group-addon">$</div>
+                            <input ng-readonly="!ctrl.editing" min="0" max="99999999" step="0.01" string-to-number data-ng-model="ctrl.detailEvent.cost" class="form-control" required>
+                        </div>
+                        <div>
+                            <textarea maxlength="255" ng-readonly="!ctrl.editing" type="text" name="eventDescription" data-ng-model="ctrl.detailEvent.description" class="form-control" required></textarea>
+                        </div>
+                        <div>
+                            <input ng-readonly="true" type="text" class="form-control" placeholder="{{ctrl.detailEvent.category}}" required>
+                        </div>
+                        <div>
+                            <input ng-readonly="true" type="text" data-ng-model="ctrl.detailEvent.createdBy" class="form-control" required>
+                        </div>
+                        <div>
+                            <toggle-switch ng-change="ctrl.saveOriginalEvent()" on-label="Edit" off-label="View" data-ng-model="ctrl.editing">Edit</toggle-switch>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="table-button btn-success" type="button" ng-show="ctrl.detailEvent.going==0 && !ctrl.editing" ng-click="ctrl.signUpForEvent(ctrl.detailEvent)">Go!</button>
+                    <button class="table-button btn-danger" type="button" ng-show="ctrl.detailEvent.going==1  && !ctrl.editing" ng-click="ctrl.cancelSignup(ctrl.detailEvent)">Cancel</button>
+                    <button ng-show="ctrl.editing" class="table-button btn-warning" type="button" ng-click="ctrl.modifyEvent()">Modify</button>
+                    <button ng-show="ctrl.editing" class="table-button btn-danger" type="button" ng-click="ctrl.deleteEvent(ctrl.detailEvent)">Delete</button>
+                    <button type="button" ng-disabled="!ctrl.editing" class="table-button btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -66,12 +85,12 @@
                 </div>
                 <div>
                     <label for="eventDescription" class="sr-only">Event Description</label>
-                    <input type="text" name="eventDescription" data-ng-model="ctrl.eventDescription" id="eventDescription" class="form-control" placeholder="Event Description" required>
+                    <textarea maxlength="255" type="text" name="eventDescription" data-ng-model="ctrl.eventDescription" id="eventDescription" class="form-control" placeholder="Event Description" required></textarea>
                 </div>
                 <div class="input-group">
                     <label for="eventCost" class="sr-only">Event Cost</label>
                     <div class="input-group-addon">$</div>
-                    <input min="0" max="99999999" step="0.01" value="0" placeholder="Event Cost" required="" type="number" name="eventCost" data-ng-model="ctrl.eventCost" id="eventCost" class="form-control" placeholder="Event Cost" required>
+                    <input min="0" max="99999999" step="0.01" value="0" required="" type="number" name="eventCost" data-ng-model="ctrl.eventCost" id="eventCost" class="form-control" placeholder="Event Cost" required>
                 </div>
                 <div>
                     <table id="date-table" class="table">
@@ -119,7 +138,7 @@
                     </div>
                     <div>
                         <label for="message" class="sr-only">Invite Message</label>
-                        <textarea class="form-control" ng-required="ctrl.private" ata-ng-model="ctrl.message" placeholder="Invite Message" rows="3"></textarea>
+                        <textarea maxlength="255" class="form-control" ng-required="ctrl.private" ata-ng-model="ctrl.message" placeholder="Invite Message" rows="3"></textarea>
                     </div>
                 </div>
                 <button ng-disabled="form.$invalid || !ctrl.timeStart ||!ctrl.timeEnd" class="btn btn-lg btn btn-primary btn-block btn-blog" type="submit">Create Event</button>

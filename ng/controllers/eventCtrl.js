@@ -5,6 +5,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.searchUrl = "/controller/search/startSearchEvents";
     this.typeUrl = "/controller/eventType/startGetTypes";
     this.createEventUrl = "/controller/createEvent/startCreateEvent";
+    this.updateEventUrl = "/controller/updateEvent/startUpdateEvent";
     this.deleteEventUrl = "/controller/deleteEvent/startDeleteEvent";
     this.addUserUrl = "/controller/userGoesEvent/startUserGoesEvent";
     this.cancelURL = "/controller/userGoesEvent/startCancelUserGoesEvent";
@@ -20,6 +21,9 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.invitees;
     this.message;
     this.private = false;
+    this.editing = false;
+    var originalEvent;
+    this.detailEvent;
 
 
     var userPosition;
@@ -54,7 +58,6 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
                     drawUserPostion(bounds, map, userPosition);
                 });
             }
-
         }, function errorCallback(response) {
             alertFactory.add('success', response.data);
         });
@@ -237,19 +240,58 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
         });
     };
 
-    this.modifyEvent = function(event) {
+    this.modifyEvent = function() {
+        console.log("original event")
+        console.log(originalEvent);
+     var data = {
+        origEventName: originalEvent.eventName,
+        origTimeStart: originalEvent.timeStart,
+        origTimeEnd: originalEvent.timeEnd,
+        origLat: originalEvent.lat,
+        origLng: originalEvent.lon,
+        eventName: this.detailEvent.eventName,
+        eventDescription: this.detailEvent.description,
+        eventCost: this.detailEvent.cost,
+        timeStart: this.detailEvent.timeStart,
+        timeEnd: this.detailEvent.timeEnd,
+        lat: this.detailEvent.lat,
+        lng: this.detailEvent.lon,
+        invitees: this.detailEvent.invitees,
+        message: this.detailEvent.message,
+        privateEvent: this.detailEvent.private
+    }
+    console.log(data);
 
-    }
+    $http({
+        method: 'POST',
+        data: data,
+        url: this.updateEventUrl
+    }).then(function successCallback(response) {
+        if (JSON.parse(response.data)) {
+            alertFactory.add('success', 'Event update successful');
+        } else {
+            alertFactory.add('danger', 'The server returned malformed data');
+        }
+    }, function errorCallback(response) {
+        alertFactory.add('danger', response.data);
+    });
+}
 
-    this.viewDetails = function(event) {
-        console.log(" Event " + event);
-        this.detailEvent = event;
-    }
-    var formatDate = function(date) {
-        return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
-    }
-    if (!userPosition) {
-        getLocation();
-    }
-    this.getEventTypes();
+this.saveOriginalEvent = function() {
+    console.log("saving original event");
+    console.log(this.detailEvent);
+    originalEvent = angular.copy(this.detailEvent);
+}
+
+this.viewDetails = function(event) {
+    console.log(event);
+    this.detailEvent = event;
+}
+var formatDate = function(date) {
+    return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
+}
+if (!userPosition) {
+    getLocation();
+}
+this.getEventTypes();
 });

@@ -81,7 +81,7 @@ GROUP BY R.eventName , R.lat , R.lon , R.timeStart , R.timeEnd , R.cost , R.desc
         $result = $res->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
         $this->disconnect();
-        return json_encode($result);
+        return json_encode($result, JSON_NUMERIC_CHECK);
     }
 
     function startSearchEvents(){

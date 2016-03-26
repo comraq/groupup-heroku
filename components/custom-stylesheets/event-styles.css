@@ -43,3 +43,7 @@
 .going {
     opacity: 0.5;
 }
+
+#viewDetailModal{
+    max-height: 85%;
+}
