@@ -33,7 +33,8 @@ class REST
 					400 => 'Bad Request', 
 					404 => 'Not Found',
 					405 => 'Method Not Allowed',  
-					406 => 'Not Acceptable');
+					406 => 'Not Acceptable',
+					500 => 'Internal Server Error');
 		return ($status[$this->_code])?$status[$this->_code]:$status[500];
 	}
 	

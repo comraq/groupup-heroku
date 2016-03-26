@@ -53,7 +53,7 @@ var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scop
 			$location.path('/');
 			
 		}.bind(this), function errorCallback(response){
-			var message = response.data.data;
+			var message = response.data;
 			alertFactory.add('danger', message);
 			this.dataLoading = false;
 

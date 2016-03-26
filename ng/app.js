@@ -8,7 +8,8 @@ var app = angular.module('groupUpApp',
                            'selectionModel',
                            'anguFixedHeaderTable',
                            'ui.bootstrap.datetimepicker',
-                           'ui.bootstrap'
+                           'ui.bootstrap',
+                           'toggle-switch'
                          ]);
 
 app.config(function ($routeProvider) {
