@@ -121,7 +121,6 @@
 
     <alerts></alerts>
 
->>>>>>> login:index.php
 	<div class="container-fluid">
 		<div data-ng-view></div>
 	</div><!-- /.container-fluid -->
