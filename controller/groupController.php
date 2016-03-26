@@ -1,18 +1,6 @@
 <?php
   require_once(__DIR__.'/database.php');
 
-  /*
-   * TODO: Need to translate individual sql query executions to
-   *       batch transactions (in joinLeaveGroups and createGroups)
-   *
-   *       As subsequent group queries must reflected all the previous
-   *       commitedchanges
-   *
-   * TODO: Need to check for whether Groups have no entries in `With` table
-   *       after the last user has chosen to leave and delete that Group.
-   *       After deletion occurs in joinLeaveGroups.
-   */
-
   class GroupController extends Database {
     function __construct() {
       parent::__construct();
@@ -284,10 +272,7 @@
       }
 
       /*
-       * TODO: Need to check whether the group which user just left still
-       *       has remaining Users and Events Going With
-       *       ie: If groupId is not found in `With` table,
-       *           group is safe to delete
+       * TODO: Can this be aggregated with the previous deleteWith query?
        */
       $deleteGroupIfNotInWithSql = "delete from `Group`
                                       where groupId

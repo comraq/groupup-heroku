@@ -18,6 +18,8 @@ var app = angular.module('groupUpApp')
       joinGroupMapModalButton = "Confirm Action for Current Group";
 
   this.newGroup = {
+    name: "",
+    description: "",
     withEvents: []
   };
 
@@ -116,8 +118,14 @@ var app = angular.module('groupUpApp')
     // this.joinGroupsMap repoints to this.createGroupMap at this point
     this.joinTab = false;
     this.joinGroupId = undefined;
+
+    /* Resetting the properties of newGroup */
     this.newGroup.name = "";
     this.newGroup.description = "";
+
+    // Seleciton-Model keeps permenant reference to newGroup.withEvents
+    // So we use this method to clear the array, retaining refrences
+    this.newGroup.withEvents.length = 0;
     
     if (!this.createGroupMap)
       this.createGroupMap = NgMap.initMap(mapId);
@@ -155,7 +163,7 @@ var app = angular.module('groupUpApp')
 
   this.createGroup = function createGroup() {
     this.dataLoading = true;
-    if (true) {
+    if (verbose) {
       console.log("Creating Group with Post Request Body: ");
       console.log(this.newGroup);
     }
