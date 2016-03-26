@@ -2,7 +2,7 @@
 
 require_once(__DIR__.'/rest.inc.php');
 
-class Database extends Rest
+class Database extends Rest 
 {
 
 	var $servername = "localhost";
@@ -27,7 +27,7 @@ class Database extends Rest
 	public function disconnect(){
 		$this->conn->close();
 	}
-
+	
 }
 
 

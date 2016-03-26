@@ -146,8 +146,8 @@ class Authentication extends Database
 		$this->response($result, $statusCode);
 	}
 
-	public function user()
-	{
+	public function user() {
+		
 		$method = $_SERVER['REQUEST_METHOD'];
 		if ($method == 'POST')
 		{
@@ -174,8 +174,8 @@ class Authentication extends Database
 		}
 	}
 
-	public function admin()
-	{
+	public function admin() {
+
 		$method = $_SERVER['REQUEST_METHOD'];
 		if ($method == 'POST')
 		{
