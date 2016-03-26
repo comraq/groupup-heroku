@@ -1,8 +1,8 @@
     <div id="join-group-map-modal-container">
-      <form class="form-signin" ng-submit="ctrl.joinGroup()"
+      <form class="form-signin" ng-submit="ctrl.joinLeaveGroups()"
         name="joinGroup" role="form">
         <label for="modalEventsFilter">
-          Select Events to Attend and Create Group For</label>
+          Join Group to Attend Event With</label>
         <div class="form-group events-filter">
           <label for="modalEventsFilter" class="sr-only">
             Filter Events
@@ -24,19 +24,20 @@
               <th>Category(ies)</th>
               <th>Attending Event?</th>
               <th>Go With Group?</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="e in events
                            | filter: modalEventsFilter
                            | orderBy: '-selected'
+                           | orderBy: '(selected == alreadyGoing)'
                            | orderBy: '-attendPreference'"
               ng-class=
                 "{ 'group-events-table-user-attend-event': e.attending }"
               selection-model
               selection-model-type="checkbox"
               selection-model-mode="multiple-additive"
-              selection-model-selected-items="ctrl.newGroup.withEvents"
               selection-model-on-change="ctrl.eventsChanged(e)"
               selection-model-selected-class="group-events-selected">
               <td>{{ e.eventName }}</td>
@@ -46,6 +47,22 @@
               <td>{{ e.category }} {{ e.remaining }}</td>
               <td>{{ e.attendPreference }}</td>
               <td><input type="checkbox" /></td>
+              <td
+                ng-class=
+                  "{
+                     'group-events-table-action':
+                       (e.selected != e.alreadyGoing)
+                   }">
+                  {{
+                     (e.selected == e.alreadyGoing)?
+                       "None"
+                     :
+                       (e.alreadyGoing)?
+                         "Leaving"
+                       :
+                         "Joining"
+                  }}
+             </td>
             </tr>
           </tbody>
         </table>
@@ -59,7 +76,8 @@
 
         <button class="btn btn-lg btn-block btn-blog" type="submit"
           id="join-group-map-modal-button" ng-bind="joinGroupMapModalButton"
-          ng-disabled="events.length < 1">
+          ng-disabled="events.length < 1 || ctrl.dataLoading
+                       || ctrl.actionsCount == 0">
         </button>
       </form>
     </div>
