@@ -66,12 +66,12 @@
             array_push($result, $curGroup);
  
           $entry['events'] = array(
-            GroupController::aggregateEventsAttr($entry, $filter, True));
+            GroupController::aggregateEventsAttr($entry, $filter, true));
           $curGroup = $entry;
 
         } else if ($curGroup['groupId'] == $entry['groupId']) {
           array_push($curGroup['events'], 
-            GroupController::aggregateEventsAttr($entry, $filter, False));
+            GroupController::aggregateEventsAttr($entry, $filter, false));
         }
       }
       if (isset($curGroup))
@@ -192,9 +192,13 @@
       }
 
       $this->connect();
+      $this->conn->autocommit(false);
+      $this->conn->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
       $err = GroupController::addUserToEvents($this->conn,
                                               $data['withEvents']);
       if (!is_null($err)) {
+        $this->conn->rollback();
         $this->disconnect();
         $this->response($err['data'], $err['statusCode']);
       }
@@ -232,6 +236,7 @@
                           $event['timeEnd']);
           if (!$stmt->execute()) {
             $stmt->close();
+            $this->conn->rollback();
             $this->disconnect();
             $res = array(
                      'data' => 'Error Adding User to Group!'
@@ -269,6 +274,7 @@
                         $event['timeEnd']);
         if (!$stmt->execute()) {
           $stmt->close();
+          $this->conn->rollback();
           $this->disconnect();
           $res= array(
                   'data' => 'Error Removing User from Group!'
@@ -283,9 +289,27 @@
        *       ie: If groupId is not found in `With` table,
        *           group is safe to delete
        */
+      $deleteGroupIfNotInWithSql = "delete from `Group`
+                                      where groupId
+                                        not in (
+                                          select W.groupId
+                                          from `With` W
+                                        )";
+      $stmt = $this->conn->prepare($deleteGroupIfNotInWithSql);
+      if (!$stmt->execute()) {
+        $stmt->close();
+        $this->conn->rollback();
+        $this->disconnect();
+        $res= array(
+                'data' => 'Error Deleting Empty Group!'
+              );
+        $this->response($res, 500);
+      };
 
       // Successfully added/deleted UserGoesEvents to Group!
       $stmt->close();
+      $this->conn->commit();
+
       $this->disconnect();
       $res = array(
                'data' => 'Successfully Updated Group Preferences!'
@@ -360,9 +384,13 @@
       }
 
       $this->connect();
+      $this->conn->autocommit(false);
+      $this->conn->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
       $err = GroupController::addUserToEvents($this->conn,
                                               $data['withEvents']);
       if (!is_null($err)) {
+        $this->rollback();
         $this->disconnect();
         $this->response($err['data'], $err['statusCode']);
       }
@@ -377,6 +405,7 @@
       $stmt->bind_param('ss', $escGroupName, $escDescription);
       if (!$stmt->execute()) {
         $stmt->close();
+        $this->rollback();
         $this->disconnect();
         $res = array(
                  'data' => 'Error Creating Group!'
@@ -391,17 +420,15 @@
         // Failed to Add User To Group
         // Deleting Previously Created Group
 
-        $deleteGroupSql = "delete from `Group` where groupId = ?";
-        $stmt = $this->conn->prepare($deleteGroupSql);
-        $stmt->bind_param('i', $groupId);
-        $stmt->execute();
-        $stmt->close();
+        $this->rollback();
         $this->disconnect();
         $this->response($err['data'], $err['statusCode']);
       }
 
       // New Group Successfully Inserted into Database!
       $stmt->close();
+      $this->conn->commit();
+
       $this->disconnect();
       $res = array(
                'data' => 'Successfully Created and Joined New Group!'

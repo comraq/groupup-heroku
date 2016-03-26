@@ -58,9 +58,12 @@
                        "None"
                      :
                        (e.alreadyGoing)?
-                         "Leaving"
+                         "Leave Group"
                        :
-                         "Joining"
+                         (e.attending)?
+                           "Join Group"
+                         :
+                           "Attend Event and Join Group"
                   }}
              </td>
             </tr>

@@ -17,6 +17,10 @@ var app = angular.module('groupUpApp')
   this.scope.
       joinGroupMapModalButton = "Confirm Action for Current Group";
 
+  this.newGroup = {
+    withEvents: []
+  };
+
   /*
   /* Restricts the max number of UserGoesEvent instances per group
    * displayed in the Join Groups Tab 
@@ -45,6 +49,13 @@ var app = angular.module('groupUpApp')
       scope: this.scope,
       size: "lg"
     });
+    if (verbose) {
+      console.log("Opened a modalInstance: ");
+      console.log(modalInstance);
+    }
+
+    // A Reference to the dismiss function of the opened map modal
+    this.dismissModal = modalInstance.dismiss;
 
     // this.joinGroupsMap always loses the original joinGroupsMap obj
     // Must use NgMap.getMap with explicit mapId to fetch the correct map
@@ -58,12 +69,8 @@ var app = angular.module('groupUpApp')
     var map;
     if (this.joinTab)
       map = this.joinGroupsMap;
-    else {
-      map = this.createGroupsMap;
-      this.newGroup = {
-        withEvents: []
-      };
-    }
+    else
+      map = this.createGroupMap;
  
     if (verbose)
       console.log("prepareMap, joinTab = " + this.joinTab + ", mapId: "
@@ -80,7 +87,6 @@ var app = angular.module('groupUpApp')
       }, 1000);
     });
 
-    this.actionsCount = 0;
     if (!this.scope.events)
       this.getEvents();
     else {
@@ -94,24 +100,27 @@ var app = angular.module('groupUpApp')
         }
       };
     }
+    this.actionsCount = 0;
   }
   
   this.initCreateTab = function initCreateTab(mapId) {
     if (!this.joinTab)
       return;
 
-    // For reasons unknown,
-    // this.joinGroupsMap repoints to this.createGroupsMap at this point
-    this.joinTab = false;
-    this.joinGroupId = undefined;
-    
-    if (!this.createGroupsMap)
-      this.createGroupsMap = NgMap.initMap(mapId);
- 
     if (Object.keys($routeParams).length == 0)
       this.scope.createButton = "Join Event and Go With Created Group";
     else
       this.scope.createButton = "Go With Created Group";
+
+    // For reasons unknown,
+    // this.joinGroupsMap repoints to this.createGroupMap at this point
+    this.joinTab = false;
+    this.joinGroupId = undefined;
+    this.newGroup.name = "";
+    this.newGroup.description = "";
+    
+    if (!this.createGroupMap)
+      this.createGroupMap = NgMap.initMap(mapId);
 
     prepareMap.call(this);
   };
@@ -130,18 +139,23 @@ var app = angular.module('groupUpApp')
 
     if (e.selected != e.alreadyGoing)
       ++this.actionsCount;
-    else
+    else if (this.actionsCount > 0) // Necessary due to selection-model bug
       --this.actionsCount;
 
     if (this.joinTab)
       refreshMap(this.joinGroupsMap, eventPosition)
     else
-      refreshMap(this.createGroupsMap, eventPosition);
+      refreshMap(this.createGroupMap, eventPosition);
+
+    if (verbose) {
+      console.log("selection changed: ")
+      console.log(this.newGroup);
+    }
   }
 
   this.createGroup = function createGroup() {
     this.dataLoading = true;
-    if (verbose) {
+    if (true) {
       console.log("Creating Group with Post Request Body: ");
       console.log(this.newGroup);
     }
@@ -158,6 +172,8 @@ var app = angular.module('groupUpApp')
       // Clear the groups model so Join Groups tab can query for new data
       delete this.scope.groups;
 
+      this.getEvents();
+
     }.bind(this), function errorCallback(err){
       alertFactory.add("danger", err.data.data);
       console.log(err);
@@ -167,6 +183,8 @@ var app = angular.module('groupUpApp')
   };
 
   this.getGroups = function getGroups() {
+    var origGroupsCount = (this.scope.groups)?
+                            this.scope.groups.length : 0;
     $http({
       method: "GET",
       url: this.url + "/getGroups",
@@ -177,6 +195,8 @@ var app = angular.module('groupUpApp')
       this.scope.groups = JSON.parse(res.data).map(function(e, i, arr) {
         return e;
       });
+      if (this.scope.groups.length < origGroupsCount)
+        this.dismissModal();
 
       if (verbose)
         console.log(this.scope.groups);
@@ -231,7 +251,7 @@ var app = angular.module('groupUpApp')
         return e;
       }.bind(this));
 
-      if (verbose);
+      if (verbose)
         console.log(this.scope.events);
 
     }.bind(this), function errorCallback(err) {
@@ -263,7 +283,11 @@ var app = angular.module('groupUpApp')
     }).then(function successCallback(res){
       alertFactory.add("success", res.data.data);
       this.dataLoading = false;
+
       $routeParams = {};
+      this.getGroups();
+      this.getEvents();
+      prepareMap.call(this);
 
     }.bind(this), function errorCallback(err){
       alertFactory.add("danger", err.data.data);
@@ -271,9 +295,6 @@ var app = angular.module('groupUpApp')
       this.dataLoading = false;
 
     }.bind(this));
-
-    this.getGroups();
-    this.getEvents();
   }
 
   if (Object.keys($routeParams).length == 0)
