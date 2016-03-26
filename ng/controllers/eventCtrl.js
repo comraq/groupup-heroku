@@ -213,8 +213,8 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
         });
     };
 
-    this.deleteEvent = function deleteEvent(event){
-         var data = {
+    this.deleteEvent = function deleteEvent(event) {
+        var data = {
             eventName: event.eventName,
             timeStart: event.timeStart,
             timeEnd: event.timeEnd,
@@ -237,6 +237,14 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
         });
     };
 
+    this.modifyEvent = function(event) {
+
+    }
+
+    this.viewDetails = function(event) {
+        console.log(" Event " + event);
+        this.detailEvent = event;
+    }
     var formatDate = function(date) {
         return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
     }

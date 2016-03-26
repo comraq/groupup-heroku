@@ -19,31 +19,44 @@
                 <table id="event-table" class="table-hover" border="1" ng-if="results">
                     <tr>
                         <th>Event Name</th>
-                        <th>Created By</th>
-                        <th>Description</th>
                         <th>Time Start</th>
                         <th>Time End</th>
                         <th>Cost</th>
-                        <th>Category</th>
-                        <th>Options</th>
                     </tr>
-                    <tr ng-hide="event.delete" ng-repeat="event in events">
+                    <tr ng-hide="event.delete" ng-repeat="event in events" data-toggle="modal" data-target="#viewDetailModal" ng-click="ctrl.viewDetails(event)" ng-class="{'going': event.going==1}">
                         <td>{{event.eventName}}</td>
-                        <td>{{event.createdBy}}</td>
                         <td>{{event.timeStart}}</td>
                         <td>{{event.timeEnd}}</td>
-                        <td>{{event.description}}</td>
                         <td>{{event.cost}}</td>
-                        <td>{{event.category}}</td>
-                        <td>
-                            <button class="table-button btn-success" type="button" ng-show="event.going==0" ng-click="ctrl.signUpForEvent(event)">Go!</button>
-                            <button class="table-button btn-danger" type="button" ng-show="event.going==1" ng-click="ctrl.cancelSignup(event)">Cancel</button>
-                            <button class="table-button btn-warning" type="button" ng-click="ctrl.deleteEvent(event)">Modify</button>
-                            <button class="table-button btn-danger" type="button" ng-click="ctrl.deleteEvent(event)">Delete</button>
-                        </td>
                     </tr>
                 </table>
             </form>
+        </div>
+        <!-- Referencing http://www.w3schools.com/bootstrap/bootstrap_modal.asp-->
+        <div id="viewDetailModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">{{ctrl.detailEvent.eventName}}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{ctrl.detailEvent.createdBy}}</p>
+                        <p>{{ctrl.detailEvent.timeStart}}</p>
+                        <p>{{ctrl.detailEvent.timeEnd}}</p>
+                        <p>{{ctrl.detailEvent.description}}</p>
+                        <p>{{ctrl.detailEvent.cost}}</p>
+                        <p>{{ctrl.detailEvent.category}}</p>
+                        <button class="table-button btn-success" type="button" ng-show="ctrl.detailEvent.going==0" ng-click="ctrl.signUpForEvent(ctrl.detailEvent)">Go!</button>
+                        <button class="table-button btn-danger" type="button" ng-show="ctrl.detailEvent.going==1" ng-click="ctrl.cancelSignup(ctrl.detailEvent)">Cancel</button>
+                        <button class="table-button btn-warning" data-toggle="modal" data-target="#modifyModal" type="button" ng-click="ctrl.modifyEvent(ctrl.detailEvent)">Modify</button>
+                        <button class="table-button btn-danger" type="button" ng-click="ctrl.deleteEvent(ctrl.detailEvent)">Delete</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="createEvent" class="tab-pane fade">
             <form class="form-createEvent" ng-submit="ctrl.createEvent()" name="createEvent" role="form">
