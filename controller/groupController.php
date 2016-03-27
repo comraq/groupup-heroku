@@ -349,6 +349,67 @@
       $stmt->close();
       return null;
     }
+
+    function modifyGroup() {
+      $method = $_SERVER['REQUEST_METHOD'];
+      if ($method != 'POST') {
+        $res = array(
+                 'data' => 'Bad Request Method!'
+               );
+        $this->response($res, 400);
+      }
+      $data = json_decode(file_get_contents('php://input'), true);
+      if (is_null($data)) {
+        $res = array(
+                 'data' => "POST Request, Invalid Request Body!"
+               );
+        $this->response($res, 400);
+      } else if (is_null($data['groupId']) || $data['groupId'] < 0) {
+        $res = array(
+                 'data' => 'Invalid groupId!'
+               );
+        $this->response($res, 400);
+      }
+
+      $this->connect();
+      $escGroupId = $this->conn->real_escape_string($data['groupId']);
+
+      if ($data['delete']) {
+        $msg = 'Delete';
+        $deleteGroupSql = "delete from `Group`
+                           where groupId = ?";
+        $stmt = $this->conn->prepare($deleteGroupSql);
+        $stmt->bind_param('i', $escGroupId);
+      } else {
+        $msg = 'Update';
+        $updateGroupSql = "update `Group`
+                           set groupName = ?, description = ?
+                           where groupId = ?";
+        $escGroupName = $this->conn->real_escape_string($data['groupName']);
+        $escDescription = $this->conn->real_escape_string(
+                            $data['description']);
+        $stmt = $this->conn->prepare($updateGroupSql);
+        $stmt->bind_param('ssi', $escGroupName, $escDescription,
+                                 $escGroupId);
+      }
+
+      if (!$stmt->execute()) {
+        $stmt->close();
+        $this->disconnect();
+        $res = array(
+                 'data' => 'Error ' . substr($msg, 0, -1) . 'ing Group!'
+               );
+        $this->response($res, 500);
+      };
+
+      // Modify Group Successful!
+      $stmt->close();
+      $this->disconnect();
+      $res = array(
+               'data' => 'Successfully ' . $msg . 'd Group!'
+             );
+      $this->response($res, 200);
+    }
  
     function createGroup() {
       $method = $_SERVER['REQUEST_METHOD'];

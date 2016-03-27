@@ -2,9 +2,19 @@
  * Shared Styles
  */
 
+.group-events-table-label { color: #099; }
+
+.groups-modal-container { margin: 2%; }
+
 .jumbotron .join-group-group-title { font-size: 4.5vw; }
 
-.jumbotron .join-group-group-members-title { font-size: 3vw; }
+.jumbotron .join-group-group-members-title {
+  font-size: 2vw;
+  font-weight: bold;
+  color: #5a0;
+
+  text-align: center;
+ }
 
 .events-filter {
   float: right;
@@ -25,14 +35,21 @@
 
 .group-events-table-user-attend-event { background-color: #dfdfff }
 
-.group-events-table-action { color: #f00; }
+.group-events-table-action-join {
+  color: #393;
+  font-weight: bold;
+}
 
+.group-events-table-action-leave {
+  color: #c00;
+  font-weight: bold;
+ }
 
 /*
  * Join Groups Tab Styles
  */
 
-#join-group-map-modal-container { margin: 2%; }
+#join-group-events-table-label { color: #05b; }
 
 #join-group-events-table th { width: 15vw; }
 
@@ -51,6 +68,8 @@
 /*
  * Create Group Tab Styles
  */
+
+#create-group-events-table-label { color: #0b5; }
 
 #create-group-events-table th { width: 15vw; }
 

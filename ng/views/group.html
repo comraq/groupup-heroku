@@ -15,29 +15,46 @@
     <div id="group-list" class="tab-pane fade in active">  
       <div ng-repeat="group in groups" class="jumbotron">
         <div class="row">
-          <h1 class="col-md-7 join-group-group-title">
-            {{ group.groupName }}
-          </h1>
-          <h1 class="col-md-5 join-group-group-members-title">
-            Group Members
-          </h1>
-        </div>
+          <div class="col-md-7 join-group-jumbotron-detail-container">
+            <h1 class="join-group-group-title"
+              data-ng-model="group.groupName">
+              {{ group.groupName }}
+            </h1>
 
-        <div class="row">
-          <div class="col-md-7">
-            <p>{{ group.description }}</p>
+            <p data-ng-model="group.description">
+              {{ group.description }}
+            </p>
             <p>
-              <a class="btn btn-primary btn-lg" href="" role="button"
-                ng-click="ctrl.joinGroupsShowMap('join-group-events-map',
-                                                 group.groupId)">
+              <a class="btn btn-primary btn-lg ng-hide"
+                href="" role="button" ng-show="!group.editing"
+                ng-click=
+                  "ctrl.showJoinGroupsMapModal('join-group-events-map',
+                                                group)">
                 View Details</a>
             </p>
-          </div>
+            <p>
+              <a class="btn btn-warning btn-lg ng-hide"
+                href="" role="button"
+                ng-click="ctrl.showEditGroupModal(group)"
+                ng-show="group.editing">
+                Edit</a>
+            </p>
+            <p>
+              <a class="btn btn-danger btn-lg ng-hide"
+                href="" role="button"
+                ng-click="ctrl.deleteGroup(group)"
+                ng-show="group.editing">
+                Delete</a>
+            </p>
+          </div><!-- join-group-jumbotron-detail-container -->
 
-          <div class="col-md-5">
+          <div class="col-md-5 join-group-jumbotron-members-container">
+            <p class="join-group-group-members-title">
+              Users Going With this Group
+            </p>
             <table class="table table-condensed">
               <tr>
-                <th>Email</th>
+                <th>User</th>
                 <th>Going to Event</th>
                 <th>Event Start</th>
               </tr>
@@ -53,8 +70,13 @@
               and {{ group.events.length - userGoesEventsPerGroupLimit }}
               more...
             </div>
-          </div>
-        </div>
+          </div><!-- join-group-jumbotron-members-container -->
+        </div><!-- row -->
+
+        <toggle-switch data-ng-model="group.editing"
+          on-label="Edit" off-label="View">
+          Edit
+        </toggle-switch>
       </div><!-- jumbotron -->
     </div><!-- tabpane -->
 
@@ -91,8 +113,6 @@
             class="help-block">Group Description is Required</span>
         </div>
 
-        <label for="eventsFilter">
-          Select Events to Attend and Create Group For</label>
         <div class="form-group events-filter">
           <label for="eventsFilter" class="sr-only">
             Filter Events
@@ -103,8 +123,11 @@
             placeholder="Filter Events" autofocus>
         </div>
  
+        <label for="create-group-events-table"
+          id="create-group-events-table-label">
+          Create Group For Attending Events</label>
         <table fixed-header class="table group-events-table"
-         id="create-group-events-table">
+         id="create-group-events-table" name="create-group-events-table">
           <thead>
             <tr>
               <th>Event Name</th>
@@ -147,7 +170,7 @@
               position="{{e.lat}}, {{e.lon}}"></marker>
         </ng-map>
 
-        <button class="btn btn-lg btn-block btn-blog" type="submit"
+        <button class="btn btn-lg btn-block btn-success" type="submit"
           id="create-group-button" ng-bind="createButton"
           ng-disabled="createGroup.$invalid || ctrl.dataLoading">
         </button>
