@@ -4,6 +4,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
 
     this.searchUrl = "/controller/search/startSearchEvents";
     this.typeUrl = "/controller/eventType/startGetTypes";
+    this.deleteEventTypeUrl = "/controller/eventType/startDeleteEventTypes";
     this.createEventUrl = "/controller/createEvent/startCreateEvent";
     this.updateEventUrl = "/controller/updateEvent/startUpdateEvent";
     this.deleteEventUrl = "/controller/deleteEvent/startDeleteEvent";
@@ -48,11 +49,12 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.invitees;
     this.message;
     this.newEventType = [];
+    this.deleteET = [];
     this.private = false;
     this.editing = false;
-
+    this.etTabView = false;
     this.eventTypeDetail;
-
+    var eventTypeToDel;
     var originalEvent;
     var userPosition;
     var newEventLat;
@@ -273,6 +275,36 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
         });
     }
 
+    this.deleteEventTypes = function deleteEventTypes() {
+        eventTypeToDel = angular.copy(this.deleteET[0]);
+        var data = {
+            eventTypes: eventTypeToDel.eventTypeId
+        }
+
+        $http({
+            method: 'POST',
+            data: data,
+            url: this.deleteEventTypeUrl
+        }).then(function successCallback(response) {
+            console.log(response.data);
+            if (JSON.parse(response.data)) {
+                alertFactory.add('success', 'Event Type deletion successful');
+                var idx;
+                $scope.eventTypes.forEach(function(eventType, index) {
+                    if (eventType.eventTypeId == eventTypeToDel.eventTypeId) {
+                        idx = index;
+                    }
+                });
+                $scope.eventTypes[idx].delete = true;
+            } else {
+                alertFactory.add('danger', 'The server returned malformed data');
+            }
+        }, function errorCallback(response) {
+            alertFactory.add('danger', response.data);
+        });
+    };
+
+
     this.saveOriginalEvent = function() {
         originalEvent = angular.copy(this.detailEvent);
     }
@@ -288,6 +320,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     }
 
     $scope.clearSearchData = function clearSearchData() {
+        this.etTabView = false;
         createTab = true;
         $scope.results = null;
         $scope.positions = [];
@@ -297,7 +330,12 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
         });
     }
 
+    $scope.switchToETTab = function switchToETTab() {
+        this.etTabView = true;
+    }
+
     this.clearCreateData = function clearCreateData() {
+        this.etTabView = false;
         createTab = false;
         NgMap.getMap({ id: 'event-map' }).then(function(map) {
             $scope.positions = [];

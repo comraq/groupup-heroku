@@ -4,7 +4,7 @@
         <li ng-click="ctrl.clearCreateData()" class="active">
             <a data-toggle="tab" data-target="#eventSearchBar">Event Search</a></li>
         <li ng-click="clearSearchData()"><a data-toggle="tab" data-target="#createEvent">Create Event</a></li>
-        <li><a data-toggle="tab" data-target="#eventTypePane">Modify Event Types</a></li>
+        <li><a ng-click="switchToETTab()" data-toggle="tab" data-target="#eventTypePane">Modify Event Types</a></li>
     </ul>
     <div class="tab-content">
         <div id="eventSearchBar" class="tab-pane fade in active">
@@ -274,7 +274,7 @@
                 <div>
                     <table id="event-type-table" class="table-hover">
                         <th>Event Type</th>
-                        <tr ng-repeat="eventType in eventTypes" ng-click="viewEventTypeDetails(eventType)">
+                        <tr ng-repeat="eventType in eventTypes" selection-model selection-model-type="checkbox" selection-model-mode="single" selection-model-selected-items="ctrl.deleteET" selection-model-selected-class="create-group-events-selected" ng-hide="eventType.delete">
                             <td>
                                 <input type="checkbox" />
                             </td>
@@ -282,11 +282,12 @@
                         </tr>
                     </table>
                 </div>
+                <button class="btn btn-primary" ng-click="ctrl.deleteEventTypes(deleteET)">Delete Selected</button>
             </form>
         </div>
     </div>
     <!-- https://www.kevinhooke.com/2015/06/15/angularjs-and-google-maps-dynamic-marker-updates/ -->
-    <ng-map id="event-map" center="[0,0]" zoom="13" on-click="ctrl.mapClick()">
+    <ng-map ng-hide="this.etTabView" id="event-map" center="[0,0]" zoom="13" on-click="ctrl.mapClick()">
         <marker ng-repeat="pos in positions" position="{{pos.lat}}, {{pos.lng}}"></marker>
     </ng-map>
 </div>
