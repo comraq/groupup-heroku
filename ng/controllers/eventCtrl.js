@@ -51,6 +51,8 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.private = false;
     this.editing = false;
 
+    this.eventTypeDetail;
+
     var originalEvent;
     var userPosition;
     var newEventLat;
@@ -58,10 +60,6 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     var createTab = false;
 
     this.searchEvents = function searchEvents() {
-
-        if (!this.searchNameOperator) {
-            this.searchNameOperator = "LIKE"
-        }
         var data = {
             searchNameOperator: this.searchNameOperator,
             searchName: this.searchName,
@@ -88,7 +86,6 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
         }).then(function successCallback(response) {
             $scope.events = JSON.parse(response.data);
 
-            console.log(response.data);
             //https://ngmap.github.io/#/!map_fit_bounds.html
             if ($scope.events.length > 0) {
                 $scope.results = true;
@@ -105,12 +102,14 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
                     bounds.extend(ps);
                 });
 
-                NgMap.getMap().then(function(map) {
+                NgMap.getMap({ id: 'event-map' }).then(function(map) {
                     drawUserPostion(bounds, map, userPosition);
                 });
+            } else {
+                $scope.results = false;
+                $scope.clearSearchData();
             }
         }, function errorCallback(response) {
-            console.log(response.data);
             alertFactory.add('danger', response.data);
         });
     };
@@ -242,8 +241,6 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     };
 
     this.modifyEvent = function() {
-        console.log("original event")
-        console.log(originalEvent);
         var data = {
             origEventName: originalEvent.eventName,
             origTimeStart: originalEvent.timeStart,
@@ -261,8 +258,6 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
             message: this.detailEvent.message,
             privateEvent: this.detailEvent.private
         }
-        console.log(data);
-
         $http({
             method: 'POST',
             data: data,
@@ -279,24 +274,24 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     }
 
     this.saveOriginalEvent = function() {
-        console.log("saving original event");
-        console.log(this.detailEvent);
         originalEvent = angular.copy(this.detailEvent);
     }
 
     this.viewDetails = function(event) {
-        console.log(event);
         this.detailEvent = event;
+    }
+    this.viewEventTypeDetails = function(eventType) {
+        this.eventTypeDetail = eventType;
     }
     var formatDate = function(date) {
         return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
     }
 
-    this.clearSearchData = function clearSearchData() {
+    $scope.clearSearchData = function clearSearchData() {
         createTab = true;
         $scope.results = null;
         $scope.positions = [];
-        NgMap.getMap().then(function(map) {
+        NgMap.getMap({ id: 'event-map' }).then(function(map) {
             var bounds = new google.maps.LatLngBounds();
             drawUserPostion(bounds, map, userPosition);
         });
@@ -304,7 +299,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
 
     this.clearCreateData = function clearCreateData() {
         createTab = false;
-        NgMap.getMap().then(function(map) {
+        NgMap.getMap({ id: 'event-map' }).then(function(map) {
             $scope.positions = [];
             var bounds = new google.maps.LatLngBounds();
             drawUserPostion(bounds, map, userPosition);
@@ -331,8 +326,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
                 lat: lat,
                 lng: lon
             };
-
-            NgMap.getMap().then(function(map) {
+            NgMap.getMap({ id: 'event-map' }).then(function(map) {
                 var bounds = new google.maps.LatLngBounds();
                 drawUserPostion(bounds, map, userPosition);
             });

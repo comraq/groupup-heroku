@@ -52,11 +52,18 @@
     min-width: 161px;
 }
 
-.min-width-one-six-six
- {
+.min-width-one-six-six {
     min-width: 166px;
 }
-.min-width-one-forty
-{
+
+.min-width-one-forty {
     min-width: 140px;
+}
+
+#event-map {
+    height: 100%;
+}
+
+.ng-invalid-pattern {
+    color: #a94442;
 }
