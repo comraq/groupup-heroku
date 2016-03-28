@@ -20,13 +20,17 @@
 			        <div class="col-md-9">
 			          <p id="title"> From: {{invitation.email}} </p>
 			          <p id="description"> {{invitation.eventName}}<br>
-			          {{invitation.timeStart}} : {{invitation.timeEnd}}
+					  Cost: {{invitation.cost}}<br>
+					  Event Type: {{invitation.eventType}}<br>
+			          Time: {{invitation.timeStart}} - {{invitation.timeEnd}}<br>
+			          {{invitation.message}}<br>
+			          {{invitation.description}}
 			          </p>
 			        </div>
 		        	<div class="col-md-3">
-		        	<button type="button" ng-show="event.going==0" style="width:100%" ng-click="ctrl.signUpForEvent(event)">Go!
+		        	<button type="button" ng-show="invitation.going==0" style="width:100%" ng-click="ctrl.signUpForEvent(invitation)">Go!
 		        	</button>
-                    <button type="button" ng-show="event.going==1" style="width:100%" ng-click="ctrl.cancelSignup(event)">	Cancel Go!
+                    <button type="button" ng-show="invitation.going==1" style="width:100%" ng-click="ctrl.cancelSignup(invitation)">	Cancel Go!
                     </button>
 		        	</div>
 				  </div>

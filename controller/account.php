@@ -193,106 +193,52 @@ class Account extends Database
 		$this->connect();
 		$escapeEmail = $this->conn->real_escape_string($email);
 		// $getInvitationSql = "select email, invitationId, eventName, lat, lon, timeStart, timeEnd from ".$table." where sendToEmail = ? LIMIT ".$this->LIMIT; //." OFFSET ".$page;
-		$getInvitationSql= "SELECT 
-        R.eventName AS eventName,
-        R.lat AS lat,
-        R.lon AS lon,
-        R.timeStart AS timeStart,
-        R.timeEnd AS timeEnd,
-        R.cost AS cost,
-        R.description AS description,
-        R.createdBy AS createdBy,
-        R.category AS category,
-        SUM(CASE
-        WHEN uge.email = ? THEN 1
+		$getInvitationSql = "SELECT
+		EPSI.email AS email,
+		EPSI.invitationId AS invitationId,
+		EPSI.eventName AS eventName,
+		EPSI.lat AS lat,
+		EPSI.lon AS lon,
+		EPSI.timeStart AS timeStart,
+		EPSI.timeEnd AS timeEnd,
+		HI.message AS message,
+		E.cost AS cost,
+		E.description AS description,
+		SUM(CASE
+        WHEN UGE.email = ? THEN 1
         ELSE 0
-        END) AS going
-        FROM
-        (SELECT 
-        e.eventName AS eventName,
-        e.lat AS lat,
-        e.lon AS lon,
-        e.timeStart AS timeStart,
-        e.timeEnd AS timeEnd,
-        e.cost AS cost,
-        e.description AS description,
-        e.createdBy AS createdBy,
-        GROUP_CONCAT(et.category
+        END) AS going,
+        GROUP_CONCAT(ET.category
         SEPARATOR ', ') AS category
-        FROM
-        `Event` e
-        NATURAL LEFT JOIN EventTypeHasEvent eht
-        NATURAL LEFT JOIN EventType et
-        WHERE
-        eventName LIKE ?
-        AND NOT EXISTS( SELECT 
-                *
-        FROM
-        PrivateEvent pe
-        WHERE
-        pe.eventName = e.eventName
-        AND pe.lat = e.lat
-        AND pe.lon = e.lon
-        AND pe.timeStart = e.timeStart
-        AND pe.timeEnd = e.timeEnd)
-        GROUP BY eventName , lat , lon , timeStart , timeEnd UNION (SELECT 
-        e.eventName AS eventName,
-        e.lat AS lat,
-        e.lon AS lon,
-        e.timeStart AS timeStart,
-        e.timeEnd AS timeEnd,
-        e.cost AS cost,
-        e.description AS description,
-        e.createdBy AS createdBy,
-        GROUP_CONCAT(et.category
-        SEPARATOR ', ') AS category
-        FROM
-        EventTypeHasEvent eht
-        NATURAL LEFT JOIN `Event` e
-        NATURAL LEFT JOIN EventType et
-        WHERE
-        createdBy LIKE ?
-        AND NOT EXISTS( SELECT 
-                *
-        FROM
-        PrivateEvent pe
-        WHERE
-        pe.eventName = e.eventName
-        AND pe.lat = e.lat
-        AND pe.lon = e.lon
-        AND pe.timeStart = e.timeStart
-        AND pe.timeEnd = e.timeEnd)
-        GROUP BY eventName , lat , lon , timeStart , timeEnd) UNION (SELECT 
-        e.eventName AS eventName,
-        e.lat AS lat,
-        e.lon AS lon,
-        e.timeStart AS timeStart,
-        e.timeEnd AS timeEnd,
-        e.cost AS cost,
-        e.description AS description,
-        e.createdBy AS createdBy,
-        GROUP_CONCAT(et.category
-        SEPARATOR ', ') AS category
-        FROM
-        EventTypeHasEvent eht
-        NATURAL LEFT JOIN `Event` e
-        NATURAL LEFT JOIN EventType et
-        WHERE
-        description LIKE ?
-        AND NOT EXISTS( SELECT 
-                *
-        FROM
-        PrivateEvent pe
-        WHERE
-        pe.eventName = e.eventName
-        AND pe.lat = e.lat
-        AND pe.lon = e.lon
-        AND pe.timeStart = e.timeStart
-        AND pe.timeEnd = e.timeEnd)
-        GROUP BY eventName , lat , lon , timeStart , timeEnd)) R
-        NATURAL LEFT JOIN
-        UserGoesEvent uge
-        GROUP BY R.eventName , R.lat , R.lon , R.timeStart , R.timeEnd , R.cost , R.description , R.createdBy , R.category";
+
+		FROM EventProviderSendInvitation as EPSI,
+			 HasInvitation as HI,
+			 PrivateEvent as PE,
+			 Event as E
+		NATURAL LEFT JOIN UserGoesEvent UGE
+		NATURAL LEFT JOIN EventTypeHasEvent ETHE
+        NATURAL LEFT JOIN EventType ET
+
+		WHERE
+			EPSI.invitationId = HI.invitationId AND
+			EPSI.eventName = HI.eventName AND
+			EPSI.lat = HI.lat AND
+			EPSI.lon = HI.lon AND
+			EPSI.timeStart = HI.timeStart AND
+			EPSI.timeEnd = HI.timeEnd AND
+
+			HI.eventName = PE.eventName AND
+			HI.lat = PE.lat AND
+			HI.lon = PE.lon AND
+			HI.timeStart = PE.timeStart AND
+			HI.timeEnd = PE.timeEnd AND
+
+			PE.eventName = E.eventName AND
+        	PE.lat = E.lat AND
+        	PE.lon = E.lon AND
+        	PE.timeStart = E.timeStart AND
+        	PE.timeEnd = E.timeEnd
+        	Group By PE.eventName, PE.lat, PE.lon, PE.timeStart, PE.timeEnd";
 
 		$stmt = $this->conn->prepare($getInvitationSql);
 		$stmt->bind_param('s', $escapeEmail);
