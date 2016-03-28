@@ -59,6 +59,9 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
 
     this.searchEvents = function searchEvents() {
 
+        if (!this.searchNameOperator) {
+            this.searchNameOperator = "LIKE"
+        }
         var data = {
             searchNameOperator: this.searchNameOperator,
             searchName: this.searchName,

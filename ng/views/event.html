@@ -9,13 +9,13 @@
         <div id="eventSearchBar" class="tab-pane fade in active">
             <form class="form-signin" ng-submit="ctrl.searchEvents()" name="searchEvents" role="form">
                 <div class="input-group">
-                    <div class="input-group-addon">
+                    <div class="input-group-addon" style="min-width: 161px">
                         <label>
                             <input type="checkbox" data-ng-model="ctrl.advancedSearch"></input> Advanced
                         </label>
                     </div>
-                    <div class="input-group-addon">
-                        <select ng-model="ctrl.searchNameOperator">
+                    <div class="input-group-addon" style="min-width: 166px">
+                        <select ng-model="ctrl.searchNameOperator" style="min-width: 140px" ng-change="ctrl.searchName=''">
                             <option value="">Choose Operator</option>
                             <option value="IS NULL">is null</option>
                             <option value="IS NOT NULL">is not null</option>
@@ -24,7 +24,7 @@
                         </select>
                     </div>
                     <label for="inputSearch" class="sr-only">Search</label>
-                    <input ng-disabled="!ctrl.searchNameOperator || ctrl.searchNameOperator=='IS NOT NULL' || ctrl.searchNameOperator=='IS NULL'" type="text" name="search" data-ng-model="ctrl.searchName" id="inputSearch" class="form-control" placeholder="Event Name" required autofocus>
+                    <input ng-disabled="(!ctrl.searchNameOperator && ctrl.advancedSearch )|| ctrl.searchNameOperator=='IS NOT NULL' || ctrl.searchNameOperator=='IS NULL'" type="text" name="search" data-ng-model="ctrl.searchName" id="inputSearch" class="form-control" placeholder="Event Name" ng-required="!ctrl.advancedSearch" autofocus>
                     <span class="input-group-btn">
                            <button ng-disabled="form.$invalid" class="btn btn-primary" type="submit">Search</button>
                        </span>
@@ -39,13 +39,13 @@
                             </select>
                         </div>
                         <div class="input-group-addon">
-                            <select ng-model="ctrl.searchTimeStartOperator">
+                            <select ng-model="ctrl.searchTimeStartOperator" ng-change="ctrl.searchTimeStart=''">>
                                 <option value="">Choose Operator</option>
                                 <option value="<">less than</option>
                                 <option value="<=">less than or equal</option>
                                 <option value="=">equal</option>
-                                <option value="<">greater than</option>
-                                <option value="<=">greater than or equal</option>
+                                <option value=">">greater than</option>
+                                <option value=">=">greater than or equal</option>
                                 <option value="IS NOT NULL">is not null</option>
                                 <option value="LIKE">like</option>
                                 <option value="IS NOT LIKE">is not like</option>
@@ -62,19 +62,19 @@
                             </select>
                         </div>
                         <div class="input-group-addon">
-                            <select ng-model="ctrl.searchTimeEndOperator">
+                            <select ng-model="ctrl.searchTimeEndOperator" ng-change="ctrl.searchTimeEnd=''">
                                 <option value="">Choose Operator</option>
                                 <option value="<">less than</option>
                                 <option value="<=">less than or equal</option>
                                 <option value="=">equal</option>
-                                <option value="<">greater than</option>
-                                <option value="<=">greater than or equal</option>
+                                <option value=">">greater than</option>
+                                <option value=">=">greater than or equal</option>
                                 <option value="IS NOT NULL">is not null</option>
                                 <option value="LIKE">like</option>
                                 <option value="IS NOT LIKE">is not like</option>
                             </select>
                         </div>
-                        <input ng-disabled="!ctrl.searchTimeEndLogic ||!ctrl.searchTimeEndOperator || ctrl.searchTimeEndOperator=='IS NOT NULL' || ctrl.searchTimeEndOperator=='IS NULL'" type="text " name="search " data-ng-model="ctrl.searchTimeStart " class="form-control " placeholder="Time End ">
+                        <input ng-disabled="!ctrl.searchTimeEndLogic ||!ctrl.searchTimeEndOperator || ctrl.searchTimeEndOperator=='IS NOT NULL' || ctrl.searchTimeEndOperator=='IS NULL'" type="text " name="search " data-ng-model="ctrl.searchTimeEnd" class="form-control " placeholder="Time End ">
                     </div>
                     <div class="input-group">
                         <div class="input-group-addon">
@@ -84,8 +84,8 @@
                                 <option value="or">or</option>
                             </select>
                         </div>
-                        <div class="input-group-addon">
-                            <select ng-model="ctrl.searchDesctiptionOperator">
+                        <div class="input-group-addon" style="min-width: 166px">
+                            <select ng-model="ctrl.searchDesctiptionOperator" style="min-width: 140px" ng-change="ctrl.searchDesctiption=''">
                                 <option value="">Choose Operator</option>
                                 <option value="IS NULL">is null</option>
                                 <option value="IS NOT NULL">is not null</option>
@@ -104,13 +104,13 @@
                             </select>
                         </div>
                         <div class="input-group-addon">
-                            <select ng-model="ctrl.searchCostOperator">
+                            <select ng-model="ctrl.searchCostOperator" ng-change="ctrl.searchCost=''">
                                 <option value="">Choose Operator</option>
                                 <option value="<">less than</option>
                                 <option value="<=">less than or equal</option>
                                 <option value="=">equal</option>
-                                <option value="<">greater than</option>
-                                <option value="<=">greater than or equal</option>
+                                <option value=">">greater than</option>
+                                <option value=">=">greater than or equal</option>
                                 <option value="IS NULL">is null</option>
                                 <option value="IS NOT NULL">is not null</option>
                                 <option value="LIKE">like</option>
@@ -127,14 +127,9 @@
                                 <option value="or">or</option>
                             </select>
                         </div>
-                        <div class="input-group-addon">
-                            <select ng-model="ctrl.searchCreatedByOperator">
+                        <div class="input-group-addon" style="min-width: 166px">
+                            <select ng-model="ctrl.searchCreatedByOperator" style="min-width: 140px" ng-change="ctrl.searchCreatedBy=''">
                                 <option value="">Choose Operator</option>
-                                <option value="<">less than</option>
-                                <option value="<=">less than or equal</option>
-                                <option value="=">equal</option>
-                                <option value="<">greater than</option>
-                                <option value="<=">greater than or equal</option>
                                 <option value="IS NULL">is null</option>
                                 <option value="IS NOT NULL">is not null</option>
                                 <option value="LIKE">like</option>

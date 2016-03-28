@@ -44,70 +44,75 @@ class Search extends Database
 
 
         if ($searchNameOperator == 'LIKE' || $searchNameOperator == 'IS NOT LIKE') {
-            $searchName = '%'.$this->conn->real_escape_string($searchName).'%';
+            $searchName = '%'.$searchName.'%';
         }
         if ($searchTimeStartOperator == 'LIKE' || $searchTimeStartOperator == 'IS NOT LIKE') {
-            $searchTimeStart = '%'.$this->conn->real_escape_string($searchTimeStart).'%';
+            $searchTimeStart = '%'.$searchTimeStart.'%';
         }
         if ($searchTimeStartOperator == 'LIKE' || $searchTimeStartOperator == 'IS NOT LIKE') {
-            $searchTimeStart = '%'.$this->conn->real_escape_string($searchTimeStart).'%';
+            $searchTimeStart = '%'.$searchTimeStart.'%';
         }
         if ($searchTimeEndOperator == 'LIKE' || $searchTimeEndOperator == 'IS NOT LIKE') {
-            $searchTimeEnd = '%'.$this->conn->real_escape_string($searchTimeEnd).'%';
+            $searchTimeEnd = '%'.$searchTimeEnd.'%';
         }
         if ($searchCostOperator == 'LIKE' || $searchCostOperator == 'IS NOT LIKE') {
-            $searchCost = '%'.$this->conn->real_escape_string($searchCost).'%';
+            $searchCost = '%'.$searchCost.'%';
         }
         if ($searchDesctipionOperator == 'LIKE' || $searchDesctipionOperator == 'IS NOT LIKE') {
-            $searchDesctipion = '%'.$this->conn->real_escape_string($searchDesctipion).'%';
+            $searchDesctipion = '%'.$searchDesctipion.'%';
         }
         if ($searchCreatedByOperator == 'LIKE' || $searchCreatedByOperator == 'IS NOT LIKE') {
-            $searchCreatedBy = '%'.$this->conn->real_escape_string($searchCreatedBy).'%';
+            $searchCreatedBy = '%'.$searchCreatedBy.'%';
         }
 
 
-        $nameQuery = "eventName ".$searchNameOperator;
-        if ($searchName) {   
-            $nameQuery.=" '".$searchName."' ";
-        }
+        $nameQuery = '';
+
+        if($searchNameOperator){
+            $nameQuery.="eventName ".$searchNameOperator." ";
+            if ($searchName) {   
+                $nameQuery.="'".$searchName."' ";
+            }
+        };
+
 
         $timeStartQuery = '';
         if ($searchTimeStartLogic && $searchTimeStartOperator) {
-            $timeStartQuery.=$searchTimeStartLogic." timeStart ".$searchTimeStartOperator;
+            $timeStartQuery.=$searchTimeStartLogic." timeStart ".$searchTimeStartOperator." ";
             if ($searchTimeStart) {
-                $timeStartQuery.=" '".$searchTimeStart."' ";
+                $timeStartQuery.="'".$searchTimeStart."' ";
             }
         }
 
         $timeEndQuery = '';
         if ($searchTimeEndLogic && $searchTimeEndOperator) {
-            $timeEndQuery.=$searchTimeEndLogic." timeEnd ".$searchTimeEndOperator;
+            $timeEndQuery.=$searchTimeEndLogic." timeEnd ".$searchTimeEndOperator." ";
             if ($searchTimeStart) {
-                $timeEndQuery.=" '".$searchTimeEnd."' ";
+                $timeEndQuery.="'".$searchTimeEnd."' ";
             }
         }
 
         $costQuery = '';
-        if ($searchCostLogic && $searchCostOperator) {
-            $costQuery.=$searchCostLogic." cost ".$searchCostOperator;
-            if ($searchCost) {
-                $costQuery.=" ".$searchCost." ";
+        if ($searchCostLogic && strval($searchCostOperator)) {
+            $costQuery.=$searchCostLogic." cost ".$searchCostOperator." ";
+            if (strval($searchCost)) {
+                $costQuery.=strval($searchCost)." ";
             }
         }
 
         $descriptionQuery = '';
         if ($searchDesctipionLogic && $searchDesctipionOperator) {
-            $descriptionQuery.=$searchDesctipionLogic." desctiption ".$searchDesctipionOperator;
+            $descriptionQuery.=$searchDesctipionLogic." desctiption ".$searchDesctipionOperator." ";
             if ($searchDesctipion) {
-                $descriptionQuery.=" '".$searchDesctipion."' ";
+                $descriptionQuery.="'".$searchDesctipion."' ";
             }
         };
 
         $createdByQuery = '';
         if ($searchCreatedByLogic && $searchCreatedByOperator) {
-            $createdByQuery.=$searchCreatedByLogic." createdBy ".$searchCreatedByOperator;
+            $createdByQuery.=$searchCreatedByLogic." createdBy ".$searchCreatedByOperator." ";
             if ($searchCreatedBy) {
-                $createdByQuery.=" '".$searchCreatedBy."' ";
+                $createdByQuery.="'".$searchCreatedBy."' ";
             }
         }
 
@@ -178,18 +183,18 @@ class Search extends Database
     function startSearchEvents(){
       $reqMethod = $_SERVER['REQUEST_METHOD'];
       if ($reqMethod == 'POST'){
-         $json = file_get_contents("php://input");
-         $data = json_decode($json, TRUE);
-         $result = $this->searchEvents($data);
-        $this->response($result["data"], $result["code"]);
-     }else{
-        $result = array(
-            'data' => "Emtpy Data"
-            );
-        $statusCode = 405;
-        $this->response($result, $statusCode);
-        exit;
-    }
+       $json = file_get_contents("php://input");
+       $data = json_decode($json, TRUE);
+       $result = $this->searchEvents($data);
+       $this->response($result["data"], $result["code"]);
+   }else{
+    $result = array(
+        'data' => "Emtpy Data"
+        );
+    $statusCode = 405;
+    $this->response($result, $statusCode);
+    exit;
+}
 }
 }
 ?>
