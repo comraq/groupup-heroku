@@ -10,30 +10,73 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.addUserUrl = "/controller/userGoesEvent/startUserGoesEvent";
     this.cancelURL = "/controller/userGoesEvent/startCancelUserGoesEvent";
 
-    this.searchTarget;
+    this.detailEvent;
+    //search stuff
+    this.searchName;
+    this.searchNameOperator;
+
+    this.searchTimeStart;
+    this.searchTimeStartLogic;
+    this.searchTimeStartOperator;
+
+    this.searchTimeEnd;
+    this.searchTimeEndLogic;
+    this.searchTimeEndOperator;
+
+    this.searchCost;
+    this.searchCostLogic;
+    this.searchCostOperator;
+
+    this.searchDesctipion;
+    this.searchDesctipionLogic;
+    this.searchDesctipionOperator;
+
+    this.searchEventType;
+    this.searchEventTypeLogic;
+    this.searchEventTypeOperator;
+
+    this.searchCreatedBy;
+    this.searchCreatedByLogic;
+    this.searchCreatedByOperator;
+
     this.bounds;
     this.eventName;
     this.eventDescription;
     this.eventCost;
     this.timeStart;
     this.timeEnd;
-    this.newEventType = [];
     this.invitees;
     this.message;
+    this.newEventType = [];
     this.private = false;
     this.editing = false;
+
     var originalEvent;
-    this.detailEvent;
-
-
     var userPosition;
     var newEventLat;
     var newEventLng;
     var createTab = false;
 
     this.searchEvents = function searchEvents() {
+
         var data = {
-            searchTarget: this.searchTarget,
+            searchNameOperator: this.searchNameOperator,
+            searchName: this.searchName,
+            searchTimeStart: this.searchTimeStart,
+            searchTimeStartLogic: this.searchTimeStartLogic,
+            searchTimeStartOperator: this.searchTimeStartOperator,
+            searchTimeEnd: this.searchTimeEnd,
+            searchTimeEndLogic: this.searchTimeEndLogic,
+            searchTimeEndOperator: this.searchTimeEndOperator,
+            searchCost: this.searchCost,
+            searchCostLogic: this.searchCostLogic,
+            searchCostOperator: this.searchCostOperator,
+            searchDesctipion: this.searchDesctipion,
+            searchDesctipionLogic: this.searchDesctipionLogic,
+            searchDesctipionOperator: this.searchDesctipionOperator,
+            searchCreatedBy: this.searchCreatedBy,
+            searchCreatedByLogic: this.searchCreatedByLogic,
+            searchCreatedByOperator: this.searchCreatedByOperator
         }
         $http({
             method: 'POST',
@@ -41,6 +84,8 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
             url: this.searchUrl,
         }).then(function successCallback(response) {
             $scope.events = JSON.parse(response.data);
+
+            console.log(response.data);
             //https://ngmap.github.io/#/!map_fit_bounds.html
             if ($scope.events.length > 0) {
                 $scope.results = true;
@@ -48,7 +93,10 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
 
                 $scope.positions = [];
                 $scope.events.forEach(function(event) {
-                    var position = { lat: event.lat, lng: event.lon };
+                    var position = {
+                        lat: event.lat,
+                        lng: event.lon
+                    };
                     var ps = new google.maps.LatLng(event.lat, event.lon);
                     $scope.positions.push(position);
                     bounds.extend(ps);
@@ -59,34 +107,10 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
                 });
             }
         }, function errorCallback(response) {
-            alertFactory.add('success', response.data);
+            console.log(response.data);
+            alertFactory.add('danger', response.data);
         });
     };
-
-    var getLocation = function getLocation() {
-        $window.navigator.geolocation.getCurrentPosition(function(position) {
-            lat = position.coords.latitude;
-            lon = position.coords.longitude;
-            userPosition = { lat: lat, lng: lon };
-
-            NgMap.getMap().then(function(map) {
-                var bounds = new google.maps.LatLngBounds();
-                drawUserPostion(bounds, map, userPosition);
-            });
-        });
-    }
-
-    var drawUserPostion = function drawUserPostion(bounds, map, userPosition) {
-        if (userPosition) {
-            $scope.positions.push(userPosition);
-            var up = new google.maps.LatLng(userPosition.lat, userPosition.lng);
-            bounds.extend(up);
-            newEventLat = userPosition.lat;
-            newEventLng = userPosition.lng;
-        }
-        map.setCenter(bounds.getCenter());
-        map.fitBounds(bounds);
-    }
 
     this.getEventTypes = function getEventTypes() {
         $http({
@@ -99,33 +123,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
         });
     }
 
-    this.clearSearchData = function clearSearchData() {
-        createTab = true;
-        $scope.results = null;
-        $scope.positions = [];
-        NgMap.getMap().then(function(map) {
-            var bounds = new google.maps.LatLngBounds();
-            drawUserPostion(bounds, map, userPosition);
-        });
-    }
 
-    this.clearCreateData = function clearCreateData() {
-        createTab = false;
-        NgMap.getMap().then(function(map) {
-            $scope.positions = [];
-            var bounds = new google.maps.LatLngBounds();
-            drawUserPostion(bounds, map, userPosition);
-        });
-    }
-
-    this.mapClick = function mapClick(event) {
-        if (createTab) {
-            $scope.positions = [];
-            newEventLat = event.latLng.lat();
-            newEventLng = event.latLng.lng();
-            $scope.positions.push({ lat: newEventLat, lng: newEventLng })
-        }
-    }
 
     this.signUpForEvent = function signUpForEvent(event) {
         event.going = 1;
@@ -243,55 +241,116 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.modifyEvent = function() {
         console.log("original event")
         console.log(originalEvent);
-     var data = {
-        origEventName: originalEvent.eventName,
-        origTimeStart: originalEvent.timeStart,
-        origTimeEnd: originalEvent.timeEnd,
-        origLat: originalEvent.lat,
-        origLng: originalEvent.lon,
-        eventName: this.detailEvent.eventName,
-        eventDescription: this.detailEvent.description,
-        eventCost: this.detailEvent.cost,
-        timeStart: this.detailEvent.timeStart,
-        timeEnd: this.detailEvent.timeEnd,
-        lat: this.detailEvent.lat,
-        lng: this.detailEvent.lon,
-        invitees: this.detailEvent.invitees,
-        message: this.detailEvent.message,
-        privateEvent: this.detailEvent.private
-    }
-    console.log(data);
-
-    $http({
-        method: 'POST',
-        data: data,
-        url: this.updateEventUrl
-    }).then(function successCallback(response) {
-        if (JSON.parse(response.data)) {
-            alertFactory.add('success', 'Event update successful');
-        } else {
-            alertFactory.add('danger', 'The server returned malformed data');
+        var data = {
+            origEventName: originalEvent.eventName,
+            origTimeStart: originalEvent.timeStart,
+            origTimeEnd: originalEvent.timeEnd,
+            origLat: originalEvent.lat,
+            origLng: originalEvent.lon,
+            eventName: this.detailEvent.eventName,
+            eventDescription: this.detailEvent.description,
+            eventCost: this.detailEvent.cost,
+            timeStart: this.detailEvent.timeStart,
+            timeEnd: this.detailEvent.timeEnd,
+            lat: this.detailEvent.lat,
+            lng: this.detailEvent.lon,
+            invitees: this.detailEvent.invitees,
+            message: this.detailEvent.message,
+            privateEvent: this.detailEvent.private
         }
-    }, function errorCallback(response) {
-        alertFactory.add('danger', response.data);
-    });
-}
+        console.log(data);
 
-this.saveOriginalEvent = function() {
-    console.log("saving original event");
-    console.log(this.detailEvent);
-    originalEvent = angular.copy(this.detailEvent);
-}
+        $http({
+            method: 'POST',
+            data: data,
+            url: this.updateEventUrl
+        }).then(function successCallback(response) {
+            if (JSON.parse(response.data)) {
+                alertFactory.add('success', 'Event update successful');
+            } else {
+                alertFactory.add('danger', 'The server returned malformed data');
+            }
+        }, function errorCallback(response) {
+            alertFactory.add('danger', response.data);
+        });
+    }
 
-this.viewDetails = function(event) {
-    console.log(event);
-    this.detailEvent = event;
-}
-var formatDate = function(date) {
-    return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
-}
-if (!userPosition) {
-    getLocation();
-}
-this.getEventTypes();
+    this.saveOriginalEvent = function() {
+        console.log("saving original event");
+        console.log(this.detailEvent);
+        originalEvent = angular.copy(this.detailEvent);
+    }
+
+    this.viewDetails = function(event) {
+        console.log(event);
+        this.detailEvent = event;
+    }
+    var formatDate = function(date) {
+        return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
+    }
+
+    this.clearSearchData = function clearSearchData() {
+        createTab = true;
+        $scope.results = null;
+        $scope.positions = [];
+        NgMap.getMap().then(function(map) {
+            var bounds = new google.maps.LatLngBounds();
+            drawUserPostion(bounds, map, userPosition);
+        });
+    }
+
+    this.clearCreateData = function clearCreateData() {
+        createTab = false;
+        NgMap.getMap().then(function(map) {
+            $scope.positions = [];
+            var bounds = new google.maps.LatLngBounds();
+            drawUserPostion(bounds, map, userPosition);
+        });
+    }
+
+    this.mapClick = function mapClick(event) {
+        if (createTab) {
+            $scope.positions = [];
+            newEventLat = event.latLng.lat();
+            newEventLng = event.latLng.lng();
+            $scope.positions.push({
+                lat: newEventLat,
+                lng: newEventLng
+            })
+        }
+    }
+
+    var getLocation = function getLocation() {
+        $window.navigator.geolocation.getCurrentPosition(function(position) {
+            lat = position.coords.latitude;
+            lon = position.coords.longitude;
+            userPosition = {
+                lat: lat,
+                lng: lon
+            };
+
+            NgMap.getMap().then(function(map) {
+                var bounds = new google.maps.LatLngBounds();
+                drawUserPostion(bounds, map, userPosition);
+            });
+        });
+    }
+
+    var drawUserPostion = function drawUserPostion(bounds, map, userPosition) {
+        if (userPosition) {
+            $scope.positions.push(userPosition);
+            var up = new google.maps.LatLng(userPosition.lat, userPosition.lng);
+            bounds.extend(up);
+            newEventLat = userPosition.lat;
+            newEventLng = userPosition.lng;
+        }
+        map.setCenter(bounds.getCenter());
+        map.fitBounds(bounds);
+    }
+
+
+    if (!userPosition) {
+        getLocation();
+    }
+    this.getEventTypes();
 });

@@ -9,11 +9,140 @@
         <div id="eventSearchBar" class="tab-pane fade in active">
             <form class="form-signin" ng-submit="ctrl.searchEvents()" name="searchEvents" role="form">
                 <div class="input-group">
+                    <div class="input-group-addon">
+                        <label>
+                            <input type="checkbox" data-ng-model="ctrl.advancedSearch"></input> Advanced
+                        </label>
+                    </div>
+                    <div class="input-group-addon">
+                        <select ng-model="ctrl.searchNameOperator">
+                            <option value="">Choose Operator</option>
+                            <option value="IS NULL">is null</option>
+                            <option value="IS NOT NULL">is not null</option>
+                            <option value="LIKE">like</option>
+                            <option value="IS NOT LIKE">is not like</option>
+                        </select>
+                    </div>
                     <label for="inputSearch" class="sr-only">Search</label>
-                    <input type="text" name="search" data-ng-model="ctrl.searchTarget" id="inputSearch" class="form-control" placeholder="Find an Event" required autofocus>
+                    <input ng-disabled="!ctrl.searchNameOperator || ctrl.searchNameOperator=='IS NOT NULL' || ctrl.searchNameOperator=='IS NULL'" type="text" name="search" data-ng-model="ctrl.searchName" id="inputSearch" class="form-control" placeholder="Event Name" required autofocus>
                     <span class="input-group-btn">
                            <button ng-disabled="form.$invalid" class="btn btn-primary" type="submit">Search</button>
                        </span>
+                </div>
+                <div ng-show="ctrl.advancedSearch">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <select ng-model="ctrl.searchTimeStartLogic">
+                                <option value="">Choose Conjunction</option>
+                                <option value="and">and</option>
+                                <option value="or">or</option>
+                            </select>
+                        </div>
+                        <div class="input-group-addon">
+                            <select ng-model="ctrl.searchTimeStartOperator">
+                                <option value="">Choose Operator</option>
+                                <option value="<">less than</option>
+                                <option value="<=">less than or equal</option>
+                                <option value="=">equal</option>
+                                <option value="<">greater than</option>
+                                <option value="<=">greater than or equal</option>
+                                <option value="IS NOT NULL">is not null</option>
+                                <option value="LIKE">like</option>
+                                <option value="IS NOT LIKE">is not like</option>
+                            </select>
+                        </div>
+                        <input ng-disabled="!ctrl.searchTimeStartLogic || !ctrl.searchTimeStartOperator|| ctrl.searchTimeStartOperator=='IS NOT NULL' || ctrl.searchTimeStartOperator=='IS NULL'" type="text" name="search" data-ng-model="ctrl.searchTimeStart" class="form-control" placeholder="Time Start">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <select ng-model="ctrl.searchTimeEndLogic">
+                                <option value="">Choose Conjunction</option>
+                                <option value="and">and</option>
+                                <option value="or">or</option>
+                            </select>
+                        </div>
+                        <div class="input-group-addon">
+                            <select ng-model="ctrl.searchTimeEndOperator">
+                                <option value="">Choose Operator</option>
+                                <option value="<">less than</option>
+                                <option value="<=">less than or equal</option>
+                                <option value="=">equal</option>
+                                <option value="<">greater than</option>
+                                <option value="<=">greater than or equal</option>
+                                <option value="IS NOT NULL">is not null</option>
+                                <option value="LIKE">like</option>
+                                <option value="IS NOT LIKE">is not like</option>
+                            </select>
+                        </div>
+                        <input ng-disabled="!ctrl.searchTimeEndLogic ||!ctrl.searchTimeEndOperator || ctrl.searchTimeEndOperator=='IS NOT NULL' || ctrl.searchTimeEndOperator=='IS NULL'" type="text " name="search " data-ng-model="ctrl.searchTimeStart " class="form-control " placeholder="Time End ">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <select ng-model="ctrl.searchDesctiptionLogic">
+                                <option value="">Choose Conjunction</option>
+                                <option value="and">and</option>
+                                <option value="or">or</option>
+                            </select>
+                        </div>
+                        <div class="input-group-addon">
+                            <select ng-model="ctrl.searchDesctiptionOperator">
+                                <option value="">Choose Operator</option>
+                                <option value="IS NULL">is null</option>
+                                <option value="IS NOT NULL">is not null</option>
+                                <option value="LIKE">like</option>
+                                <option value="IS NOT LIKE">is not like</option>
+                            </select>
+                        </div>
+                        <input ng-disabled="!ctrl.searchDesctiptionLogic || !ctrl.searchDesctiptionOperator || ctrl.searchDesctiptionOperator=='IS NOT NULL' || ctrl.searchDesctiptionOperator=='IS NULL'" type="text" name="search" data-ng-model="ctrl.searchDesctiption " class="form-control " placeholder="Description">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <select ng-model="ctrl.searchCostLogic">
+                                <option value="">Choose Conjunction</option>
+                                <option value="and">and</option>
+                                <option value="or">or</option>
+                            </select>
+                        </div>
+                        <div class="input-group-addon">
+                            <select ng-model="ctrl.searchCostOperator">
+                                <option value="">Choose Operator</option>
+                                <option value="<">less than</option>
+                                <option value="<=">less than or equal</option>
+                                <option value="=">equal</option>
+                                <option value="<">greater than</option>
+                                <option value="<=">greater than or equal</option>
+                                <option value="IS NULL">is null</option>
+                                <option value="IS NOT NULL">is not null</option>
+                                <option value="LIKE">like</option>
+                                <option value="IS NOT LIKE">is not like</option>
+                            </select>
+                        </div>
+                        <input ng-disabled="!ctrl.searchCostLogic || !ctrl.searchCostOperator || ctrl.searchCostOperator=='IS NOT NULL' || ctrl.searchCostOperator=='IS NULL'" type="text" name="search" data-ng-model="ctrl.searchCost " class="form-control " placeholder="Cost">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <select ng-model="ctrl.searchCreatedByLogic">
+                                <option value="">Choose Conjunction</option>
+                                <option value="and">and</option>
+                                <option value="or">or</option>
+                            </select>
+                        </div>
+                        <div class="input-group-addon">
+                            <select ng-model="ctrl.searchCreatedByOperator">
+                                <option value="">Choose Operator</option>
+                                <option value="<">less than</option>
+                                <option value="<=">less than or equal</option>
+                                <option value="=">equal</option>
+                                <option value="<">greater than</option>
+                                <option value="<=">greater than or equal</option>
+                                <option value="IS NULL">is null</option>
+                                <option value="IS NOT NULL">is not null</option>
+                                <option value="LIKE">like</option>
+                                <option value="IS NOT LIKE">is not like</option>
+                            </select>
+                        </div>
+                        <input ng-disabled="!ctrl.searchCreatedByLogic || !ctrl.searchCreatedByOperator || ctrl.searchCreatedByOperator=='IS NOT NULL' || ctrl.searchCreatedByOperator=='IS NULL'" type="text" name="search" data-ng-model="ctrl.searchCreatedBy " class="form-control " placeholder="Created By ">
+                    </div>
                 </div>
                 <!-- referenced: http://jsfiddle.net/mjaric/pj5br/ -->
                 <table id="event-table" class="table-hover" border="1" ng-if="results">
