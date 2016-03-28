@@ -9,13 +9,13 @@
         <div id="eventSearchBar" class="tab-pane fade in active">
             <form class="form-signin" ng-submit="ctrl.searchEvents()" name="searchEvents" role="form">
                 <div class="input-group">
-                    <div class="input-group-addon" style="min-width: 161px">
+                    <div class="input-group-addon min-width-one-six-one">
                         <label>
                             <input type="checkbox" data-ng-model="ctrl.advancedSearch"></input> Advanced
                         </label>
                     </div>
-                    <div class="input-group-addon" style="min-width: 166px">
-                        <select ng-model="ctrl.searchNameOperator" style="min-width: 140px" ng-change="ctrl.searchName=''">
+                    <div class="input-group-addon min-width-one-six-six">
+                        <select class="min-width-one-forty" ng-model="ctrl.searchNameOperator" ng-change="ctrl.searchName=''">
                             <option value="">Choose Operator</option>
                             <option value="IS NULL">is null</option>
                             <option value="IS NOT NULL">is not null</option>
@@ -31,15 +31,15 @@
                 </div>
                 <div ng-show="ctrl.advancedSearch">
                     <div class="input-group">
-                        <div class="input-group-addon">
+                        <div class="input-group-addon min-width-one-six-one">
                             <select ng-model="ctrl.searchTimeStartLogic">
                                 <option value="">Choose Conjunction</option>
                                 <option value="and">and</option>
                                 <option value="or">or</option>
                             </select>
                         </div>
-                        <div class="input-group-addon">
-                            <select ng-model="ctrl.searchTimeStartOperator" ng-change="ctrl.searchTimeStart=''">>
+                        <div class="input-group-addon min-width-one-six-six">
+                            <select class="min-width-one-forty" ng-model="ctrl.searchTimeStartOperator" ng-change="ctrl.searchTimeStart=''">>
                                 <option value="">Choose Operator</option>
                                 <option value="<">less than</option>
                                 <option value="<=">less than or equal</option>
@@ -54,15 +54,15 @@
                         <input ng-disabled="!ctrl.searchTimeStartLogic || !ctrl.searchTimeStartOperator|| ctrl.searchTimeStartOperator=='IS NOT NULL' || ctrl.searchTimeStartOperator=='IS NULL'" type="text" name="search" data-ng-model="ctrl.searchTimeStart" class="form-control" placeholder="Time Start">
                     </div>
                     <div class="input-group">
-                        <div class="input-group-addon">
+                        <div class="input-group-addon min-width-one-six-one">
                             <select ng-model="ctrl.searchTimeEndLogic">
                                 <option value="">Choose Conjunction</option>
                                 <option value="and">and</option>
                                 <option value="or">or</option>
                             </select>
                         </div>
-                        <div class="input-group-addon">
-                            <select ng-model="ctrl.searchTimeEndOperator" ng-change="ctrl.searchTimeEnd=''">
+                        <div class="input-group-addon min-width-one-six-six">
+                            <select class="min-width-one-forty" ng-model="ctrl.searchTimeEndOperator" ng-change="ctrl.searchTimeEnd=''">
                                 <option value="">Choose Operator</option>
                                 <option value="<">less than</option>
                                 <option value="<=">less than or equal</option>
@@ -77,15 +77,15 @@
                         <input ng-disabled="!ctrl.searchTimeEndLogic ||!ctrl.searchTimeEndOperator || ctrl.searchTimeEndOperator=='IS NOT NULL' || ctrl.searchTimeEndOperator=='IS NULL'" type="text " name="search " data-ng-model="ctrl.searchTimeEnd" class="form-control " placeholder="Time End ">
                     </div>
                     <div class="input-group">
-                        <div class="input-group-addon">
+                        <div class="input-group-addon min-width-one-six-one">
                             <select ng-model="ctrl.searchDesctiptionLogic">
                                 <option value="">Choose Conjunction</option>
                                 <option value="and">and</option>
                                 <option value="or">or</option>
                             </select>
                         </div>
-                        <div class="input-group-addon" style="min-width: 166px">
-                            <select ng-model="ctrl.searchDesctiptionOperator" style="min-width: 140px" ng-change="ctrl.searchDesctiption=''">
+                        <div class="input-group-addon min-width-one-six-six">
+                            <select class="min-width-one-forty" ng-model="ctrl.searchDesctiptionOperator" ng-change="ctrl.searchDesctiption=''">
                                 <option value="">Choose Operator</option>
                                 <option value="IS NULL">is null</option>
                                 <option value="IS NOT NULL">is not null</option>
@@ -96,15 +96,15 @@
                         <input ng-disabled="!ctrl.searchDesctiptionLogic || !ctrl.searchDesctiptionOperator || ctrl.searchDesctiptionOperator=='IS NOT NULL' || ctrl.searchDesctiptionOperator=='IS NULL'" type="text" name="search" data-ng-model="ctrl.searchDesctiption " class="form-control " placeholder="Description">
                     </div>
                     <div class="input-group">
-                        <div class="input-group-addon">
+                        <div class="input-group-addon min-width-one-six-one">
                             <select ng-model="ctrl.searchCostLogic">
                                 <option value="">Choose Conjunction</option>
                                 <option value="and">and</option>
                                 <option value="or">or</option>
                             </select>
                         </div>
-                        <div class="input-group-addon">
-                            <select ng-model="ctrl.searchCostOperator" ng-change="ctrl.searchCost=''">
+                        <div class="input-group-addon min-width-one-six-six">
+                            <select class="min-width-one-forty" ng-model="ctrl.searchCostOperator" ng-change="ctrl.searchCost=''">
                                 <option value="">Choose Operator</option>
                                 <option value="<">less than</option>
                                 <option value="<=">less than or equal</option>
@@ -120,15 +120,15 @@
                         <input ng-disabled="!ctrl.searchCostLogic || !ctrl.searchCostOperator || ctrl.searchCostOperator=='IS NOT NULL' || ctrl.searchCostOperator=='IS NULL'" type="text" name="search" data-ng-model="ctrl.searchCost " class="form-control " placeholder="Cost">
                     </div>
                     <div class="input-group">
-                        <div class="input-group-addon">
+                        <div class="input-group-addon min-width-one-six-one">
                             <select ng-model="ctrl.searchCreatedByLogic">
                                 <option value="">Choose Conjunction</option>
                                 <option value="and">and</option>
                                 <option value="or">or</option>
                             </select>
                         </div>
-                        <div class="input-group-addon" style="min-width: 166px">
-                            <select ng-model="ctrl.searchCreatedByOperator" style="min-width: 140px" ng-change="ctrl.searchCreatedBy=''">
+                        <div class="input-group-addon min-width-one-six-six">
+                            <select class="min-width-one-forty" ng-model="ctrl.searchCreatedByOperator" ng-change="ctrl.searchCreatedBy=''">
                                 <option value="">Choose Operator</option>
                                 <option value="IS NULL">is null</option>
                                 <option value="IS NOT NULL">is not null</option>
