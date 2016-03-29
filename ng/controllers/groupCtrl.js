@@ -22,6 +22,13 @@ var app = angular.module('groupUpApp')
     description: "",
     withEvents: []
   };
+  this.tempGroup = {
+    // Placeholder attributes for a to be modified group instance
+    groupId: 0,
+    groupName: "",
+    description: "",
+    delete: false
+  };
 
   /*
   /* Restricts the max number of UserGoesEvent instances per group
@@ -43,21 +50,35 @@ var app = angular.module('groupUpApp')
     map.fitBounds(bounds);
   }
 
-  this.joinGroupsShowMap = function joinGroupsShowMap(mapId, groupId) {
-    this.joinGroupId = groupId;
+  function openModal(ctrl, view) {
     var modalInstance = $uibModal.open({
       animation: true,
-      templateUrl: "ng/views/groupMap.html",
-      scope: this.scope,
+      templateUrl: view,
+      scope: ctrl.scope,
       size: "lg"
     });
+
+    modalInstance.result.then(function(result) {
+      ctrl.dismissModal = undefined;
+    }, function(reason) {
+      ctrl.dismissModal = undefined;
+    });
+
     if (verbose) {
-      console.log("Opened a modalInstance: ");
+      console.log("Opened modalInstance from: " + viewPath);
       console.log(modalInstance);
     }
 
-    // A Reference to the dismiss function of the opened map modal
-    this.dismissModal = modalInstance.dismiss;
+    // A Reference to the dismiss function of the opened modal
+    ctrl.dismissModal = modalInstance.dismiss;
+  }
+
+  this.showJoinGroupsMapModal = function showJoinGroupsMapModal(mapId,
+                                                                group) {
+    this.scope.modalGroupName = group.groupName;
+    this.joinGroupId = group.groupId;
+
+    openModal(this, "ng/views/groupMap.html");
 
     // this.joinGroupsMap always loses the original joinGroupsMap obj
     // Must use NgMap.getMap with explicit mapId to fetch the correct map
@@ -178,8 +199,7 @@ var app = angular.module('groupUpApp')
       $routeParams = {};
 
       // Clear the groups model so Join Groups tab can query for new data
-      delete this.scope.groups;
-
+      this.scope.groups = undefined;
       this.getEvents();
 
     }.bind(this), function errorCallback(err){
@@ -304,6 +324,50 @@ var app = angular.module('groupUpApp')
 
     }.bind(this));
   }
+
+  this.showEditGroupModal = function showEditGroupModal(group) {
+    this.scope.modalGroupName = group.groupName;
+    this.tempGroup.groupId = group.groupId;
+    this.tempGroup.groupName = group.groupName;
+    this.tempGroup.description = group.description;
+
+    openModal(this, "ng/views/groupEdit.html");
+  };
+
+  this.updateGroup = function updateGroup() {
+    if (verbose) {
+      console.log("updating Group with request body: ");
+      console.log(this.tempGroup);
+    }
+
+    $http({
+      method: "POST",
+      data: this.tempGroup,
+      url: this.url + "/modifyGroup",
+    }).then(function successCallback(res){
+      alertFactory.add("success", res.data.data);
+      this.dataLoading = false;
+
+      this.getGroups();
+      this.getEvents();
+      this.tempGroup['delete'] = false;
+
+      if (this.dismissModal)
+        this.dismissModal();
+
+    }.bind(this), function errorCallback(err){
+      alertFactory.add("danger", err.data.data);
+      console.log(err);
+      this.dataLoading = false;
+
+    }.bind(this));
+  };
+
+  this.deleteGroup = function deleteGroup(group) {
+    this.tempGroup.groupId = group.groupId;
+    this.tempGroup['delete'] = true;
+    this.updateGroup();
+  };
 
   if (Object.keys($routeParams).length == 0)
     this.getGroups();
