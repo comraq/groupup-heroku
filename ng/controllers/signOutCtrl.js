@@ -1,23 +1,16 @@
-var app = angular.module('groupUpApp').controller('SignOutCtrl', function($scope, $location, $http){
-	this.url;
-	this.scope = $scope;
-
-	this.signout = function(){
-		this.url = "/controller/login/doLogout"
-		
-
-		$http({
-			method: 'GET',
-			url: this.url,
-		}).then(function successCallback(response){
-			window.location.replace("/");
-			
-		}.bind(this), function errorCallback(response){
-			var message = response.data.data;
-			console.log(response.data);
-
-		}.bind(this));
-	};
-
-});
+angular.module('groupUpApp').controller('SignOutCtrl',
+	function($location, SessionService, alertFactory){
+		this.signOut = function () {
+			SessionService.logout()
+			.then(
+				function successCallback(response){
+					alertFactory.add('success', 'Logout Successful');
+					$location.path('/');
+				}.bind(this),
+				function errorCallback(response){
+					var message = response.data;
+					alertFactory.add('danger', message);
+				}.bind(this));
+		};
+	});
 

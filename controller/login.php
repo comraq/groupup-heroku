@@ -40,6 +40,7 @@ class Login extends Database {
                 $_SESSION['email'] = $result_row->email;
                 $_SESSION['login_status'] = 1;
                 $_SESSION['account_type'] = 0;
+                return $arr = array('email' => $_SESSION['email'], 'accountType' => $_SESSION['account_type']);
             } else {
                 $this->errors[] = "Wrong password. Try again.";
             }
@@ -60,6 +61,7 @@ class Login extends Database {
                 $_SESSION['email'] = $result_row->email;
                 $_SESSION['login_status'] = 1;
                 $_SESSION['account_type'] = 1;
+                return $arr = array('email' => $_SESSION['email'], 'accountType' => $_SESSION['account_type']);
             } else {
                 $this->errors[] = "Wrong password. Try again.";
             }
@@ -80,6 +82,7 @@ class Login extends Database {
                 $_SESSION['email'] = $result_row->email;
                 $_SESSION['login_status'] = 1;
                 $_SESSION['account_type'] = 2;
+                return $arr = array('email' => $_SESSION['email'], 'accountType' => $_SESSION['account_type']);
             } else {
                 $this->errors[] = "Wrong password. Try again.";
             }
@@ -93,38 +96,31 @@ class Login extends Database {
     public function doLogout() {
         $_SESSION = array();
         session_destroy();
-        $this->messages[] = "You have been logged out.";
-
+        $this->response("You have been logged out.", 200);
     }
 
-    public function isUserLoggedIn() {
-        if (isset($_SESSION['login_status']) AND $_SESSION['login_status'] == 1) {
-            return true;
+    public function getSessionInfo() {
+        if ($_SESSION != ""
+            AND isset($_SESSION['login_status'])
+            AND $_SESSION['login_status'] == 1) {
+            $arr = array('email' => $_SESSION['email'], 'accountType' => $_SESSION['account_type']);
+            return $arr; // user = 0, eventprovider = 1, admin = 2
         }
-        return false;
+        $this->response(null, 200);
     }
 
-    public function getAccountType() {
-        if (isset($_SESSION['login_status']) AND $_SESSION['login_status'] == 1) {
-            return $_SESSION['account_type']; // user = 0, eventprovider = 1, admin = 2
-        }
-        return -1;
-    }
-
-    public function getEmail() {
-        if (isset($_SESSION['login_status']) AND $_SESSION['login_status'] == 1) {
-            return $_SESSION['email'];
-        }
-        return -1;
-    }
-
-    public function account() {
+    public function login() {
 		$method = $_SERVER['REQUEST_METHOD'];
 		if ($method == 'POST') {
 			$json = file_get_contents("php://input");
 			$data = json_decode($json,TRUE);
 			$result = $this->dologinWithPostData($data);
-			$this->response($result, 200);
+            if ($result == null) {
+                $this->response("Not logged in", 401);
+            }
+            else {
+                $this->response($result, 200);
+            }
 		}else{
 			$this->response("Method Not Allowed", 405);
 		}

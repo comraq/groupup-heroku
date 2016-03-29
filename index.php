@@ -34,8 +34,10 @@
 
 
     <script type="text/javascript" src="./ng/app.js"></script>
+    <script type="text/javascript" src="./ng/services/session.js"></script>
     <script type="text/javascript" src="./ng/directives/alert.js"></script>
-    <script type="text/javascript" src="./ng/controllers/newsCtrl.js"></script>    
+    <script type="text/javascript" src="./ng/controllers/navbarCtrl.js"></script> 
+    <script type="text/javascript" src="./ng/controllers/newsCtrl.js"></script> 
     <script type="text/javascript" src="./ng/controllers/eventCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/groupCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/signInCtrl.js"></script>
@@ -46,22 +48,9 @@
 	<title>GroupUp | Attend Events in a Group</title>
 </head>
 
-<?php
-	require_once("controller/login.php");
-
-	$login = new Login();
-
-	if ($login->isUserLoggedIn() == true) {
-	    echo "Status message: logged in" . "<br />" . "Account type: " . $login->getAccountType() . "<br />" . "Email: " . $login->getEmail();
-
-	} else {
-	    echo "Status message: not logged in" . "<br />" . "Account type: " . $login->getAccountType() . "<br />" . "Email: " . $login->getEmail();;
-	}
-?>
-
 <body>
 	<nav class="navbar navbar-default">
-		<div class="container-fluid">
+		<div  ng-controller="navbarCtrl as navBar" class="container-fluid">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -86,25 +75,15 @@
 					</div>
 					<button type="submit" class="btn btn-default">Submit</button>
 				</form>
-				<?php 
-					if ($login->isUserLoggedIn() == false) { 
-				?>
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#/SignIn">Sign In</a></li>
-						<li><a href="#/Register">Register</a></li>
-					</ul>
-				<?php 
-					} 
-				?>
-				<?php 
-					if ($login->isUserLoggedIn() == true) { 
-				?>
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#/SignOut">Sign Out</a></li>
-					</ul>
-				<?php 
-					} 
-				?>
+				<ul ng-hide="navBar.isLoggedIn()" class="nav navbar-nav navbar-right">
+					<li><a href="#/SignIn">Sign In</a></li>
+					<li><a href="#/Register">Register</a></li>
+				</ul>
+
+				<ul ng-show="navBar.isLoggedIn()" class="nav navbar-nav navbar-right">
+					<li><a href="#/SignOut">Sign Out</a></li>
+				</ul>
+
 			</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->
 	</nav>

@@ -1,7 +1,7 @@
 <div class="container">
 	<h2 class="blog-title">Log In</h2>
 
-	<form class="form-signin" ng-submit="ctrl.signin()" name="signin" role="form">
+	<form class="form-signin" ng-submit="ctrl.signIn()" name="signin" role="form">
 	    <div class="form-group" ng-class="{ 'has-error': signin.email.$dirty && (signin.email.$error.required || signin.email.$invalid)}">
 		    <label for="inputEmail" class="sr-only">Email address</label>
 		    <input type="email" name="email" data-ng-model="ctrl.email" id="inputEmail" class="form-control" placeholder="Email address"  required autofocus>
