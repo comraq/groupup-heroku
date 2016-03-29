@@ -10,7 +10,7 @@ class Account extends Database
 		parent::__construct();
 	}
 
-	private function updateProfile($db, $dataArray)
+	private function updateProfile($tb, $dataArray)
 	{
 		$data = $dataArray;
 		if (is_null($data))
@@ -23,7 +23,7 @@ class Account extends Database
 			return;
 		}
 		
-		$table = $db;
+		$table = $tb;
 		$email = $data["email"];
 		$firstName = $data["firstName"];
 		$lastName = $data["lastName"];
@@ -89,7 +89,7 @@ class Account extends Database
 
 	}
 
-	private function updatePassword($db, $dataArray)
+	private function updatePassword($tb, $dataArray)
 	{
 		$data = $dataArray;
 		if (is_null($data))
@@ -102,7 +102,7 @@ class Account extends Database
 			return;
 		}
 		
-		$table = $db;
+		$table = $tb;
 		$email = $data["email"];
 		$oldPassword = $data["oldPassword"];
 		$newPassword = $data["newPassword"];
@@ -173,7 +173,8 @@ class Account extends Database
 		$this->response($result, $statusCode);
 	}
 
-	private function getInvitation($db, $dataArray){
+	private function getEvent($dataArray)
+	{
 		$data = $dataArray;
 		if (is_null($data))
 		{
@@ -184,15 +185,91 @@ class Account extends Database
 			$this->response($result, $statusCode);
 			return;
 		}
-		$table = $db;
 		$email = $data["email"];
 		$page = $data["page"];
+		$offset = $page * $this->LIMIT;
+		$result;
+		$statusCode;
+
+		$this->connect();
+		$escapeEmail = $this->conn->real_escape_string($email);
+		$getEventSql = "SELECT 
+		UGE.email AS email,
+		UGE.eventName AS eventName,
+		UGE.lat AS lat,
+		UGE.lon AS lon,
+		UGE.timeStart AS timeStart,
+		UGE.timeEnd AS timeEnd,
+		E.cost AS cost,
+		E.description AS description,
+        GROUP_CONCAT(ET.category
+        SEPARATOR ', ') AS category,
+        G.groupName AS groupName,
+        G.description AS groupDescription
+
+		FROM UserGoesEvent as UGE,
+			 Event as E,
+			 With as W,
+			 Group as G
+		NATURAL LEFT JOIN EventTypeHasEvent ETHE
+        NATURAL LEFT JOIN EventType ET
+
+		WHERE
+			UGE.eventName = E.eventName AND
+			UGE.lat = E.lat AND
+			UGE.lon = E.lon AND
+			UGE.timeStart = E.timeStart AND
+			UGE.timeEnd = E.timeEnd AND
+			UGE.email = ?
+
+        	UGE.email = W.email AND 
+        	UGE.eventName = W.eventName AND
+        	UGE.lat = W.lat AND
+        	UGE.lon = W.lon AND
+        	UGE.timeStart = W.timeStart AND
+        	UGE.timeEnd = W.timeEnd AND
+
+        	W.groupId = G.groupId
+		Group By UGE.eventName, UGE.eventName, UGE.lat, UGE.lon, UGE.timeStart, UGE.timeEnd
+		Order By UGE.timeStart DESC
+		LIMIT ? OFFSET ?";
+
+		$stmt = $this->conn->prepare($getEventSql);
+		$stmt->bind_param('sii', $escapeEmail, $this->LIMIT, $offset);
+		$stmt->execute();
+		$res = $stmt->get_result();
+		$result = $res->fetch_all(MYSQLI_ASSOC);
+
+	    $stmt->close();
+	    $this->disconnect();
+
+		$statusCode = 200;
+
+		$this->response($result, $statusCode);
+
+	}
+
+	private function getInvitation($tb, $dataArray)
+	{
+		$data = $dataArray;
+		if (is_null($data))
+		{
+			$result = array(
+				'data' => "Emtpy Data"
+				);
+			$statusCode = 400;
+			$this->response($result, $statusCode);
+			return;
+		}
+		$table = $tb;
+		$email = $data["email"];
+		$page = $data["page"];
+		$offset = $page * $this->LIMIT;
 		$result;
 		$statusCode;
 		
 		$this->connect();
 		$escapeEmail = $this->conn->real_escape_string($email);
-		// $getInvitationSql = "select email, invitationId, eventName, lat, lon, timeStart, timeEnd from ".$table." where sendToEmail = ? LIMIT ".$this->LIMIT; //." OFFSET ".$page;
 		$getInvitationSql = "SELECT
 		EPSI.email AS email,
 		EPSI.invitationId AS invitationId,
@@ -237,11 +314,15 @@ class Account extends Database
         	PE.lat = E.lat AND
         	PE.lon = E.lon AND
         	PE.timeStart = E.timeStart AND
-        	PE.timeEnd = E.timeEnd
-        	Group By PE.eventName, PE.lat, PE.lon, PE.timeStart, PE.timeEnd";
+        	PE.timeEnd = E.timeEnd AND
+        	sendToEmail = ?
+        Group By PE.eventName, PE.lat, PE.lon, PE.timeStart, PE.timeEnd
+        Order By EPSI.timeStart DESC
+
+        LIMIT ? OFFSET ?";
 
 		$stmt = $this->conn->prepare($getInvitationSql);
-		$stmt->bind_param('s', $escapeEmail);
+		$stmt->bind_param('ssii', $escapeEmail, $escapeEmail, $this->LIMIT, $offset);
 		$stmt->execute();
 		$res = $stmt->get_result();
 		$result = $res->fetch_all(MYSQLI_ASSOC);
@@ -264,6 +345,10 @@ class Account extends Database
 			$table = "User";
 			$json = file_get_contents("php://input");
 			$dataObj = json_decode($json,TRUE);
+			if (isset($dataObj["event"])){
+				$data = $dataObj["event"];
+				$this->getEvent($data);
+			}
 
 			if (isset($dataObj["invitation"])){
 				$data = $dataObj["invitation"];

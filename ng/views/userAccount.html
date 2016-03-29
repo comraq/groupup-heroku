@@ -2,7 +2,7 @@
 	<h2 class="title">Account</h2>
 
 	<ul class="nav nav-tabs nav-justified">
-		<li class="active"><a data-toggle="tab" data-target="#userInfo">User</a></li>
+		<li class="active"><a data-toggle="tab" data-target="#userInfo">Upcoming Events</a></li>
 		<li><a data-toggle="tab" data-target="#invitation">Invitation</a></li>
 		<li><a data-toggle="tab" data-target="#profile">Profile</a></li>
 		<li><a data-toggle="tab" data-target="#password">Password</a></li>
@@ -10,17 +10,37 @@
 
 	<div class="tab-content">
 		<div id="userInfo" class="tab-pane fade in active">
-		test
+			<div infinite-scroll='ctrl.getEvents()' infinite-scroll-disabled='ctrl.eveEndOfResult' infinite-scroll-distance='10'>
+				<div ng-repeat='event in ctrl.events'>
+				  <div class="row">
+			        <div class="col-md-9">
+			          <h3 id="title"> {{event.eventName}} </h3>
+			          <p id="description"> <br>
+					  Cost: ${{event.cost}}<br>
+					  Event Type: {{event.eventType}}<br>
+			          Time: {{event.timeStart}} - {{event.timeEnd}}<br>
+			          {{event.message}}<br>
+			          {{event.description}}<br>
+			          {{event.groupName}}<br>
+			          {{event.groupDescription}}
+			          </p>
+			        </div>
+		        	<div class="col-md-3">
+		        	</div>
+				  </div>
+				</div>
+				<div ng-show="ctrl.eveEndOfResult" class="jumbotron blog-center">End Of Invitations</div>
+			</div>
 		</div>
 
 		<div id="invitation" class="tab-pane fade">
-			<div infinite-scroll='ctrl.nextPage()' infinite-scroll-disabled='ctrl.endOfResult' infinite-scroll-distance='1'>
+			<div infinite-scroll='ctrl.getInvitations()' infinite-scroll-disabled='ctrl.invEndOfResult' infinite-scroll-distance='3'>
 				<div ng-repeat='invitation in ctrl.invitations'>
 				  <div class="row">
 			        <div class="col-md-9">
-			          <p id="title"> From: {{invitation.email}} </p>
-			          <p id="description"> {{invitation.eventName}}<br>
-					  Cost: {{invitation.cost}}<br>
+			          <p> From: {{invitation.email}} </p>
+			          <p> {{invitation.eventName}}<br>
+					  Cost: ${{invitation.cost}}<br>
 					  Event Type: {{invitation.eventType}}<br>
 			          Time: {{invitation.timeStart}} - {{invitation.timeEnd}}<br>
 			          {{invitation.message}}<br>
@@ -28,15 +48,15 @@
 			          </p>
 			        </div>
 		        	<div class="col-md-3">
-		        	<button type="button" ng-show="invitation.going==0" style="width:100%" ng-click="ctrl.signUpForEvent(invitation)">Go!
+		        	<button type="button" class="btn btn-primary custom-button" ng-show="invitation.going==0" ng-click="ctrl.signUpForEvent(invitation)">Go!
 		        	</button>
-                    <button type="button" ng-show="invitation.going==1" style="width:100%" ng-click="ctrl.cancelSignup(invitation)">	Cancel Go!
+                    <button type="button" class="btn btn-primary custom-button" ng-show="invitation.going==1" ng-click="ctrl.cancelSignup(invitation)">	Cancel Go!
                     </button>
 		        	</div>
 				  </div>
+				<hr>
 				</div>
-				<div ng-show="ctrl.invitations.busy" class="jumbotron blog-center">Loading data...</div>
-				<div ng-show="ctrl.invitations.endOfResult" class="jumbotron blog-center">End Of Invitations</div>
+				<div ng-show="ctrl.invEndOfResult" class="jumbotron blog-center">End Of Invitations</div>
 			</div>
 		</div>
 	  

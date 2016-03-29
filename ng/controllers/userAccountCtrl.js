@@ -16,9 +16,63 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 	this.lastName;
 	this.phone;
 	this.age;
+	
+	// invitation
+	this.invEndOfResult = false;
 	this.invitations = [];
-	this.busy = false;
-	this.page = 0;
+	this.invPage = 0;
+
+	// events to go to
+	this.eveEndOfResult = false;
+	this.evePage = 0;
+	this.events = [];
+
+	function loadEvents(eveJson){
+		var events = [];
+		for(var i = 0; i < eveJson.length; i++){
+		    var event = {
+				email: eveJson[i]["email"],
+				eventName: eveJson[i]["eventName"],
+				lat: eveJson[i]["lat"],
+				lon: eveJson[i]["lon"],
+				timeStart: eveJson[i]["timeStart"],
+				timeEnd: eveJson[i]["timeEnd"],
+				cost: eveJson[i]["cost"],
+				message: eveJson[i]["message"],
+				eventType: eveJson[i]["category"],
+				groupName: eveJson[i]["groupName"],
+				groupDescription: eveJson[i]["groupDescription"]
+			};
+		    events.push(event);
+		}
+		return events;
+	}
+
+	this.getEvents = function(){
+		this.url = "/controller/account/user";
+
+		var data = {
+					event: {
+						email: this.email,
+						page: this.evePage
+					}
+				};
+		$http({
+			method: 'POST',
+			data: data,
+			url: this.url,
+		}).then(function successCallback(response){
+			//this.eveEndOfResult = (!response.data || response.data.length == 0);
+			this.events.push.apply(this.events, loadEvents(response.data));
+			this.evePage++;
+
+		}.bind(this), function errorCallback(response){
+			var message = response.data.data;
+			alertFactory.add('danger', message);
+
+		}.bind(this));
+	};
+	this.getEvents();
 
 
 	function loadInvitations(invJson){
@@ -42,13 +96,13 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 		return invs;
 	}
 
-	this.getInvitation = function(){
+	this.getInvitations = function(){
 		this.url = "/controller/account/user";
 
 		var data = {
 					invitation: {
 						email: this.email,
-						page: this.page
+						page: this.invPage
 					}
 				};
 		$http({
@@ -56,18 +110,19 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 			data: data,
 			url: this.url,
 		}).then(function successCallback(response){
-			this.endOfResult = (!response.data || response.data.length == 0);
+						console.log(this.invPage);
+			this.invEndOfResult = (!response.data || response.data.length == 0);
 			this.invitations.push.apply(this.invitations, loadInvitations(response.data));
-			this.busy = false;
-			this.page++;
+			this.invPage++;
+
 
 		}.bind(this), function errorCallback(response){
 			var message = response.data.data;
 			alertFactory.add('danger', message);
-			this.dataLoading = false;
+
 		}.bind(this));
 	};
-	this.getInvitation();
+	this.getInvitations();
 
 	this.updateProfile = function(){
 		this.url = "/controller/account/user";
@@ -146,8 +201,6 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 		return result;
 	}
 
-
-	
 	this.signUpForEvent = function signUpForEvent(invitation) {
     invitation.going = 1;
     var data = {
@@ -209,4 +262,4 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 		}.bind(this));
 	}
 
-})
+});

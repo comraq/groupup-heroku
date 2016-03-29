@@ -7,7 +7,8 @@ var app = angular.module('groupUpApp',
                            'alertService',
                            'selectionModel',
                            'anguFixedHeaderTable',
-                           'ui.bootstrap.datetimepicker'
+                           'ui.bootstrap.datetimepicker',
+                           'infinite-scroll'
                          ]);
 
 app.config(function ($routeProvider) {
