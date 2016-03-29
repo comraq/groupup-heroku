@@ -260,6 +260,12 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
             message: this.detailEvent.message,
             privateEvent: this.detailEvent.private
         }
+
+        if (this.detailEvent.timeStart >= this.detailEvent.timeEnd) {
+            alertFactory.add('danger', 'Time Start must be before time end');
+            return;
+        }
+
         $http({
             method: 'POST',
             data: data,

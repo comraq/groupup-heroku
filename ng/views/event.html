@@ -197,7 +197,7 @@
                     <button class="table-button btn-success" type="button" ng-show="ctrl.detailEvent.going==0 && !ctrl.editing" ng-click="ctrl.signUpForEvent(ctrl.detailEvent)" data-dismiss="modal">Go!</button>
                     <button class="table-button btn-danger" type="button" ng-show="ctrl.detailEvent.going==1  && !ctrl.editing" ng-click="ctrl.cancelSignup(ctrl.detailEvent)">Cancel</button>
                     <button ng-show="ctrl.editing" class="table-button btn-warning" type="button" ng-click="ctrl.modifyEvent()">Modify</button>
-                    <button ng-show="ctrl.editing" class="table-button btn-danger" type="button" ng-click="ctrl.deleteEvent(ctrl.detailEvent)">Delete</button>
+                    <button ng-show="ctrl.editing" class="table-button btn-danger" type="button" ng-click="ctrl.deleteEvent(ctrl.detailEvent)" data-dismiss="modal">Delete</button>
                     <button type="button" class="table-button btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
