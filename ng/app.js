@@ -22,7 +22,7 @@ app.config(function ($routeProvider) {
         })
         .when("/SignIn",
         {
-            templateUrl: 'ng/views/signIn.php',
+            templateUrl: 'ng/views/signIn.html',
             controller: 'SignInCtrl',
             controllerAs: 'ctrl'
         })
