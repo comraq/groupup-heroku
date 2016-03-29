@@ -44,6 +44,31 @@
     opacity: 0.5;
 }
 
-#viewDetailModal{
+#viewDetailModal {
     max-height: 85%;
+}
+
+.min-width-one-six-one {
+    min-width: 161px;
+}
+
+.min-width-one-six-six {
+    min-width: 166px;
+}
+
+.min-width-one-forty {
+    min-width: 140px;
+}
+
+#event-map {
+    height: 100%;
+}
+
+.ng-invalid-pattern {
+    color: #a94442;
+}
+
+#event-type-modify-table {
+    overflow: auto;
+    max-height: 300px;
 }

@@ -20,11 +20,105 @@ class Search extends Database
 			exit;
 		}
         $this->connect();
-        $searchString = $data["searchTarget"];   
-        $escSearch  = $this->conn->real_escape_string($searchString);
-        $searchTarget = "%".$escSearch."%";
 
-        $searchEventsSQL = "SELECT 
+        $searchName =$data["searchName"];
+        $searchNameOperator = $data["searchNameOperator"];
+        $searchTimeStart =$data["searchTimeStart"];
+        $searchTimeStartLogic =$data["searchTimeStartLogic"];
+        $searchTimeStartOperator =$data["searchTimeStartOperator"];
+        $searchTimeEnd =$data["searchTimeEnd"];
+        $searchTimeEndLogic =$data["searchTimeEndLogic"];
+        $searchTimeEndOperator =$data["searchTimeEndOperator"];
+        $searchCost =$data["searchCost"];
+        $searchCostLogic =$data["searchCostLogic"];
+        $searchCostOperator =$data["searchCostOperator"];
+        $searchDesctipion =$data["searchDesctipion"];
+        $searchDesctipionLogic =$data["searchDesctipionLogic"];
+        $searchDesctipionOperator =$data["searchDesctipionOperator"];
+        $searchEventType =$data["searchEventType"];
+        $searchEventTypeLogic =$data["searchEventTypeLogic"];
+        $searchEventTypeOperator =$data["searchEventTypeOperator"];
+        $searchCreatedBy =$data["searchCreatedBy"];
+        $searchCreatedByLogic =$data["searchCreatedByLogic"];
+        $searchCreatedByOperator =$data["searchCreatedByOperator"];
+
+
+        $nameQuery = '';
+
+        if($searchNameOperator){
+            if ($searchNameOperator == 'LIKE' || $searchNameOperator == 'IS NOT LIKE') {
+                $searchName = '%'.$searchName.'%';
+            }
+            $nameQuery.="AND eventName ".$searchNameOperator." ";
+            if ($searchName) {   
+                $nameQuery.="'".$searchName."' ";
+            }
+        };
+
+
+        $timeStartQuery = '';
+        if ($searchTimeStartLogic && $searchTimeStartOperator) {
+
+            if ($searchTimeStartOperator == 'LIKE' || $searchTimeStartOperator == 'IS NOT LIKE') {
+                $searchTimeStart = '%'.$searchTimeStart.'%';
+            }
+            $timeStartQuery.=$searchTimeStartLogic." timeStart ".$searchTimeStartOperator." ";
+            if ($searchTimeStart) {
+                $timeStartQuery.="'".$searchTimeStart."' ";
+            }
+        }
+
+        $timeEndQuery = '';
+        if ($searchTimeEndLogic && $searchTimeEndOperator) {
+         if ($searchTimeEndOperator == 'LIKE' || $searchTimeEndOperator == 'IS NOT LIKE') {
+            $searchTimeEnd = '%'.$searchTimeEnd.'%';
+        }
+        $timeEndQuery.=$searchTimeEndLogic." timeEnd ".$searchTimeEndOperator." ";
+        if ($searchTimeEnd) {
+            $timeEndQuery.="'".$searchTimeEnd."' ";
+        }
+    }
+
+    $costQuery = '';
+    if ($searchCostLogic && strval($searchCostOperator)) {
+        $costQuery.=$searchCostLogic." cost ".$searchCostOperator." ";
+        if ($searchCostOperator == 'LIKE' || $searchCostOperator == 'IS NOT LIKE') {
+            $searchCost = '%'.strval($searchCost).'%';
+        }
+
+        if (strval($searchCost)) {
+            $costQuery.=$searchCost." ";
+        }
+    }
+
+    $descriptionQuery = '';
+    if ($searchDesctipionLogic && $searchDesctipionOperator) {
+
+        if ($searchDesctipionOperator == 'LIKE' || $searchDesctipionOperator == 'IS NOT LIKE') {
+            $searchDesctipion = '%'.$searchDesctipion.'%';
+        }
+
+        $descriptionQuery.=$searchDesctipionLogic." desctiption ".$searchDesctipionOperator." ";
+        if ($searchDesctipion) {
+            $descriptionQuery.="'".$searchDesctipion."' ";
+        }
+    };
+
+    $createdByQuery = '';
+    if ($searchCreatedByLogic && $searchCreatedByOperator) {
+
+        if ($searchCreatedByOperator == 'LIKE' || $searchCreatedByOperator == 'IS NOT LIKE') {
+            $searchCreatedBy = '%'.$searchCreatedBy.'%';
+        }
+        $createdByQuery.=$searchCreatedByLogic." createdBy ".$searchCreatedByOperator." ";
+        if ($searchCreatedBy) {
+            $createdByQuery.="'".$searchCreatedBy."' ";
+        }
+    }
+
+    $whenQuery = $nameQuery.$timeStartQuery.$timeEndQuery.$costQuery.$descriptionQuery.$createdByQuery;
+    
+    $searchEventsSQL = "SELECT 
     R.eventName AS eventName,
     R.lat AS lat,
     R.lon AS lon,
@@ -35,70 +129,72 @@ class Search extends Database
     R.createdBy AS createdBy,
     R.category AS category,
     SUM(CASE
-        WHEN uge.email = 'testUser1@test.com' THEN 1
-        ELSE 0
+    WHEN uge.email = 'testUser1@test.com' THEN 1
+    ELSE 0
     END) AS going
-FROM
-    (SELECT 
-        e.eventName AS eventName,
-            e.lat AS lat,
-            e.lon AS lon,
-            e.timeStart AS timeStart,
-            e.timeEnd AS timeEnd,
-            e.cost AS cost,
-            e.description AS description,
-            e.createdBy AS createdBy,
-            GROUP_CONCAT(et.category
-                SEPARATOR ', ') AS category
     FROM
-        `Event` e
+    (SELECT 
+    e.eventName AS eventName,
+    e.lat AS lat,
+    e.lon AS lon,
+    e.timeStart AS timeStart,
+    e.timeEnd AS timeEnd,
+    e.cost AS cost,
+    e.description AS description,
+    e.createdBy AS createdBy,
+    GROUP_CONCAT(et.category
+    SEPARATOR ', ') AS category
+    FROM
+    `Event` e
     NATURAL LEFT JOIN EventTypeHasEvent eht
     NATURAL LEFT JOIN EventType et
-    WHERE
-        (eventName LIKE ?
-            OR createdBy LIKE ?
-            OR description LIKE ?)
-            AND NOT EXISTS( SELECT 
+    WHERE NOT EXISTS( SELECT 
                 *
-            FROM
-                PrivateEvent pe
-            WHERE
-                pe.eventName = e.eventName
-                    AND pe.lat = e.lat
-                    AND pe.lon = e.lon
-                    AND pe.timeStart = e.timeStart
-                    AND pe.timeEnd = e.timeEnd)
+    FROM
+    PrivateEvent pe
+    WHERE
+    pe.eventName = e.eventName
+    AND pe.lat = e.lat
+    AND pe.lon = e.lon
+    AND pe.timeStart = e.timeStart
+    AND pe.timeEnd = e.timeEnd)
+    ".$whenQuery."
     GROUP BY eventName , lat , lon , timeStart , timeEnd) R
-        NATURAL LEFT JOIN
+    NATURAL LEFT JOIN
     UserGoesEvent uge
-GROUP BY R.eventName , R.lat , R.lon , R.timeStart , R.timeEnd , R.cost , R.description , R.createdBy , R.category;
-";
-        $stmt = $this->conn->prepare($searchEventsSQL);
-        $stmt->bind_param('sss', $searchTarget, $searchTarget, $searchTarget);
-        $stmt->execute();
-		//referenced http://stackoverflow.com/questions/11892699/how-do-i-properly-use-php-to-encode-mysql-object-into-json
+    GROUP BY R.eventName , R.lat , R.lon , R.timeStart , R.timeEnd , R.cost , R.description , R.createdBy , R.category
+    ";
+
+    $stmt = $this->conn->prepare($searchEventsSQL);
+    if(!$stmt->execute()){
+        $result = array('data' => "There was an error deleting the event from the databse", 'code'=> 500);
+        $stmt->close();
+    }else{
+           //referenced http://stackoverflow.com/questions/11892699/how-do-i-properly-use-php-to-encode-mysql-object-into-json
         $res = $stmt->get_result();
-        $result = $res->fetch_all(MYSQLI_ASSOC);
+        $rows = $res->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
         $this->disconnect();
-        return json_encode($result, JSON_NUMERIC_CHECK);
+        $result = array('data' => json_encode($rows, JSON_NUMERIC_CHECK), 'code' => 200);
     }
+    return $result;
+}
 
-    function startSearchEvents(){
-      $reqMethod = $_SERVER['REQUEST_METHOD'];
-      if ($reqMethod == 'POST'){
-         $json = file_get_contents("php://input");
-         $data = json_decode($json, TRUE);
-         $result = $this->searchEvents($data);
-         $this->response($result, 200);
-     }else{
-        $result = array(
-            'data' => "Emtpy Data"
-            );
-        $statusCode = 405;
-        $this->response($result, $statusCode);
-        exit;
-    }
+function startSearchEvents(){
+  $reqMethod = $_SERVER['REQUEST_METHOD'];
+  if ($reqMethod == 'POST'){
+     $json = file_get_contents("php://input");
+     $data = json_decode($json, TRUE);
+     $result = $this->searchEvents($data);
+     $this->response($result["data"], $result["code"]);
+ }else{
+    $result = array(
+        'data' => "Emtpy Data"
+        );
+    $statusCode = 405;
+    $this->response($result, $statusCode);
+    exit;
+}
 }
 }
 ?>
