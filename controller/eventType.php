@@ -39,7 +39,23 @@ class EventType extends Database{
 		$this->disconnect();
 		return $result;
 	}
-	
+
+	function addEventType($data){
+		$this->connect();
+		$addEventType = $data["addEventType"];
+		$addSQL = "INSERT INTO `EventType` (`category`) VALUES (?)";
+		$addStmt = $this->conn->prepare($addSQL);
+		$addStmt->bind_param('s', $addEventType);
+		if($addStmt->execute()){
+			$result = array('data' => TRUE, 'code'=> 200);
+		}else{
+			$result = array('data' => "Unable to add event type", 'code'=> 500);
+		}
+		$addStmt->close();
+		$this->disconnect();
+		return $result;
+	}
+
 	function startGetTypes(){
 		$reqMethod = $_SERVER['REQUEST_METHOD'];
 		if ($reqMethod == 'GET'){
@@ -61,6 +77,23 @@ class EventType extends Database{
 			$json = file_get_contents("php://input");
 			$data = json_decode($json, TRUE);
 			$result = $this->deleteTypes($data);
+			$this->response($result["data"], $result["code"]);
+		}else{
+			$result = array(
+				'data' => "Emtpy Data"
+				);
+			$statusCode = 405;
+			$this->response($result, $statusCode);
+		}
+		exit;
+	}
+
+	function startAddEventType(){
+		$reqMethod = $_SERVER['REQUEST_METHOD'];
+		if ($reqMethod == 'POST'){
+			$json = file_get_contents("php://input");
+			$data = json_decode($json, TRUE);
+			$result = $this->addEventType($data);
 			$this->response($result["data"], $result["code"]);
 		}else{
 			$result = array(

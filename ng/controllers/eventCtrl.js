@@ -5,6 +5,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.searchUrl = "/controller/search/startSearchEvents";
     this.typeUrl = "/controller/eventType/startGetTypes";
     this.deleteEventTypeUrl = "/controller/eventType/startDeleteEventTypes";
+    this.addEventUrl = "/controller/eventType/startAddEventType";
     this.createEventUrl = "/controller/createEvent/startCreateEvent";
     this.updateEventUrl = "/controller/updateEvent/startUpdateEvent";
     this.deleteEventUrl = "/controller/deleteEvent/startDeleteEvent";
@@ -39,7 +40,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.searchCreatedBy;
     this.searchCreatedByLogic;
     this.searchCreatedByOperator;
-
+    this.addEventType;
     this.bounds;
     this.eventName;
     this.eventDescription;
@@ -54,6 +55,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.editing = false;
     this.etTabView = false;
     this.eventTypeDetail;
+
     var eventTypeToDel;
     var originalEvent;
     var userPosition;
@@ -116,10 +118,11 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
         });
     };
 
-    this.getEventTypes = function getEventTypes() {
+    $scope.getEventTypes = function getEventTypes() {
+        $scope.eventTypes = [];
         $http({
             method: 'GET',
-            url: this.typeUrl,
+            url: "/controller/eventType/startGetTypes",
         }).then(function successCallback(response) {
             $scope.eventTypes = JSON.parse(response.data);
         }.bind(this), function errorCallback(response) {
@@ -362,6 +365,26 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
         }
     }
 
+    this.addNewEventType = function addNewEventType() {
+        var data = {
+            addEventType: this.addEventType
+        }
+        $http({
+            method: 'POST',
+            data: data,
+            url: this.addEventUrl
+        }).then(function successCallback(response) {
+            if (JSON.parse(response.data)) {
+                alertFactory.add('success', 'Event Type deletion successful');
+                $scope.getEventTypes();
+            } else {
+                alertFactory.add('danger', 'The server returned malformed data');
+            }
+        }, function errorCallback(response) {
+            alertFactory.add('danger', response.data);
+        });
+    }
+
     var getLocation = function getLocation() {
         $window.navigator.geolocation.getCurrentPosition(function(position) {
             lat = position.coords.latitude;
@@ -393,5 +416,5 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     if (!userPosition) {
         getLocation();
     }
-    this.getEventTypes();
+    $scope.getEventTypes();
 });

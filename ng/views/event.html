@@ -271,6 +271,13 @@
         </div>
         <div id="eventTypePane" class="tab-pane fade in">
             <form role="form">
+                <div class="input-group">
+                    <span class="input-group-addon">A</span>
+                    <input type="text" required data-ng-model="ctrl.addEventType" class="form-control" placeholder="Enter a new Event Type">
+                    <span class="input-group-btn">
+                         <button ng-disabled="form.$invalid" class="btn btn-primary" ng-click="ctrl.addNewEventType()">Add</button>
+                     </span>
+                </div>
                 <div>
                     <table id="event-type-table" class="table-hover">
                         <th>Event Type</th>
@@ -282,7 +289,9 @@
                         </tr>
                     </table>
                 </div>
-                <button class="btn btn-primary" ng-click="ctrl.deleteEventTypes(deleteET)">Delete Selected</button>
+                <div>
+                    <button class="btn btn-primary" ng-click="ctrl.deleteEventTypes(deleteET)">Delete Selected</button>
+                </div>
             </form>
         </div>
     </div>
