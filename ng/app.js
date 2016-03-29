@@ -9,7 +9,8 @@ var app = angular.module('groupUpApp',
                            'anguFixedHeaderTable',
                            'ui.bootstrap.datetimepicker',
                            'ui.bootstrap',
-                           'toggle-switch'
+                           'toggle-switch',
+                           'infinite-scroll'
                          ]);
 
 app.config(function ($routeProvider) {
@@ -49,6 +50,15 @@ app.config(function ($routeProvider) {
             templateUrl: 'ng/views/register.html',
             controller: 'RegisterCtrl',
             controllerAs: 'ctrl'
+        })
+        .when("/Account",
+        {
+            templateUrl: 'ng/views/userAccount.html',
+            controller: 'UserAccountCtrl',
+            controllerAs: 'ctrl',
+            resolve:{
+                email: function(){ return "testUser1@test.com";}
+            }
         });
         //.otherwise({redirectTo: "/"});
 });

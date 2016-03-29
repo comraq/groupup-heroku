@@ -47,7 +47,7 @@
 				</div>
 
 				<div class="form-group" ng-class="{ 'has-error': registerUser.age.$dirty && (registerUser.age.$error.required || registerUser.age.$invalid)}">
-				    <label for="inputAge" class="sr-only">Phone Number</label>
+				    <label for="inputAge" class="sr-only">Age</label>
 				    <input type="number" name="age" id="inputAge" data-ng-model="ctrl.age" class="form-control" placeholder="Age" required>
 				    <span ng-show="registerUser.age.$dirty && (registerUser.age.$error.required || registerUser.age.$invalid)" class="help-block">Valid Age is required</span>
 				</div>

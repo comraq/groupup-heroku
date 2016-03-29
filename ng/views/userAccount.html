@@ -1,0 +1,122 @@
+<div class="container">
+	<h2 class="title">Account</h2>
+
+	<ul class="nav nav-tabs nav-justified">
+		<li class="active"><a data-toggle="tab" data-target="#userInfo">Upcoming Events</a></li>
+		<li><a data-toggle="tab" data-target="#invitation">Invitation</a></li>
+		<li><a data-toggle="tab" data-target="#profile">Profile</a></li>
+		<li><a data-toggle="tab" data-target="#password">Password</a></li>
+	</ul>
+
+	<div class="tab-content">
+		<div id="userInfo" class="tab-pane fade in active">
+			<div infinite-scroll='ctrl.getEvents()' infinite-scroll-disabled='ctrl.eveEndOfResult' infinite-scroll-distance='3'>
+				<div ng-repeat='event in ctrl.events'>
+				  <div class="row">
+			        <div class="col-md-9">
+			          <h3> {{event.eventName}} </h3>
+			          <p>
+					  Cost: ${{event.cost}}<br>
+					  Event Type: {{event.eventType}}<br>
+			          Time: {{event.timeStart}} - {{event.timeEnd}}<br>
+			          {{event.message}}<br>
+			          {{event.description}}
+			          </p>
+			        </div>
+		        	<div class="col-md-3">
+		        	<h3>Group</h3>
+		        	{{event.groupName}}<br>
+		        	{{event.groupDescription}}
+		        	</div>
+				  </div>
+				  <hr>
+				</div>
+				<div ng-show="ctrl.eveEndOfResult" class="jumbotron center">End Of Invitations</div>
+			</div>
+		</div>
+
+		<div id="invitation" class="tab-pane fade">
+			<div infinite-scroll='ctrl.getInvitations()' infinite-scroll-disabled='ctrl.invEndOfResult' infinite-scroll-distance='3'>
+				<div ng-repeat='invitation in ctrl.invitations'>
+				  <div class="row">
+			        <div class="col-md-9">
+			          <p> From: {{invitation.email}} </p>
+			          <p> {{invitation.eventName}}<br>
+					  Cost: ${{invitation.cost}}<br>
+					  Event Type: {{invitation.eventType}}<br>
+			          Time: {{invitation.timeStart}} - {{invitation.timeEnd}}<br>
+			          {{invitation.message}}<br>
+			          {{invitation.description}}
+			          </p>
+			        </div>
+		        	<div class="col-md-3">
+		        	<button type="button" class="btn btn-primary custom-button" ng-disabled="this.loadingAttend" ng-show="invitation.going==0" ng-click="ctrl.signUpForEvent(invitation)">Go!
+		        	</button>
+                    <button type="button" class="btn btn-primary custom-button" ng-disabled="this.loadingAttend" ng-show="invitation.going==1" ng-click="ctrl.cancelSignup(invitation)">	Cancel Go!
+                    </button>
+		        	</div>
+				  </div>
+				<hr>
+				</div>
+				<div ng-show="ctrl.invEndOfResult" class="jumbotron center">End Of Invitations</div>
+			</div>
+		</div>
+	  
+		<div id="profile" class="tab-pane fade">
+			<form class="form-signin" ng-submit="ctrl.updateProfile()" name="userProfile" role="form">
+
+		        <div class="form-group" ng-class="{ 'has-error': userProfile.firstName.$dirty && userProfile.firstName.$error.required }">
+				    <label for="updateFirstName" class="sr-only">First Name</label>
+				    <input type="text" name="firstName" id="updateFirstName" data-ng-model="ctrl.firstName" class="form-control" placeholder="First Name" required>
+				    <span ng-show="userProfile.firstName.$dirty && userProfile.firstName.$error.required" class="help-block">First Name is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': userProfile.lastName.$dirty && userProfile.lastName.$error.required }">
+				    <label for="updateLastName" class="sr-only">Last Name</label>
+				    <input type="text" name="lastName" id="updateLastName" data-ng-model="ctrl.lastName" class="form-control" placeholder="Last Name" required>
+				    <span ng-show="userProfile.lastName.$dirty && userProfile.lastName.$error.required" class="help-block">Last Name is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': userProfile.phone.$dirty && (userProfile.phone.$error.required || userProfile.phone.$invalid) }">
+				    <label for="updatePhone" class="sr-only">Phone Number</label>
+				    <input type="tel" name="phone" id="updatePhone" data-ng-model="ctrl.phone" class="form-control" placeholder="Phone Number" required>
+				    <span ng-show="userProfile.phone.$dirty && userProfile.phone.$error.required" class="help-block">Valid Phone Number is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': userProfile.age.$dirty && (userProfile.age.$error.required || userProfile.age.$invalid)}">
+				    <label for="updateAge" class="sr-only">Age</label>
+				    <input type="number" name="age" id="updateAge" data-ng-model="ctrl.age" class="form-control" placeholder="Age" required>
+				    <span ng-show="userProfile.age.$dirty && (userProfile.age.$error.required || userProfile.age.$invalid)" class="help-block">Valid Age is required</span>
+				</div>
+		    	
+		    	<button class="btn btn-lg btn-block btn-blog" type="submit" ng-disabled="userProfile.$invalid || ctrl.dataLoading">Update Profile</button>
+		    	<hr class="href-divider">
+			</form>
+		</div>
+
+		<div id="password" class="tab-pane fade">
+			<form class="form-signin" ng-submit="ctrl.updatePassword()" name="userPassword" role="form">
+				<div class="form-group" ng-class="{ 'has-error': userPassword.oldPassword.$dirty && userPassword.oldPassword.$error.required}">
+				    <label for="updateOldPassword" class="sr-only">Old Password</label>
+				    <input type="password" name="oldPassword" data-ng-model="ctrl.oldPassword" id="updateOldPassword" class="form-control" placeholder="Old Password" required>
+					<span ng-show="userPassword.password.$dirty && userPassword.password.$error.required" class="help-block">Password is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': userPassword.newPassword.$dirty && userPassword.newPassword.$error.required}">
+				    <label for="updateNewPassword" class="sr-only">New Password</label>
+				    <input type="password" name="newPassword" data-ng-model="ctrl.newPassword" id="updateNewPassword" class="form-control" placeholder="New Password" required>
+					<span ng-show="userPassword.newPassword.$dirty && userPassword.newPassword.$error.required" class="help-block">Password is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': userPassword.rePassword.$dirty && userPassword.rePassword.$error.required }">
+				    <label for="updateRePassword" class="sr-only">Re New Password</label>
+				    <input type="password" name="rePassword" id="updateRePassword" data-ng-model="ctrl.rePassword" class="form-control" placeholder="Re-New Password" required>
+				    <span ng-show="userPassword.rePassword.$dirty && userPassword.rePassword.$error.required" class="help-block">Re-Password is required</span>
+				</div>
+		    	
+		    	<button class="btn btn-lg btn-block btn-blog" type="submit" ng-disabled="userPassword.$invalid || ctrl.dataLoading">Update Password</button>
+		    	<hr class="href-divider">
+			</form>
+		</div>
+	</div>
+</div> <!-- /container -->
