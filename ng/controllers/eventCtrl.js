@@ -150,11 +150,14 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
         }).then(function successCallback(response) {
             if (JSON.parse(response.data)) {
                 alertFactory.add('success', 'Added user to event');
+                $location.path('/Group/' + event.eventName + '/' + event.lat + '/' + event.lon + '/' + event.timeStart + '/' + event.timeEnd + '/' + event.createdBy + '/');
+                // referencing http://stackoverflow.com/questions/31688426/bootstrap-angularjs-modal-redirecting-the-user-properly-but-the-page-looks-blac
+                $('.modal-backdrop').remove();
+
             } else {
                 alertFactory.add('danger', response.data);
             }
         });
-        $location.path('/Group/' + event.eventName + '/' + event.lat + '/' + event.lon + '/' + event.timeStart + '/' + event.timeEnd + '/' + event.createdBy + '/');
     }
 
     this.cancelSignup = function cancelSignup(event) {
@@ -263,7 +266,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
             message: this.detailEvent.message,
             privateEvent: this.detailEvent.private
         }
-
+        this.detailEvent = false;
         if (this.detailEvent.timeStart >= this.detailEvent.timeEnd) {
             alertFactory.add('danger', 'Time Start must be before time end');
             return;
