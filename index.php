@@ -37,6 +37,7 @@
 
     <script type="text/javascript" src="./ng/controllers/eventCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/groupCtrl.js"></script>
+    <script type="text/javascript" src="./ng/controllers/profileCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/signInCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/signOutCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/registerCtrl.js"></script>
@@ -49,6 +50,7 @@
     
   <!-- Custom Stylesheets -->
   <link rel="stylesheet" type="text/css" href="./components/custom-stylesheets/group-styles.css">
+  <link rel="stylesheet" type="text/css" href="./components/custom-stylesheets/profile-styles.css">
   <link rel="stylesheet" type="text/css" href="./components/custom-stylesheets/event-styles.css">
 
     <title>GroupUp | Attend Events in a Group</title>
@@ -98,6 +100,8 @@
 					if ($login->isUserLoggedIn() == false) { 
 				?>
 					<ul class="nav navbar-nav navbar-right">
+						<li><a
+href="#/Profile">Profile</a></li>
 						<li><a href="#/SignIn">Sign In</a></li>
 						<li><a href="#/Register">Register</a></li>
 					</ul>

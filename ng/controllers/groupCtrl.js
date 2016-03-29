@@ -60,8 +60,14 @@ var app = angular.module('groupUpApp')
 
     modalInstance.result.then(function(result) {
       ctrl.dismissModal = undefined;
+      if (verbose)
+        console.log("dismissModal reset, modal closed for result")
+
     }, function(reason) {
       ctrl.dismissModal = undefined;
+      if (verbose)
+        console.log("dismissModal reset, modal dismissed for reason")
+
     });
 
     if (verbose) {
@@ -71,6 +77,11 @@ var app = angular.module('groupUpApp')
 
     // A Reference to the dismiss function of the opened modal
     ctrl.dismissModal = modalInstance.dismiss;
+
+    if (verbose) {
+      console.log("Opening modal, setting ctrl.dismissModal: ");
+      console.log(ctrl.dismissModal);
+    }
   }
 
   this.showJoinGroupsMapModal = function showJoinGroupsMapModal(mapId,
@@ -220,10 +231,8 @@ var app = angular.module('groupUpApp')
       if (verbose)
         console.log("getGroups res: " + JSON.stringify(res));
 
-      this.scope.groups = JSON.parse(res.data).map(function(e, i, arr) {
-        return e;
-      });
-      if (this.scope.groups.length < origGroupsCount)
+      this.scope.groups = JSON.parse(res.data);
+      if (this.dismissModal && this.scope.groups.length < origGroupsCount)
         this.dismissModal();
 
       if (verbose)

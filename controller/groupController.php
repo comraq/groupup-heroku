@@ -92,7 +92,7 @@
 
       $this->connect();
       $escEmail = $this->conn->real_escape_string(
-                 GroupController::getUserEmail());
+                  GroupController::getUserEmail());
       $allEventsSql =
         'select E.eventName, E.timeStart, E.timeEnd, E.cost,
                 E.lat, E.lon, ifnull(T.category, "None") as category,
