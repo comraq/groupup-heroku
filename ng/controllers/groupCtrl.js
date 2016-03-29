@@ -15,7 +15,7 @@ var app = angular.module('groupUpApp')
   this.location = $location;
   this.joinTab = true;
   this.scope.
-      joinGroupMapModalButton = "Confirm Action for Current Group";
+       joinGroupMapModalButton = "Confirm Action for Current Group";
 
   this.newGroup = {
     name: "",
@@ -31,7 +31,7 @@ var app = angular.module('groupUpApp')
   };
 
   /*
-  /* Restricts the max number of UserGoesEvent instances per group
+   * Restricts the max number of UserGoesEvent instances per group
    * displayed in the Join Groups Tab 
    */
   this.scope.userGoesEventsPerGroupLimit = 3;
@@ -140,7 +140,7 @@ var app = angular.module('groupUpApp')
     this.joinTab = false;
     this.joinGroupId = undefined;
 
-    /* Resetting the properties of newGroup */
+    // Resetting the properties of newGroup
     this.newGroup.name = "";
     this.newGroup.description = "";
 
@@ -369,6 +369,7 @@ var app = angular.module('groupUpApp')
     this.updateGroup();
   };
 
+  // Below is the initialization code when routed to group.html view
   if (Object.keys($routeParams).length == 0)
     this.getGroups();
   else {

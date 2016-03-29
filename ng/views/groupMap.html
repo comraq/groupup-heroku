@@ -1,93 +1,93 @@
-    <div class="groups-modal-container"
-      id="join-group-map-modal-container">
-      <h2 class="modal-header">{{ modalGroupName }}</h2>
+<div class="groups-modal-container"
+  id="join-group-map-modal-container">
+  <h2 class="modal-header">{{ modalGroupName }}</h2>
 
-      <form class="form-signin" ng-submit="ctrl.joinLeaveGroups()"
-        name="joinGroup" role="form">
-        <div class="form-group events-filter">
-          <label for="modalEventsFilter" class="sr-only">
-            Filter Events
-          </label>
-          <input type="filter" name="modalEventsFilter"
-            data-ng-model="modalEventsFilter"
-            id="modal-events-filter-input" class="form-control"
-            placeholder="Filter Events" autofocus>
-        </div>
- 
-        <label for="join-group-events-table"
-          id="join-group-events-table-label">
-          Join Group With Attending Events</label>
-        <table fixed-header class="table group-events-table"
-         id="join-group-events-table" name="join-group-events-table">
-          <thead>
-            <tr>
-              <th>Event Name</th>
-              <th>Time Start</th>
-              <th>Time End</th>
-              <th>Cost</th>
-              <th>Category(ies)</th>
-              <th>Attending Event?</th>
-              <th>Go With Group?</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="e in events
-                           | filter: modalEventsFilter
-                           | orderBy: '-selected'
-                           | orderBy: '(selected == alreadyGoing)'
-                           | orderBy: '-attendPreference'"
-              ng-class=
-                "{ 'group-events-table-user-attend-event': e.attending }"
-              selection-model
-              selection-model-type="checkbox"
-              selection-model-mode="multiple-additive"
-              selection-model-on-change="ctrl.eventsChanged(e)"
-              selection-model-selected-class="group-events-selected">
-              <td>{{ e.eventName }}</td>
-              <td>{{ e.timeStart }}</td>
-              <td>{{ e.timeEnd }}</td>
-              <td>{{ e.cost | currency }}</td>
-              <td>{{ e.category }} {{ e.remaining }}</td>
-              <td>{{ e.attendPreference }}</td>
-              <td><input type="checkbox" /></td>
-              <td
-                ng-class=
-                  "{
-                     'group-events-table-action-join':
-                       (e.selected != e.alreadyGoing) && !e.alreadyGoing,
-
-                     'group-events-table-action-leave':
-                       (e.selected != e.alreadyGoing) && e.alreadyGoing
-                   }">
-                  {{
-                     (e.selected == e.alreadyGoing)?
-                       "None"
-                     :
-                       (e.alreadyGoing)?
-                         "Leave Group"
-                       :
-                         (e.attending)?
-                           "Join Group"
-                         :
-                           "Attend Event and Join Group"
-                  }}
-             </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <ng-map id="join-group-events-map"
-          center="[0,0]" zoom="13"
-          default-style="true">
-            <marker ng-repeat="e in events | filter: {selected: 'true'}"
-              position="{{e.lat}}, {{e.lon}}"></marker>
-        </ng-map>
-
-        <button class="btn btn-lg btn-block btn-primary" type="submit"
-          id="join-group-map-modal-button" ng-bind="joinGroupMapModalButton"
-          ng-disabled="events.length < 1 || ctrl.dataLoading
-                       || ctrl.actionsCount == 0">
-        </button>
-      </form>
+  <form class="form-signin" ng-submit="ctrl.joinLeaveGroups()"
+    name="joinGroup" role="form">
+    <div class="form-group events-filter">
+      <label for="modalEventsFilter" class="sr-only">
+        Filter Events
+      </label>
+      <input type="filter" name="modalEventsFilter"
+        data-ng-model="modalEventsFilter"
+        id="modal-events-filter-input" class="form-control"
+        placeholder="Filter Events" autofocus>
     </div>
+
+    <label for="join-group-events-table"
+      id="join-group-events-table-label">
+      Join Group With Attending Events</label>
+    <table fixed-header class="table group-events-table"
+     id="join-group-events-table" name="join-group-events-table">
+      <thead>
+        <tr>
+          <th>Event Name</th>
+          <th>Time Start</th>
+          <th>Time End</th>
+          <th>Cost</th>
+          <th>Category(ies)</th>
+          <th>Attending Event?</th>
+          <th>Go With Group?</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="e in events
+                       | filter: modalEventsFilter
+                       | orderBy: '-selected'
+                       | orderBy: '(selected == alreadyGoing)'
+                       | orderBy: '-attendPreference'"
+          ng-class=
+            "{ 'group-events-table-user-attend-event': e.attending }"
+          selection-model
+          selection-model-type="checkbox"
+          selection-model-mode="multiple-additive"
+          selection-model-on-change="ctrl.eventsChanged(e)"
+          selection-model-selected-class="group-events-selected">
+          <td>{{ e.eventName }}</td>
+          <td>{{ e.timeStart }}</td>
+          <td>{{ e.timeEnd }}</td>
+          <td>{{ e.cost | currency }}</td>
+          <td>{{ e.category }} {{ e.remaining }}</td>
+          <td>{{ e.attendPreference }}</td>
+          <td><input type="checkbox" /></td>
+          <td
+            ng-class=
+              "{
+                 'group-events-table-action-join':
+                   (e.selected != e.alreadyGoing) && !e.alreadyGoing,
+
+                 'group-events-table-action-leave':
+                   (e.selected != e.alreadyGoing) && e.alreadyGoing
+               }">
+              {{
+                 (e.selected == e.alreadyGoing)?
+                   "None"
+                 :
+                   (e.alreadyGoing)?
+                     "Leave Group"
+                   :
+                     (e.attending)?
+                       "Join Group"
+                     :
+                       "Attend Event and Join Group"
+              }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-map id="join-group-events-map"
+      center="[0,0]" zoom="13"
+      default-style="true">
+        <marker ng-repeat="e in events | filter: {selected: 'true'}"
+          position="{{e.lat}}, {{e.lon}}"></marker>
+    </ng-map>
+
+    <button class="btn btn-lg btn-block btn-primary" type="submit"
+      id="join-group-map-modal-button" ng-bind="joinGroupMapModalButton"
+      ng-disabled="events.length < 1 || ctrl.dataLoading
+                   || ctrl.actionsCount == 0">
+    </button>
+  </form>
+</div>

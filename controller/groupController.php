@@ -469,8 +469,7 @@
                $this->conn, $groupId, $data['withEvents']);
       if (!is_null($err)) {
         // Failed to Add User To Group
-        // Deleting Previously Created Group
-
+        // Rollback, includes deleting previously created Group
         $this->rollback();
         $this->disconnect();
         $this->response($err['data'], $err['statusCode']);
