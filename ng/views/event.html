@@ -1,7 +1,7 @@
 <div class="container">
     <title>Events</title>
     <ul class="nav nav-tabs nav-justified">
-        <li ng-click="ctrl.clearCreateData()" class="active">
+        <li ng-click="clearCreateData()" class="active">
             <a data-toggle="tab" data-target="#eventSearchBar">Event Search</a></li>
         <li ng-click="clearSearchData()"><a data-toggle="tab" data-target="#createEvent">Create Event</a></li>
         <li><a ng-click="switchToETTab()" data-toggle="tab" data-target="#eventTypePane">Modify Event Types</a></li>
@@ -152,7 +152,7 @@
                         <td>{{event.eventName}}</td>
                         <td>{{event.timeStart}}</td>
                         <td>{{event.timeEnd}}</td>
-                        <td>{{event.cost}}</td>
+                        <td>{{event.cost | currency}}</td>
                     </tr>
                 </table>
             </form>
@@ -273,14 +273,13 @@
             <form role="form">
                 <div class="input-group">
                     <span class="input-group-addon">A</span>
-                    <input type="text" required data-ng-model="ctrl.addEventType" class="form-control" placeholder="Enter a new Event Type">
+                    <input type="text" data-ng-model="ctrl.addEventType" class="form-control" placeholder="Enter a new Event Type">
                     <span class="input-group-btn">
                          <button ng-disabled="form.$invalid" class="btn btn-primary" ng-click="ctrl.addNewEventType()">Add</button>
                      </span>
                 </div>
-                <div>
+                <div id="event-type-modify-table">
                     <table id="event-type-table" class="table-hover">
-                        <th>Event Type</th>
                         <tr ng-repeat="eventType in eventTypes" selection-model selection-model-type="checkbox" selection-model-mode="single" selection-model-selected-items="ctrl.deleteET" selection-model-selected-class="create-group-events-selected" ng-hide="eventType.delete">
                             <td>
                                 <input type="checkbox" />
@@ -290,7 +289,7 @@
                     </table>
                 </div>
                 <div>
-                    <button class="btn btn-primary" ng-click="ctrl.deleteEventTypes(deleteET)">Delete Selected</button>
+                    <button class="btn btn-lg btn btn-primary btn-block btn-blog" ng-click="ctrl.deleteEventTypes(deleteET)">Delete Selected</button>
                 </div>
             </form>
         </div>

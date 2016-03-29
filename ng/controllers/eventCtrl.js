@@ -343,7 +343,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
         this.etTabView = true;
     }
 
-    this.clearCreateData = function clearCreateData() {
+    $scope.clearCreateData = function clearCreateData() {
         this.etTabView = false;
         createTab = false;
         NgMap.getMap({ id: 'event-map' }).then(function(map) {

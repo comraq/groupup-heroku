@@ -67,3 +67,8 @@
 .ng-invalid-pattern {
     color: #a94442;
 }
+
+#event-type-modify-table {
+    overflow: auto;
+    max-height: 300px;
+}
