@@ -151,9 +151,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
             if (JSON.parse(response.data)) {
                 alertFactory.add('success', 'Added user to event');
                 $location.path('/Group/' + event.eventName + '/' + event.lat + '/' + event.lon + '/' + event.timeStart + '/' + event.timeEnd + '/' + event.createdBy + '/');
-                // referencing http://stackoverflow.com/questions/31688426/bootstrap-angularjs-modal-redirecting-the-user-properly-but-the-page-looks-blac
-                $('.modal-backdrop').remove();
-
+               
             } else {
                 alertFactory.add('danger', response.data);
             }
