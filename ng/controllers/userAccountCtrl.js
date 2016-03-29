@@ -4,6 +4,7 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 	this.url;
 	this.scope = $scope;
 	this.dataLoading;
+	this.loadingAttend;
 	this.email = email;
 
 	// for updating password
@@ -28,6 +29,7 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 	this.events = [];
 
 	function loadEvents(eveJson){
+
 		var events = [];
 		for(var i = 0; i < eveJson.length; i++){
 		    var event = {
@@ -40,7 +42,7 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 				cost: eveJson[i]["cost"],
 				message: eveJson[i]["message"],
 				eventType: eveJson[i]["category"],
-				groupName: eveJson[i]["groupName"],
+				groupName: (eveJson[i]["groupName"])?  eveJson[i]["groupName"]: "No Group",
 				groupDescription: eveJson[i]["groupDescription"]
 			};
 		    events.push(event);
@@ -50,22 +52,22 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 
 	this.getEvents = function(){
 		this.url = "/controller/account/user";
-
 		var data = {
 					event: {
 						email: this.email,
 						page: this.evePage
 					}
 				};
+		this.evePage++;
 		$http({
 			method: 'POST',
 			data: data,
 			url: this.url,
 		}).then(function successCallback(response){
-			//this.eveEndOfResult = (!response.data || response.data.length == 0);
+			
+			this.eveEndOfResult = (!response.data || response.data.length == 0);
 			this.events.push.apply(this.events, loadEvents(response.data));
-			this.evePage++;
-
+			
 		}.bind(this), function errorCallback(response){
 			var message = response.data.data;
 			alertFactory.add('danger', message);
@@ -98,24 +100,21 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 
 	this.getInvitations = function(){
 		this.url = "/controller/account/user";
-
 		var data = {
 					invitation: {
 						email: this.email,
 						page: this.invPage
 					}
 				};
+		this.invPage++;
 		$http({
 			method: 'POST',
 			data: data,
 			url: this.url,
 		}).then(function successCallback(response){
-						console.log(this.invPage);
 			this.invEndOfResult = (!response.data || response.data.length == 0);
 			this.invitations.push.apply(this.invitations, loadInvitations(response.data));
-			this.invPage++;
-
-
+			
 		}.bind(this), function errorCallback(response){
 			var message = response.data.data;
 			alertFactory.add('danger', message);
@@ -202,64 +201,65 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 	}
 
 	this.signUpForEvent = function signUpForEvent(invitation) {
-    invitation.going = 1;
-    var data = {
-        email: this.email,
-        eventName : invitation.eventName,
-        lat: invitation.lat,
-        lon: invitation.lon,
-        timeStart: invitation.timeStart,
-        timeEnd: invitation.timeEnd
-    }
-
-    $http({
-        method: 'POST',
-        data: data,
-        url: this.addUserUrl
-	    }).then(function successCallback(response) {
-
-			console.log(response.data);
-	        if (JSON.parse(response.data)) {
-	            alertFactory.add('success', "Added user to event");
-	        } else {
-	            console.log("Unable to add user to event");
-	        }
-	    }.bind(this), function errorCallback(response){
+		this.loadingAttend = true; 
+	    var data = {
+	        email: this.email,
+	        eventName : invitation.eventName,
+	        lat: invitation.lat,
+	        lon: invitation.lon,
+	        timeStart: invitation.timeStart,
+	        timeEnd: invitation.timeEnd
+	    }
+	    $http({
+	        method: 'POST',
+	        data: data,
+	        url: this.addUserUrl
+		    }).then(function successCallback(response) {
+		        if (JSON.parse(response.data)) {
+		        	invitation.going = 1;
+		            alertFactory.add('success', "Added user to event");
+		        } else {
+		            console.log("Unable to add user to event");
+		        }
+		        this.loadingAttend = false; 
+		    }.bind(this), function errorCallback(response){
+		    	this.loadingAttend = false; 
 				var message = response.data;
 				alertFactory.add('danger', message);
 				this.dataLoading = false;
 
-		}.bind(this));
+			}.bind(this));
 	}
 	
 	this.cancelSignup = function cancelSignup(invitation){
-    invitation.going=0;
-    var data = {
-        email: this.email,
-        eventName : invitation.eventName,
-        lat: invitation.lat,
-        lon: invitation.lon,
-        timeStart: invitation.timeStart,
-        timeEnd: invitation.timeEnd
-    }
+    	this.loadingAttend = true; 
+	    var data = {
+	        email: this.email,
+	        eventName : invitation.eventName,
+	        lat: invitation.lat,
+	        lon: invitation.lon,
+	        timeStart: invitation.timeStart,
+	        timeEnd: invitation.timeEnd
+	    }
 
-    $http({
-        method: 'POST',
-        data: data,
-        url: this.cancelURL
-    	}).then(function successCallback(response) {
-	    	console.log(response.data);
-	        if (JSON.parse(response.data)) {
-	        	alertFactory.add('success', "Removed user from event");
-	        } else {
-	            console.log("Unable to removed user to event");
-	        }
-    	}.bind(this), function errorCallback(response){
-			var message = response.data;
-			alertFactory.add('danger', message);
-			this.dataLoading = false;
+	    $http({
+	        method: 'POST',
+	        data: data,
+	        url: this.cancelURL
+	    	}).then(function successCallback(response) {
+		    	this.loadingAttend = false; 
+		        if (JSON.parse(response.data)) {
+		        	invitation.going = 0;
+		        	alertFactory.add('success', "Removed user from event");
+		        } else {
+		            console.log("Unable to removed user to event");
+		        }
+	    	}.bind(this), function errorCallback(response){
+	    		this.loadingAttend = false; 
+				var message = response.data;
+				alertFactory.add('danger', message);
 
-		}.bind(this));
-	}
+			}.bind(this));
+		}
 
 });

@@ -190,7 +190,6 @@ class Account extends Database
 		$offset = $page * $this->LIMIT;
 		$result;
 		$statusCode;
-
 		$this->connect();
 		$escapeEmail = $this->conn->real_escape_string($email);
 		$getEventSql = "SELECT 
@@ -208,11 +207,17 @@ class Account extends Database
         G.description AS groupDescription
 
 		FROM UserGoesEvent as UGE,
-			 Event as E,
-			 With as W,
-			 Group as G
+			 Event as E
 		NATURAL LEFT JOIN EventTypeHasEvent ETHE
         NATURAL LEFT JOIN EventType ET
+        LEFT OUTER JOIN `With` W on 
+			email = W.email AND 
+        	E.eventName = W.eventName AND
+        	E.lat = W.lat AND
+        	E.lon = W.lon AND
+        	E.timeStart = W.timeStart AND
+        	E.timeEnd = W.timeEnd
+		LEFT JOIN `Group` G on W.groupId = G.groupId
 
 		WHERE
 			UGE.eventName = E.eventName AND
@@ -222,14 +227,6 @@ class Account extends Database
 			UGE.timeEnd = E.timeEnd AND
 			UGE.email = ?
 
-        	UGE.email = W.email AND 
-        	UGE.eventName = W.eventName AND
-        	UGE.lat = W.lat AND
-        	UGE.lon = W.lon AND
-        	UGE.timeStart = W.timeStart AND
-        	UGE.timeEnd = W.timeEnd AND
-
-        	W.groupId = G.groupId
 		Group By UGE.eventName, UGE.eventName, UGE.lat, UGE.lon, UGE.timeStart, UGE.timeEnd
 		Order By UGE.timeStart DESC
 		LIMIT ? OFFSET ?";
@@ -281,7 +278,7 @@ class Account extends Database
 		HI.message AS message,
 		E.cost AS cost,
 		E.description AS description,
-		SUM(CASE
+		(CASE
         WHEN UGE.email = ? THEN 1
         ELSE 0
         END) AS going,

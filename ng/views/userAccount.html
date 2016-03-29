@@ -10,26 +10,28 @@
 
 	<div class="tab-content">
 		<div id="userInfo" class="tab-pane fade in active">
-			<div infinite-scroll='ctrl.getEvents()' infinite-scroll-disabled='ctrl.eveEndOfResult' infinite-scroll-distance='10'>
+			<div infinite-scroll='ctrl.getEvents()' infinite-scroll-disabled='ctrl.eveEndOfResult' infinite-scroll-distance='3'>
 				<div ng-repeat='event in ctrl.events'>
 				  <div class="row">
 			        <div class="col-md-9">
-			          <h3 id="title"> {{event.eventName}} </h3>
-			          <p id="description"> <br>
+			          <h3> {{event.eventName}} </h3>
+			          <p>
 					  Cost: ${{event.cost}}<br>
 					  Event Type: {{event.eventType}}<br>
 			          Time: {{event.timeStart}} - {{event.timeEnd}}<br>
 			          {{event.message}}<br>
-			          {{event.description}}<br>
-			          {{event.groupName}}<br>
-			          {{event.groupDescription}}
+			          {{event.description}}
 			          </p>
 			        </div>
 		        	<div class="col-md-3">
+		        	<h3>Group</h3>
+		        	{{event.groupName}}<br>
+		        	{{event.groupDescription}}
 		        	</div>
 				  </div>
+				  <hr>
 				</div>
-				<div ng-show="ctrl.eveEndOfResult" class="jumbotron blog-center">End Of Invitations</div>
+				<div ng-show="ctrl.eveEndOfResult" class="jumbotron center">End Of Invitations</div>
 			</div>
 		</div>
 
@@ -48,15 +50,15 @@
 			          </p>
 			        </div>
 		        	<div class="col-md-3">
-		        	<button type="button" class="btn btn-primary custom-button" ng-show="invitation.going==0" ng-click="ctrl.signUpForEvent(invitation)">Go!
+		        	<button type="button" class="btn btn-primary custom-button" ng-disabled="this.loadingAttend" ng-show="invitation.going==0" ng-click="ctrl.signUpForEvent(invitation)">Go!
 		        	</button>
-                    <button type="button" class="btn btn-primary custom-button" ng-show="invitation.going==1" ng-click="ctrl.cancelSignup(invitation)">	Cancel Go!
+                    <button type="button" class="btn btn-primary custom-button" ng-disabled="this.loadingAttend" ng-show="invitation.going==1" ng-click="ctrl.cancelSignup(invitation)">	Cancel Go!
                     </button>
 		        	</div>
 				  </div>
 				<hr>
 				</div>
-				<div ng-show="ctrl.invEndOfResult" class="jumbotron blog-center">End Of Invitations</div>
+				<div ng-show="ctrl.invEndOfResult" class="jumbotron center">End Of Invitations</div>
 			</div>
 		</div>
 	  
