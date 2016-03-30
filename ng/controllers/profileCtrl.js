@@ -8,7 +8,7 @@ var app = angular.module('groupUpApp')
                                                      $routeParams,
                                                      $uibModal,
                                                      alertFactory) {
-  var verbose = true;
+  var verbose = false;
 
   this.url = "controller/profileController";
   this.scope = $scope;

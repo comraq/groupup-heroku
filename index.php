@@ -14,8 +14,6 @@
     <link rel="stylesheet" type="text/css" href="./components/jqueryUI/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="./components/jqueryUI/jquery-ui.theme.css">
     <link rel="stylesheet" type="text/css" href="./components/jqueryUI/jquery-ui-combobox.css">
-<<<<<<< HEAD
-=======
     <script src="./components/bootstrap/js/bootstrap.js" type="text/javascript" charset="utf-8" async defer></script>
     <!-- Angular Js -->
     <!--
@@ -25,7 +23,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.min.js"></script>
 -->
     
->>>>>>> 5744eb21cafb52c6b7cf8490add418aa8d465458
     <link rel="stylesheet" type="text/css" href="components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css" />
     <link rel="stylesheet" type="text/css" href="./components/angular-toggle-switch/angular-toggle-switch.css">
     <link rel="stylesheet" type="text/css" href="./components/angular-toggle-switch/angular-toggle-switch-bootstrap.css">
@@ -41,6 +38,7 @@
     <script type="text/javascript" src="./components/angular-google-maps/ng-map.min.js"></script>
     <script type="text/javascript" src="./components/angular-selection-model/selection-model.js"></script>
     <script type="text/javascript" src="./components/angular-fixed-header-table/angu-fixed-header-table.js"></script>
+    <script type="text/javascript" src="./components/infinite-scroll/ng-infinite-scroll.js"></script>
 
     <script type="text/javascript" src="./ng/app.js"></script>
     <script type="text/javascript" src="./ng/services/session.js"></script>
