@@ -5,6 +5,7 @@ class CreateEvent extends Database{
 
 	function __construct(){
 		parent::__construct();
+		mysqli_report(MYSQLI_REPORT_ERROR);
 	}
 
 	function createEvent($data){
@@ -15,8 +16,7 @@ class CreateEvent extends Database{
 		$cost = $data["eventCost"];
 		$description = $data["eventDescription"];
 		$eventType = $data["eventType"];
-		//TODO Change this
-		$createdBy = "testEP1@test.com";
+		$createdBy = $data["createdBy"];
 		$lat = $data["lat"];
 		$lon = $data["lng"];
 		$privateEvent = $data["privateEvent"];
@@ -55,12 +55,10 @@ class CreateEvent extends Database{
 		
 		$checkIfExistsStmt = $this->conn->prepare($checkIfExists);
 		$checkIfExistsStmt->bind_param('sddss', $eventName, $lat, $lon, $timeStart, $timeEnd);
-		$checkIfExistsStmt->execute();
 		if(!$checkIfExistsStmt->execute()){
 			$result = array('data' => "This event already exists", 'code'=> 500);
 		}
 		$checkIfExistsStmt->store_result();
-
 
 		if ($checkIfExistsStmt->num_rows == 0){
 			$this->conn->autocommit(FALSE);
@@ -100,6 +98,7 @@ class CreateEvent extends Database{
 					if(!$invStmt->execute()){
 						$this->conn->rollback();
 						$result = array('data' => "There was an error sending your invitaitons", 'code'=> 500);
+						break;
 					}
 				}
 				$invStmt->close();
@@ -111,6 +110,7 @@ class CreateEvent extends Database{
 				if(!$insertEventTypeHasEventStmt->execute()){
 					$this->conn->rollback();
 					$result = array('data' => $this->conn->error, 'code'=> 500);
+					break;
 				}
 
 			}

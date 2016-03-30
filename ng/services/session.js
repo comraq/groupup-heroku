@@ -8,6 +8,7 @@ angular.module('groupUpApp').service("SessionService", function($http) {
 			return $http.get('controller/login/getSessionInfo')
 				.then(
 					function successCallback(response){
+						console.log(response.data);
 						this.sessionInfo = response.data;
 					}.bind(this));
 		},
