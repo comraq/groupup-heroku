@@ -33,8 +33,9 @@
     <script type="text/javascript" src="./ng/app.js"></script>
     <script type="text/javascript" src="./ng/services/session.js"></script>
     <script type="text/javascript" src="./ng/directives/alert.js"></script>
+    <script type="text/javascript" src="components/angular-google-maps/ng-map.min.js"></script>
+    <script type="text/javascript" src="./ng/controllers/newsCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/navbarCtrl.js"></script> 
-    <script type="text/javascript" src="./ng/controllers/newsCtrl.js"></script> 
     <script type="text/javascript" src="./ng/controllers/eventCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/groupCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/signInCtrl.js"></script>

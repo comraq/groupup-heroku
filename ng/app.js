@@ -37,6 +37,7 @@ app.config(function($routeProvider) {
             templateUrl: 'ng/views/signIn.html',
             controller: 'SignInCtrl',
             controllerAs: 'ctrl'
+
         }).when("/SignOut", {
             templateUrl: 'ng/views/signOut.html',
             controller: 'SignOutCtrl',
@@ -53,3 +54,4 @@ app.config(function($routeProvider) {
 app.run(function(SessionService) {
     SessionService.getSessionInfo();
 });
+
