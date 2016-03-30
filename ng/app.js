@@ -8,7 +8,8 @@ var app = angular.module('groupUpApp', [
     'anguFixedHeaderTable',
     'ui.bootstrap.datetimepicker',
     'ui.bootstrap',
-    'toggle-switch'
+    'toggle-switch',
+    'infinite-scroll'
 ]);
 
 app.config(function($routeProvider) {
@@ -42,6 +43,7 @@ app.config(function($routeProvider) {
             templateUrl: 'ng/views/signIn.html',
             controller: 'SignInCtrl',
             controllerAs: 'ctrl'
+
         }).when("/SignOut", {
             templateUrl: 'ng/views/signOut.html',
             controller: 'SignOutCtrl',
@@ -51,6 +53,11 @@ app.config(function($routeProvider) {
             templateUrl: 'ng/views/register.html',
             controller: 'RegisterCtrl',
             controllerAs: 'ctrl'
+        })
+        .when("/Account", {
+            templateUrl: 'ng/views/userAccount.html',
+            controller: 'UserAccountCtrl',
+            controllerAs: 'ctrl',
         });
     //.otherwise({redirectTo: "/"});
 });

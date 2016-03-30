@@ -10,23 +10,6 @@ class UpdateEvent extends Database{
 	function updateEvent($data){
 		$this->connect();
 
-
-		 // origEventName: originalEvent.eventName,
-   //      origTimeStart: originalEvent.timeStart,
-   //      origTimeEnd: originalEvent.timeEnd,
-   //      origLat: originalEvent.lat,
-   //      origLng: originalEvent.lon,
-   //      eventName: this.detailEvent.eventName,
-   //      eventDescription: this.detailEvent.description,
-   //      eventCost: this.detailEvent.cost,
-   //      timeStart: this.detailEvent.timeStart,
-   //      timeEnd: this.detailEvent.timeEnd,
-   //      lat: this.detailEvent.lat,
-   //      lng: this.detailEvent.lon,
-   //      invitees: this.detailEvent.invitees,
-   //      message: this.detailEvent.message,
-   //      privateEvent: this.detailEvent.private
-
 		$origEventName = $data["origEventName"];
 		$origTimeStart = $data["origTimeStart"];
 		$origTimeEnd = $data["origTimeEnd"];
@@ -40,7 +23,7 @@ class UpdateEvent extends Database{
 		$lat=$data["lat"];
 		$lon=$data["lng"];
 		//TODO Change this
-		$createdBy = "testEP1@test.com";
+		$createdBy = $data["createdBy"];
 		$privateEvent = $data["privateEvent"];
 		
 		if ($privateEvent){

@@ -1,6 +1,6 @@
 var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, $window, $location, $http, NgMap, alertFactory, SessionService) {
     $scope.positions = [];
-    $scope.results;
+    $scope.results; 
 
     this.searchUrl = "/controller/search/startSearchEvents";
     this.typeUrl = "/controller/eventType/startGetTypes";
@@ -55,7 +55,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.editing = false;
     this.etTabView = false;
     this.eventTypeDetail;
-
+  
     var eventTypeToDel;
     var originalEvent;
     var userPosition;
@@ -137,7 +137,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.signUpForEvent = function signUpForEvent(event) {
         event.going = 1;
         var data = {
-            email: "testUser1@test.com",
+            email: SessionService.sessionInfo.email,
             eventName: event.eventName,
             lat: event.lat,
             lon: event.lon,
@@ -163,7 +163,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.cancelSignup = function cancelSignup(event) {
         event.going = 0;
         var data = {
-            email: "testUser1@test.com",
+            email: SessionService.sessionInfo.email,
             eventName: event.eventName,
             lat: event.lat,
             lon: event.lon,
@@ -206,7 +206,8 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
             lng: newEventLng,
             invitees: this.invitees,
             message: this.message,
-            privateEvent: this.private
+            privateEvent: this.private,
+            createdBy: SessionService.sessionInfo.email
         }
 
         $http({

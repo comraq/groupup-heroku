@@ -10,6 +10,41 @@ class Account extends Database
 		parent::__construct();
 	}
 
+	private function getProfile($tb, $dataArray)
+	{
+		$data = $dataArray;
+		if (is_null($data))
+		{
+			$result = array(
+				'data' => "Please refresh and login again"
+				);
+			$statusCode = 400;
+			$this->response($result, $statusCode);
+			return;
+		}
+
+		$table = $tb;
+		$email = $data["email"];
+		$this->connect();
+		$escapeEmail = $this->conn->real_escape_string($email);
+		$getProfileSql = "SELECT * from " . $table . " where email = ?";
+		$stmt = $this->conn->prepare($getProfileSql);
+		$stmt->bind_param("s", $escapeEmail);
+
+		$stmt->execute();
+		$res = $stmt->get_result();
+		$result = $res->fetch_all(MYSQLI_ASSOC);
+		$stmt->close();
+
+
+		$result = array(
+					'data' => $result
+				);
+		$statusCode = 200;		
+		$this->disconnect();
+		$this->response($result, $statusCode);
+	}
+
 	private function updateProfile($tb, $dataArray)
 	{
 		$data = $dataArray;
@@ -69,11 +104,11 @@ class Account extends Database
 		
 		if (!is_null($age)){
 			$escapeAge = $this->conn->real_escape_string($age);
-			$updateProfileSql = "update " . $table . "set firstname=?, lastname=?, phone=?, age=? where email = ?";
+			$updateProfileSql = "UPDATE " . $table . " set firstname=?, lastname=?, phone=?, age=? where email = ?";
 			$stmt = $this->conn->prepare($updateProfileSql);
-			$stmt->bind_param('ssdds', $escapeFName, $escapeLName, $escapePhone, $escapeAge, $escapeEmail);
+			$stmt->bind_param('ssiis', $escapeFName, $escapeLName, $escapePhone, $escapeAge, $escapeEmail);
 		}else{
-			$updateProfileSql = "update " . $table . "set firstname=?, lastname=?, phone=? where email = ?";
+			$updateProfileSql = "UPDATE " . $table . " set firstname=?, lastname=?, phone=? where email = ?";
 			$stmt = $this->conn->prepare($updateProfileSql);
 			$stmt->bind_param('ssds', $escapeFName, $escapeLName, $escapePhone, $escapeEmail);
 		}
@@ -111,7 +146,7 @@ class Account extends Database
 		$result;
 		$statusCode;
 
-		if(is_null($oldPassword) || is_null($password) || is_null($rePassword)) 
+		if(is_null($oldPassword) || is_null($newPassword) || is_null($rePassword)) 
 		{
 			$result = array(
 				'data' => "All fields must be filled"
@@ -140,15 +175,15 @@ class Account extends Database
 		}
 
 		$checkPasswordSql = "select password from " . $table . " where email = ?";
-		$stmt = $this->conn->prepare($checkEmailSql);
+		$stmt = $this->conn->prepare($checkPasswordSql);
 		$stmt->bind_param('s', $escapeEmail);
 		$stmt->execute();
 		$res = $stmt->get_result();
 		$checkPassword = $res->fetch_all(MYSQLI_ASSOC);
 	    $stmt->close();
-	    
+
 	    // check if password is correct
-	    if (!password_verify($escapeOldPass, $checkPassword["password"]))
+	    if (!password_verify($escapeOldPass, $checkPassword[0]["password"]))
 		{ 
 			$this->disconnect(); 
 			$result = array(
@@ -159,9 +194,9 @@ class Account extends Database
 			return;
 		}
 	
-		$updatePassSql = "update " . $table . "set password=? where email = ?";
+		$updatePassSql = "update " . $table . " set password=? where email = ?";
 		$stmt = $this->conn->prepare($updatePassSql);
-		$stmt->bind_param('s', $hashPass);
+		$stmt->bind_param('ss', $hashPass, $escapeEmail);
 		$stmt->execute();
 		$stmt->close();
 		$result = array(
@@ -192,7 +227,12 @@ class Account extends Database
 		$statusCode;
 		$this->connect();
 		$escapeEmail = $this->conn->real_escape_string($email);
-		$getEventSql = "SELECT 
+		$getEventSql = "SELECT AE.*,
+		GROUP_CONCAT(G.groupName SEPARATOR ', ') AS groupNames,
+        GROUP_CONCAT(G.description SEPARATOR ', ') AS groupDescriptions,
+        GROUP_CONCAT(AE.groupId SEPARATOR ', ') AS groupIds
+        from (
+	SELECT 
 		UGE.email AS email,
 		UGE.eventName AS eventName,
 		UGE.lat AS lat,
@@ -201,35 +241,32 @@ class Account extends Database
 		UGE.timeEnd AS timeEnd,
 		E.cost AS cost,
 		E.description AS description,
-        GROUP_CONCAT(ET.category
+        GROUP_CONCAT(DISTINCT ET.category
         SEPARATOR ', ') AS category,
-        G.groupName AS groupName,
-        G.description AS groupDescription
+		W.groupId as groupId
 
-		FROM UserGoesEvent as UGE,
-			 Event as E
+		FROM UserGoesEvent as UGE
+		NATURAL LEFT JOIN `Event` E
 		NATURAL LEFT JOIN EventTypeHasEvent ETHE
         NATURAL LEFT JOIN EventType ET
-        LEFT OUTER JOIN `With` W on 
-			email = W.email AND 
-        	E.eventName = W.eventName AND
-        	E.lat = W.lat AND
-        	E.lon = W.lon AND
-        	E.timeStart = W.timeStart AND
-        	E.timeEnd = W.timeEnd
-		LEFT JOIN `Group` G on W.groupId = G.groupId
+        LEFT OUTER JOIN (select * from `With`) as W on 
+			UGE.email = W.email AND 
+        	UGE.eventName = W.eventName AND
+        	UGE.lat = W.lat AND
+        	UGE.lon = W.lon AND
+        	UGE.timeStart = W.timeStart AND
+        	UGE.timeEnd = W.timeEnd
 
 		WHERE
-			UGE.eventName = E.eventName AND
-			UGE.lat = E.lat AND
-			UGE.lon = E.lon AND
-			UGE.timeStart = E.timeStart AND
-			UGE.timeEnd = E.timeEnd AND
 			UGE.email = ?
 
-		Group By UGE.eventName, UGE.eventName, UGE.lat, UGE.lon, UGE.timeStart, UGE.timeEnd
+		Group By UGE.email, UGE.eventName, UGE.lat, UGE.lon, UGE.timeStart, UGE.timeEnd, W.groupId
 		Order By UGE.timeStart DESC
-		LIMIT ? OFFSET ?";
+        ) as AE
+		LEFT OUTER JOIN `Group` G on
+        AE.groupId = G.groupId 
+        Group By AE.email, AE.eventName, AE.lat, AE.lon, AE.timeStart, AE.timeEnd
+        LIMIT ? OFFSET ?";
 
 		$stmt = $this->conn->prepare($getEventSql);
 		$stmt->bind_param('sii', $escapeEmail, $this->LIMIT, $offset);
@@ -361,6 +398,11 @@ class Account extends Database
 			if (isset($dataObj["password"])){
 				$data = $dataObj["password"];
 				$this->updatePassword($table, $data);
+			}
+
+			if (isset($dataObj["getProfile"])){
+				$data = $dataObj["getProfile"];
+				$this->getProfile($table, $data);
 			}
 		}else{
 			$this->response("Method Not Allowed", 405);
