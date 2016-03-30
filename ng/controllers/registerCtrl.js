@@ -25,6 +25,13 @@ var app = angular.module('groupUpApp').controller('RegisterCtrl', function($scop
 	this.aLastName;
 	this.aPhone;
 
+	this.checkAge = function checkAge(){
+		if (this.age >= 0){
+			return false;
+		}
+		return true;
+	}
+
 	this.registerUser = function(){
 		this.url = "/controller/authentication/user"
 		this.dataLoading = true;

@@ -223,6 +223,24 @@ VALUES
 "test description",
 "testEP5@test.com");
 
+INSERT INTO `GroupUpDebug`.`Event`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`,
+`cost`,
+`description`,
+`createdBy`)
+VALUES
+("Test Event 6",
+4.33,
+-124.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
+1827.77,
+"test description",
+"testEP1@test.com");
 
 INSERT INTO `GroupUpDebug`.`EventType`
 (`category`)
@@ -279,7 +297,6 @@ VALUES
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28'
 );
-
 
 INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
 (`eventTypeId`,
@@ -556,6 +573,68 @@ VALUES
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
+INSERT INTO `GroupUpDebug`.`Event`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`,
+`cost`,
+`description`,
+`createdBy`)
+VALUES
+("Private Test Event 6",
+4.33,
+-124.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
+1827.77,
+"Amazing event where you can meet new people",
+"testEP1@test.com");
+
+INSERT INTO `GroupUpDebug`.`PrivateEvent`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("Private Test Event 6",
+4.33,
+-124.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
+(`eventTypeId`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+(5,
+"Private Test Event 6",
+4.33,
+-124.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
+(`eventTypeId`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+(1,
+"Private Test Event 6",
+4.33,
+-124.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
 
 INSERT INTO `GroupUpDebug`.`User`
 (`email`,
@@ -708,6 +787,21 @@ VALUES
 '2016-04-30 14:53:28',
 "TestMessage");
 
+INSERT INTO `GroupUpDebug`.`HasInvitation`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`,
+`message`)
+VALUES
+("Private Test Event 6",
+4.33,
+-124.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
+"Hello welcome to our amazing event");
+
 INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
 (`email`,
 `invitationId`,
@@ -802,6 +896,25 @@ VALUES
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28',
 'testUser5@test.com');
+
+INSERT INTO `GroupUpDebug`.`EventProviderSendInvitation`
+(`email`,
+`invitationId`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`,
+`sendToEmail`)
+VALUES
+("testEP1@test.com",
+6,
+"Private Test Event 6",
+4.33,
+-124.2,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
+'testUser1@test.com');
 
 INSERT INTO `GroupUpDebug`.`UserGoesEvent`
 (`email`,

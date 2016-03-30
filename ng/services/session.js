@@ -11,13 +11,14 @@ angular.module('groupUpApp').service("SessionService", function($http) {
 						this.sessionInfo = response.data; // accountType: user = 0, eventprovider = 1, admin = 2
 					}.bind(this));
 		},
-		login: function(email, password) {
+		login: function(email, password, accountType) {
 			return $http({
 					method: 'POST',
 					url: 'controller/login/login',
 					data: {
 						email: email,
-						password: password
+						password: password,
+						accountType: accountType
 					}
 				})
 				.then(

@@ -10,3 +10,13 @@
 	border-radius: 10px;
 	left: 10%;
 }
+
+.custom-button{
+	width:100%;
+	vertical-align: middle;
+	display: table-cell;
+}
+
+.center{
+	text-align:center;
+}
