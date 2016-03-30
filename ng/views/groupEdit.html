@@ -1,44 +1,44 @@
-    <div class="groups-modal-container"
-      id="join-group-edit-modal-container">
-      <h2 class="modal-header">{{ modalGroupName }}</h2>
+<div class="groups-modal-container"
+  id="join-group-edit-modal-container">
+  <h2 class="modal-header">{{ modalGroupName }}</h2>
 
-      <form class="form-signin" ng-submit="ctrl.updateGroup()"
-        name="groupEdit" role="form">
+  <form class="form-signin" ng-submit="ctrl.updateGroup()"
+    name="groupEdit" role="form">
 
-        <div class="form-group" ng-class="{
-          'has-error': groupEdit.name.$dirty &&
-          (groupEdit.name.$error.required
-          || groupEdit.name.$invalid)}">
-          <label for="inputName" class="sr-only">Group Name</label>
-          <input type="name" name="name"
-            data-ng-model="ctrl.tempGroup.groupName"
-            id="input-name" class="form-control"
-            placeholder="Group Name" required>
-          <span ng-show="groupEdit.name.$dirty &&
-            (groupEdit.name.$error.required
-            || groupEdit.name.$invalid)"
-            class="help-block">Valid Group Name is Required</span>
-        </div>
-
-        <div class="form-group" ng-class="{
-          'has-error': groupEdit.description.$dirty
-          && groupEdit.description.$error.required}">
-          <label for="inputDescription" class="sr-only">
-            Group Description</label>
-          <textarea type="description" name="description" rows="5"
-            data-ng-model="ctrl.tempGroup.description"
-            id="textarea-description" class="form-control"
-            placeholder="Group Description" required>
-            </textarea>
-          <span ng-show="groupEdit.description.$dirty
-            && groupEdit.description.$error.required"
-            class="help-block">Group Description is Required</span>
-        </div>
-
-        <button class="btn btn-warning btn-lg" type="submit"
-          id="group-edit-update-button"
-          ng-disabled="groupEdit.$invalid || ctrl.dataLoading">
-          Update
-        </button>
-      </form>
+    <div class="form-group" ng-class="{
+      'has-error': groupEdit.name.$dirty &&
+      (groupEdit.name.$error.required
+      || groupEdit.name.$invalid)}">
+      <label for="inputName" class="sr-only">Group Name</label>
+      <input type="name" name="name"
+        data-ng-model="ctrl.tempGroup.groupName"
+        id="input-name" class="form-control"
+        placeholder="Group Name" required>
+      <span ng-show="groupEdit.name.$dirty &&
+        (groupEdit.name.$error.required
+        || groupEdit.name.$invalid)"
+        class="help-block">Valid Group Name is Required</span>
     </div>
+
+    <div class="form-group" ng-class="{
+      'has-error': groupEdit.description.$dirty
+      && groupEdit.description.$error.required}">
+      <label for="inputDescription" class="sr-only">
+        Group Description</label>
+      <textarea type="description" name="description" rows="5"
+        data-ng-model="ctrl.tempGroup.description"
+        id="textarea-description" class="form-control"
+        placeholder="Group Description" required>
+        </textarea>
+      <span ng-show="groupEdit.description.$dirty
+        && groupEdit.description.$error.required"
+        class="help-block">Group Description is Required</span>
+    </div>
+
+    <button class="btn btn-warning btn-lg" type="submit"
+      id="group-edit-update-button"
+      ng-disabled="groupEdit.$invalid || ctrl.dataLoading">
+      Update
+    </button>
+  </form>
+</div>

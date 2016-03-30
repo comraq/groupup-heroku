@@ -34,6 +34,11 @@ app.config(function($routeProvider) {
             controller: 'GroupCtrl',
             controllerAs: 'ctrl'
         })
+        .when("/Profile", {
+          templateUrl: 'ng/views/profile.html',
+          controller: 'ProfileCtrl',
+          controllerAs: 'ctrl'
+        })
         .when("/SignIn", {
             templateUrl: 'ng/views/signIn.html',
             controller: 'SignInCtrl',
@@ -54,9 +59,7 @@ app.config(function($routeProvider) {
             templateUrl: 'ng/views/userAccount.html',
             controller: 'UserAccountCtrl',
             controllerAs: 'ctrl',
-            
         });
-    //.otherwise({redirectTo: "/"});
 });
 
 app.run(function(SessionService) {

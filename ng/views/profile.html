@@ -1,0 +1,37 @@
+<div class="container">
+
+  <ul class="nav nav-tabs nav-justified">
+    <li class="active">
+      <a data-toggle="tab" data-target="#group-list">
+        My Events Statistics</a>
+    </li>
+  </ul>
+
+  <h3 id="events-view-toggle-label">View By</h3>
+        <toggle-switch data-ng-model="typeView" 
+          on-label="By Type" off-label="By Event">
+        </toggle-switch>
+
+        <table fixed-header class="table profile-events-table"
+         id="profile-provider-events-table" ng-show="!typeView"
+         name="profile-provider-events-table">
+          <thead>
+            <tr>
+              <th>Event Name</th>
+              <th>Time Start</th>
+              <th>Time End</th>
+              <th>Cost</th>
+              <th>Number of Attendees</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="e in events | orderBy: 'eventName'">
+              <td>{{ e.eventName }}</td>
+              <td>{{ e.timeStart }}</td>
+              <td>{{ e.timeEnd }}</td>
+              <td>{{ e.cost | currency }}</td>
+              <td>{{ e.numUsers }}</td>
+            </tr>
+          </tbody>
+        </table>
+</div>

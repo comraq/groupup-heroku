@@ -15,7 +15,7 @@ var app = angular.module('groupUpApp')
   this.location = $location;
   this.joinTab = true;
   this.scope.
-      joinGroupMapModalButton = "Confirm Action for Current Group";
+       joinGroupMapModalButton = "Confirm Action for Current Group";
 
   this.newGroup = {
     name: "",
@@ -31,7 +31,7 @@ var app = angular.module('groupUpApp')
   };
 
   /*
-  /* Restricts the max number of UserGoesEvent instances per group
+   * Restricts the max number of UserGoesEvent instances per group
    * displayed in the Join Groups Tab 
    */
   this.scope.userGoesEventsPerGroupLimit = 3;
@@ -60,8 +60,14 @@ var app = angular.module('groupUpApp')
 
     modalInstance.result.then(function(result) {
       ctrl.dismissModal = undefined;
+      if (verbose)
+        console.log("dismissModal reset, modal closed for result")
+
     }, function(reason) {
       ctrl.dismissModal = undefined;
+      if (verbose)
+        console.log("dismissModal reset, modal dismissed for reason")
+
     });
 
     if (verbose) {
@@ -71,6 +77,11 @@ var app = angular.module('groupUpApp')
 
     // A Reference to the dismiss function of the opened modal
     ctrl.dismissModal = modalInstance.dismiss;
+
+    if (verbose) {
+      console.log("Opening modal, setting ctrl.dismissModal: ");
+      console.log(ctrl.dismissModal);
+    }
   }
 
   this.showJoinGroupsMapModal = function showJoinGroupsMapModal(mapId,
@@ -140,7 +151,7 @@ var app = angular.module('groupUpApp')
     this.joinTab = false;
     this.joinGroupId = undefined;
 
-    /* Resetting the properties of newGroup */
+    // Resetting the properties of newGroup
     this.newGroup.name = "";
     this.newGroup.description = "";
 
@@ -220,10 +231,8 @@ var app = angular.module('groupUpApp')
       if (verbose)
         console.log("getGroups res: " + JSON.stringify(res));
 
-      this.scope.groups = JSON.parse(res.data).map(function(e, i, arr) {
-        return e;
-      });
-      if (this.scope.groups.length < origGroupsCount)
+      this.scope.groups = JSON.parse(res.data);
+      if (this.dismissModal && this.scope.groups.length < origGroupsCount)
         this.dismissModal();
 
       if (verbose)
@@ -369,6 +378,7 @@ var app = angular.module('groupUpApp')
     this.updateGroup();
   };
 
+  // Below is the initialization code when routed to group.html view
   if (Object.keys($routeParams).length == 0)
     this.getGroups();
   else {

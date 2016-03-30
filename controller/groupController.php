@@ -92,7 +92,7 @@
 
       $this->connect();
       $escEmail = $this->conn->real_escape_string(
-                 GroupController::getUserEmail());
+                  GroupController::getUserEmail());
       $allEventsSql =
         'select E.eventName, E.timeStart, E.timeEnd, E.cost,
                 E.lat, E.lon, ifnull(T.category, "None") as category,
@@ -469,8 +469,7 @@
                $this->conn, $groupId, $data['withEvents']);
       if (!is_null($err)) {
         // Failed to Add User To Group
-        // Deleting Previously Created Group
-
+        // Rollback, includes deleting previously created Group
         $this->rollback();
         $this->disconnect();
         $this->response($err['data'], $err['statusCode']);

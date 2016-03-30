@@ -242,6 +242,82 @@ VALUES
 "test description",
 "testEP1@test.com");
 
+INSERT INTO `GroupUpDebug`.`Event`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`,
+`cost`,
+`description`,
+`createdBy`)
+VALUES
+("Test Event 5-1",
+45.3956,
+-128.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
+127.77,
+"test description",
+"testEP5@test.com");
+
+INSERT INTO `GroupUpDebug`.`Event`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`,
+`cost`,
+`description`,
+`createdBy`)
+VALUES
+("Test Event 5-2",
+46.3956,
+-130.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
+127.77,
+"test description",
+"testEP5@test.com");
+
+INSERT INTO `GroupUpDebug`.`Event`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`,
+`cost`,
+`description`,
+`createdBy`)
+VALUES
+("Test Event 5-3",
+44.3956,
+-120.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
+127.77,
+"test description",
+"testEP5@test.com");
+
+INSERT INTO `GroupUpDebug`.`Event`
+(`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`,
+`cost`,
+`description`,
+`createdBy`)
+VALUES
+("Test Event 5-4",
+41.3956,
+-121.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28',
+12007.77,
+"test description",
+"testEP5@test.com");
+
 INSERT INTO `GroupUpDebug`.`EventType`
 (`category`)
 VALUES
@@ -370,10 +446,220 @@ INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
 `timeStart`,
 `timeEnd`)
 VALUES
+(1,
+"Test Event 5",
+44.3956,
+-127.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
+(`eventTypeId`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+(2,
+"Test Event 5",
+44.3956,
+-127.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
+(`eventTypeId`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+(3,
+"Test Event 5",
+44.3956,
+-127.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
+(`eventTypeId`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+(4,
+"Test Event 5",
+44.3956,
+-127.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
+(`eventTypeId`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
 (5,
 "Test Event 5",
 44.3956,
 -127.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
+(`eventTypeId`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+(1,
+"Test Event 5-1",
+45.3956,
+-128.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
+(`eventTypeId`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+(7,
+"Test Event 5-1",
+45.3956,
+-128.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
+(`eventTypeId`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+(8,
+"Test Event 5-1",
+45.3956,
+-128.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
+(`eventTypeId`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+(6,
+"Test Event 5-2",
+46.3956,
+-130.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
+(`eventTypeId`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+(7,
+"Test Event 5-2",
+46.3956,
+-130.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
+(`eventTypeId`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+(2,
+"Test Event 5-3",
+44.3956,
+-120.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
+(`eventTypeId`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+(4,
+"Test Event 5-3",
+44.3956,
+-120.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
+(`eventTypeId`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+(5,
+"Test Event 5-3",
+44.3956,
+-120.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
+(`eventTypeId`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+(8,
+"Test Event 5-3",
+44.3956,
+-120.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`EventTypeHasEvent`
+(`eventTypeId`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+(4,
+"Test Event 5-4",
+41.3956,
+-121.968,
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
@@ -991,6 +1277,200 @@ VALUES
 '2016-04-30 14:53:28',
 '2016-04-30 14:53:28');
 
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
+(`email`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("testUser1@test.com",
+"Test Event 5",
+44.3956,
+-127.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
+(`email`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("testUser2@test.com",
+"Test Event 5",
+44.3956,
+-127.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
+(`email`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("testUser3@test.com",
+"Test Event 5",
+44.3956,
+-127.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
+(`email`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("testUser3@test.com",
+"Test Event 5-1",
+45.3956,
+-128.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
+(`email`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("testUser4@test.com",
+"Test Event 5-1",
+45.3956,
+-128.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
+(`email`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("testUser3@test.com",
+"Test Event 5-2",
+46.3956,
+-130.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
+(`email`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("testUser1@test.com",
+"Test Event 5-3",
+44.3956,
+-120.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
+(`email`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("testUser2@test.com",
+"Test Event 5-3",
+44.3956,
+-120.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
+(`email`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("testUser3@test.com",
+"Test Event 5-3",
+44.3956,
+-120.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
+(`email`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("testUser4@test.com",
+"Test Event 5-3",
+44.3956,
+-120.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
+(`email`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("testUser5@test.com",
+"Test Event 5-3",
+44.3956,
+-120.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
+(`email`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("testUser3@test.com",
+"Test Event 5-4",
+41.3956,
+-121.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
+
+INSERT INTO `GroupUpDebug`.`UserGoesEvent`
+(`email`,
+`eventName`,
+`lat`,
+`lon`,
+`timeStart`,
+`timeEnd`)
+VALUES
+("testUser5@test.com",
+"Test Event 5-4",
+41.3956,
+-121.968,
+'2016-04-30 14:53:28',
+'2016-04-30 14:53:28');
 
 INSERT INTO `GroupUpDebug`.`UserReadsInvitation`
 (`email`,
