@@ -4,10 +4,6 @@ require_once(__DIR__.'/database.php');
 
 class Login extends Database {
 
-	public $errors = array();
-    
-    public $messages = array();
-
 	function __construct(){
 		parent::__construct();
 
@@ -42,7 +38,7 @@ class Login extends Database {
                 $_SESSION['account_type'] = 0;
                 return $arr = array('email' => $_SESSION['email'], 'accountType' => $_SESSION['account_type']);
             } else {
-                $this->errors[] = "Wrong password. Try again.";
+                $this->response("Wrong password. Try again.", 401);
             }
             return;
         }
@@ -63,7 +59,7 @@ class Login extends Database {
                 $_SESSION['account_type'] = 1;
                 return $arr = array('email' => $_SESSION['email'], 'accountType' => $_SESSION['account_type']);
             } else {
-                $this->errors[] = "Wrong password. Try again.";
+                $this->response("Wrong password. Try again.", 401);
             }
             return;
         }
@@ -84,12 +80,12 @@ class Login extends Database {
                 $_SESSION['account_type'] = 2;
                 return $arr = array('email' => $_SESSION['email'], 'accountType' => $_SESSION['account_type']);
             } else {
-                $this->errors[] = "Wrong password. Try again.";
+                $this->response("Wrong password. Try again.", 401);
             }
             return;
         }
         else {
-            $this->errors[] = "This account does not exist.";
+            $this->response("This account does not exist.", 401);
         }
     }
 
