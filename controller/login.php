@@ -104,7 +104,8 @@ class Login extends Database {
             AND isset($_SESSION['login_status'])
             AND $_SESSION['login_status'] == 1) {
             $arr = array('email' => $_SESSION['email'], 'accountType' => $_SESSION['account_type']);
-            return $arr; // user = 0, eventprovider = 1, admin = 2
+            $this->response($arr, 200);
+            // return $arr; // user = 0, eventprovider = 1, admin = 2
         }
         $this->response(null, 200);
     }
