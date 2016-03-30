@@ -1,4 +1,5 @@
-var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($scope, $http, $location, alertFactory, email){
+var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($scope, $http, $location, alertFactory, SessionService){
+	SessionService.getSessionInfo();
 	this.addUserUrl = "/controller/userGoesEvent/startUserGoesEvent";
     this.cancelUrl = "/controller/userGoesEvent/startCancelUserGoesEvent";
     this.getProfileUrl = "/controller/account/user";
@@ -6,7 +7,7 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 	this.scope = $scope;
 	this.dataLoading;
 	this.loadingAttend;
-	this.email = email;
+	this.email = SessionService.sessionInfo["email"];
 
 	// for updating password
 	this.oldPassword;
@@ -28,6 +29,14 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 	this.eveEndOfResult = false;
 	this.evePage = 0;
 	this.events = [];
+
+	this.checkAge = function checkAge(){
+		if (this.age >= 0){
+			return false;
+		}
+		return true;
+	}
+	
 	this.getProfile = function getProfile(){
 		var data = {
 			getProfile: {

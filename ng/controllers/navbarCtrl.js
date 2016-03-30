@@ -3,5 +3,8 @@ angular.module('groupUpApp').controller('navbarCtrl',
 		this.isLoggedIn = function () {
 			return SessionService.isLoggedIn();
 		};
+		this.accountType = function () {
+			return SessionService.sessionInfo["accountType"];
+		}
 	});
 

@@ -96,9 +96,15 @@
 					<li><a href="#/Register">Register</a></li>
 				</ul>
 
-				<ul ng-show="navBar.isLoggedIn()" class="nav navbar-nav navbar-right">
+				<ul ng-show="navBar.isLoggedIn() && (navBar.accountType == 0)" class="nav navbar-nav navbar-right">
+                    <li><a href="#/Account">Account</a></li>
 					<li><a href="#/SignOut">Sign Out</a></li>
 				</ul>
+
+                <ul ng-show="navBar.isLoggedIn() && (navBar.accountType == 1)" class="nav navbar-nav navbar-right">
+                    <li><a href="#/">Event Provider Account</a></li>
+                    <li><a href="#/SignOut">Sign Out</a></li>
+                </ul>
 
 			</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->

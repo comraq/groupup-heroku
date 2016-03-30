@@ -65,27 +65,27 @@
 			<form class="form-signin" ng-submit="ctrl.updateProfile()" name="userProfile" role="form">
 
 		        <div class="form-group" ng-class="{ 'has-error': userProfile.firstName.$dirty && userProfile.firstName.$error.required }">
-				    <label for="updateFirstName" class="sr-only">First Name</label>
+				    <label for="updateFirstName">First Name</label>
 				    <input type="text" name="firstName" id="updateFirstName" data-ng-model="ctrl.firstName" class="form-control" placeholder="First Name" required>
 				    <span ng-show="userProfile.firstName.$dirty && userProfile.firstName.$error.required" class="help-block">First Name is required</span>
 				</div>
 
 				<div class="form-group" ng-class="{ 'has-error': userProfile.lastName.$dirty && userProfile.lastName.$error.required }">
-				    <label for="updateLastName" class="sr-only">Last Name</label>
+				    <label for="updateLastName">Last Name</label>
 				    <input type="text" name="lastName" id="updateLastName" data-ng-model="ctrl.lastName" class="form-control" placeholder="Last Name" required>
 				    <span ng-show="userProfile.lastName.$dirty && userProfile.lastName.$error.required" class="help-block">Last Name is required</span>
 				</div>
 
 				<div class="form-group" ng-class="{ 'has-error': userProfile.phone.$dirty && (userProfile.phone.$error.required || userProfile.phone.$invalid) }">
-				    <label for="updatePhone" class="sr-only">Phone Number</label>
+				    <label for="updatePhone">Phone Number</label>
 				    <input type="tel" name="phone" id="updatePhone" data-ng-model="ctrl.phone" class="form-control" placeholder="Phone Number" required>
 				    <span ng-show="userProfile.phone.$dirty && userProfile.phone.$error.required" class="help-block">Valid Phone Number is required</span>
 				</div>
 
-				<div class="form-group" ng-class="{ 'has-error': userProfile.age.$dirty && (userProfile.age.$error.required || userProfile.age.$invalid)}">
-				    <label for="updateAge" class="sr-only">Age</label>
+				<div class="form-group" ng-class="{ 'has-error': userProfile.age.$dirty && (userProfile.age.$error.required || userProfile.age.$invalid || ctrl.checkAge())}">
+				    <label for="updateAge">Age</label>
 				    <input type="number" name="age" id="updateAge" data-ng-model="ctrl.age" class="form-control" placeholder="Age" required>
-				    <span ng-show="userProfile.age.$dirty && (userProfile.age.$error.required || userProfile.age.$invalid)" class="help-block">Valid Age is required</span>
+				    <span ng-show="userProfile.age.$dirty && (userProfile.age.$error.required || userProfile.age.$invalid || ctrl.checkAge())" class="help-block">Valid Age is required</span>
 				</div>
 		    	
 		    	<button class="btn btn-lg btn-block btn-blog" type="submit" ng-disabled="userProfile.$invalid || ctrl.dataLoading">Update Profile</button>
@@ -96,19 +96,19 @@
 		<div id="password" class="tab-pane fade">
 			<form class="form-signin" ng-submit="ctrl.updatePassword()" name="userPassword" role="form">
 				<div class="form-group" ng-class="{ 'has-error': userPassword.oldPassword.$dirty && userPassword.oldPassword.$error.required}">
-				    <label for="updateOldPassword" class="sr-only">Old Password</label>
+				    <label for="updateOldPassword">Old Password</label>
 				    <input type="password" name="oldPassword" data-ng-model="ctrl.oldPassword" id="updateOldPassword" class="form-control" placeholder="Old Password" required>
 					<span ng-show="userPassword.password.$dirty && userPassword.password.$error.required" class="help-block">Password is required</span>
 				</div>
 
 				<div class="form-group" ng-class="{ 'has-error': userPassword.newPassword.$dirty && userPassword.newPassword.$error.required}">
-				    <label for="updateNewPassword" class="sr-only">New Password</label>
+				    <label for="updateNewPassword">New Password</label>
 				    <input type="password" name="newPassword" data-ng-model="ctrl.newPassword" id="updateNewPassword" class="form-control" placeholder="New Password" required>
 					<span ng-show="userPassword.newPassword.$dirty && userPassword.newPassword.$error.required" class="help-block">Password is required</span>
 				</div>
 
 				<div class="form-group" ng-class="{ 'has-error': userPassword.rePassword.$dirty && userPassword.rePassword.$error.required }">
-				    <label for="updateRePassword" class="sr-only">Re New Password</label>
+				    <label for="updateRePassword">Re New Password</label>
 				    <input type="password" name="rePassword" id="updateRePassword" data-ng-model="ctrl.rePassword" class="form-control" placeholder="Re-New Password" required>
 				    <span ng-show="userPassword.rePassword.$dirty && userPassword.rePassword.$error.required" class="help-block">Re-Password is required</span>
 				</div>

@@ -46,10 +46,10 @@
 				    <span ng-show="registerUser.phone.$dirty && (registerUser.phone.$error.required||registerUser.phone.$invalid)" class="help-block">Valid Phone Number is required</span>
 				</div>
 
-				<div class="form-group" ng-class="{ 'has-error': registerUser.age.$dirty && (registerUser.age.$error.required || registerUser.age.$invalid)}">
+				<div class="form-group" ng-class="{ 'has-error': registerUser.age.$dirty && (registerUser.age.$error.required || registerUser.age.$invalid || ctrl.checkAge())}">
 				    <label for="inputAge" class="sr-only">Age</label>
 				    <input type="number" name="age" id="inputAge" data-ng-model="ctrl.age" class="form-control" placeholder="Age" required>
-				    <span ng-show="registerUser.age.$dirty && (registerUser.age.$error.required || registerUser.age.$invalid)" class="help-block">Valid Age is required</span>
+				    <span ng-show="registerUser.age.$dirty && (registerUser.age.$error.required || registerUser.age.$invalid || ctrl.checkAge())" class="help-block">Valid Age is required</span>
 				</div>
 
 				<button class="btn btn-lg btn-block btn-blog" type="submit" ng-disabled="ctrl.dataLoading">Register</button>
