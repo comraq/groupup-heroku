@@ -5,8 +5,9 @@
     <li class="active" ng-click="ctrl.joinTabActive()">
       <a data-toggle="tab" data-target="#group-list">Join Groups</a>
     </li>
-    <li ng-click="ctrl.initCreateTab('create-group-events-map')">
-      <a data-toggle="tab" data-target="#group-create">Create Groups</a>
+    <li ng-click="ctrl.initCreateTab('create-group-events-map')"
+      id="create-group-tab">
+      <a data-toggle="tab" data-target="#group-create">Create Group</a>
     </li>
   </ul>
 
@@ -14,43 +15,73 @@
     <div id="group-list" class="tab-pane fade in active">  
       <div ng-repeat="group in groups" class="jumbotron">
         <div class="row">
-          <h1 class="col-md-7 join-group-group-title">
-            {{ group.groupName }}
-          </h1>
-          <h1 class="col-md-5 join-group-group-members-title">
-            Group Members
-          </h1>
-        </div>
+          <div class="col-md-7 join-group-jumbotron-detail-container">
+            <h1 class="join-group-group-title"
+              data-ng-model="group.groupName">
+              {{ group.groupName }}
+            </h1>
 
-        <div class="row">
-          <div class="col-md-7">
-            <p>{{ group.description }}</p>
-            <p>
-              <a class="btn btn-primary btn-lg" href="#" role="button">
-                Join Group</a>
+            <p data-ng-model="group.description">
+              {{ group.description }}
             </p>
-          </div>
+            <p>
+              <a class="btn btn-primary btn-lg ng-hide"
+                href="" role="button" ng-show="!group.editing"
+                ng-click=
+                  "ctrl.showJoinGroupsMapModal('join-group-events-map',
+                                                group)">
+                View Details</a>
+            </p>
+            <p>
+              <a class="btn btn-warning btn-lg ng-hide"
+                href="" role="button"
+                ng-click="ctrl.showEditGroupModal(group)"
+                ng-show="group.editing">
+                Edit</a>
+            </p>
+            <p>
+              <a class="btn btn-danger btn-lg ng-hide"
+                href="" role="button"
+                ng-click="ctrl.deleteGroup(group)"
+                ng-show="group.editing">
+                Delete</a>
+            </p>
+          </div><!-- join-group-jumbotron-detail-container -->
 
-          <div class="col-md-5">
+          <div class="col-md-5 join-group-jumbotron-members-container">
+            <p class="join-group-group-members-title">
+              Users Going With this Group
+            </p>
             <table class="table table-condensed">
               <tr>
-                <th>Email</th>
+                <th>User</th>
                 <th>Going to Event</th>
                 <th>Event Start</th>
               </tr>
-              <tr ng-repeat="event in group.events">
+              <tr ng-repeat="event in group.events |
+                limitTo: userGoesEventsPerGroupLimit">
                 <td>{{ event.email }}</td>
                 <td>{{ event.eventName }}</td>
                 <td>{{ event.timeStart }}</td>
               </tr>
             </table>
-          </div>
-        </div>
+            <div
+              ng-if="group.events.length - userGoesEventsPerGroupLimit > 0">
+              and {{ group.events.length - userGoesEventsPerGroupLimit }}
+              more...
+            </div>
+          </div><!-- join-group-jumbotron-members-container -->
+        </div><!-- row -->
+
+        <toggle-switch data-ng-model="group.editing"
+          on-label="Edit" off-label="View">
+          Edit
+        </toggle-switch>
       </div><!-- jumbotron -->
     </div><!-- tabpane -->
 
     <div id="group-create" class="tab-pane fade"> 
-      <form class="form-signin" ng-submit="ctrl.testSubmit()"
+      <form class="form-signin" ng-submit="ctrl.createGroup()"
         name="createGroup" role="form">
 
         <div class="form-group" ng-class="{
@@ -88,12 +119,15 @@
           </label>
           <input type="filter" name="eventsFilter"
             data-ng-model="eventsFilter"
-            id="events-filter" class="form-control"
+            id="events-filter-input" class="form-control"
             placeholder="Filter Events" autofocus>
         </div>
  
-        <table fixed-header class="table"
-         id="create-group-events-table">
+        <label for="create-group-events-table"
+          id="create-group-events-table-label">
+          Create Group For Attending Events</label>
+        <table fixed-header class="table group-events-table"
+         id="create-group-events-table" name="create-group-events-table">
           <thead>
             <tr>
               <th>Event Name</th>
@@ -101,40 +135,45 @@
               <th>Time End</th>
               <th>Cost</th>
               <th>Category(ies)</th>
-              <th>Going With Event?</th>
+              <th>Attending Event?</th>
+              <th>Go With Group?</th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="e in events
                            | filter: eventsFilter
-                           | orderBy: '-selected'"
+                           | orderBy: '-selected'
+                           | orderBy: '-attendPreference'"
+              ng-class=
+                "{ 'group-events-table-user-attend-event': e.attending }"
               selection-model
               selection-model-type="checkbox"
               selection-model-mode="multiple-additive"
               selection-model-selected-items="ctrl.newGroup.withEvents"
               selection-model-on-change="ctrl.eventsChanged(e)"
-              selection-model-selected-class=
-                "create-group-events-selected">
+              selection-model-selected-class="group-events-selected">
               <td>{{ e.eventName }}</td>
               <td>{{ e.timeStart }}</td>
               <td>{{ e.timeEnd }}</td>
               <td>{{ e.cost | currency }}</td>
               <td>{{ e.category }} {{ e.remaining }}</td>
+              <td>{{ e.attendPreference }}</td>
               <td><input type="checkbox" /></td>
             </tr>
           </tbody>
         </table>
 
-        <ng-map id="create-group-events-map" center="[0,0]" zoom="13"
+        <ng-map id="create-group-events-map"
+          center="[0,0]" zoom="13"
           lazy-init="true" default-style="true">
             <marker ng-repeat="e in events | filter: {selected: 'true'}"
               position="{{e.lat}}, {{e.lon}}"></marker>
         </ng-map>
 
-        <button class="btn btn-lg btn-block btn-blog" type="submit"
-          id="create-group-button" 
+        <button class="btn btn-lg btn-block btn-success" type="submit"
+          id="create-group-button" ng-bind="createButton"
           ng-disabled="createGroup.$invalid || ctrl.dataLoading">
-          Create</button>
+        </button>
 
       </form>
     </div> <!-- tabpane -->

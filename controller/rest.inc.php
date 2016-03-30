@@ -33,13 +33,14 @@ class REST
 					400 => 'Bad Request', 
 					404 => 'Not Found',
 					405 => 'Method Not Allowed',  
-					406 => 'Not Acceptable');
+					406 => 'Not Acceptable',
+					500 => 'Internal Server Error');
 		return ($status[$this->_code])?$status[$this->_code]:$status[500];
 	}
 	
 	private function set_headers(){
 		header("HTTP/1.1 ".$this->_code." ".$this->get_status_message());
-		header("Content-Type:".$this->_content_type);
+		header("Content-Type: ".$this->_content_type);
 	}
 }	
 ?>

@@ -1,50 +1,50 @@
-var app = angular.module('groupUpApp',
-                         [
-                           'ngAnimate',
-                           'ngRoute',
-                           'ngSanitize',
-                           'ngMap',
-                           'alertService',
-                           'selectionModel',
-                           'anguFixedHeaderTable',
-                           'ui.bootstrap.datetimepicker',
-                           'infinite-scroll'
-                         ]);
+var app = angular.module('groupUpApp', [
+    'ngAnimate',
+    'ngRoute',
+    'ngSanitize',
+    'ngMap',
+    'alertService',
+    'selectionModel',
+    'anguFixedHeaderTable',
+    'ui.bootstrap.datetimepicker',
+    'ui.bootstrap',
+    'toggle-switch',
+    'infinite-scroll'
+]);
 
-app.config(function ($routeProvider) {
+app.config(function($routeProvider) {
     $routeProvider
-        .when("/",
-        {
-        	templateUrl: 'ng/views/news.html',
+        .when("/", {
+            templateUrl: 'ng/views/news.html',
             controller: 'NewsCtrl',
             controllerAs: 'ctrl'
-        }) 
-        .when("/Event",
-        {
+        })
+        .when("/Event", {
             templateUrl: 'ng/views/event.html',
             controller: 'EventCtrl',
             controllerAs: 'ctrl'
         })
-        .when("/Group/:eventName?/:lat?/:lon?/:timeStart?/:timeEnd?/:createdBy?",
-        {
+        .when("/Group/:eventName/:lat/:lon/:timeStart/:timeEnd/:createdBy", {
             templateUrl: 'ng/views/group.html',
             controller: 'GroupCtrl',
             controllerAs: 'ctrl'
         })
-        .when("/Group",
-        {
+        .when("/Group", {
             templateUrl: 'ng/views/group.html',
             controller: 'GroupCtrl',
             controllerAs: 'ctrl'
         })
-        .when("/SignIn",
-        {
+        .when("/SignIn", {
             templateUrl: 'ng/views/signIn.html',
             controller: 'SignInCtrl',
             controllerAs: 'ctrl'
+
+        }).when("/SignOut", {
+            templateUrl: 'ng/views/signOut.html',
+            controller: 'SignOutCtrl',
+            controllerAs: 'ctrl'
         })
-        .when("/Register",
-        {
+        .when("/Register", {
             templateUrl: 'ng/views/register.html',
             controller: 'RegisterCtrl',
             controllerAs: 'ctrl'
@@ -58,5 +58,9 @@ app.config(function ($routeProvider) {
                 email: function(){ return "testUser1@test.com";}
             }
         });
-        //.otherwise({redirectTo: "/"});
+    //.otherwise({redirectTo: "/"});
+});
+
+app.run(function(SessionService) {
+    SessionService.getSessionInfo();
 });

@@ -250,12 +250,27 @@ VALUES
 INSERT INTO `GroupUpDebug`.`EventType`
 (`category`)
 VALUES
+("Action Movie");
+
+INSERT INTO `GroupUpDebug`.`EventType`
+(`category`)
+VALUES
+("SciFi Movie");
+
+INSERT INTO `GroupUpDebug`.`EventType`
+(`category`)
+VALUES
 ("Rock Concert");
 
 INSERT INTO `GroupUpDebug`.`EventType`
 (`category`)
 VALUES
 ("Fight Club");
+
+INSERT INTO `GroupUpDebug`.`EventType`
+(`category`)
+VALUES
+("Pub Crawl");
 
 INSERT INTO `GroupUpDebug`.`EventType`
 (`category`)

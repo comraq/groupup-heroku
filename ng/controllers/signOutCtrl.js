@@ -1,10 +1,10 @@
-angular.module('groupUpApp').controller('SignInCtrl',
+angular.module('groupUpApp').controller('SignOutCtrl',
 	function($location, SessionService, alertFactory){
-		this.signIn = function () {
-			SessionService.login(this.email, this.password)
+		this.signOut = function () {
+			SessionService.logout()
 			.then(
 				function successCallback(response){
-					alertFactory.add('success', 'Login Successful');
+					alertFactory.add('success', 'Logout Successful');
 					$location.path('/');
 				}.bind(this),
 				function errorCallback(response){
@@ -12,6 +12,5 @@ angular.module('groupUpApp').controller('SignInCtrl',
 					alertFactory.add('danger', message);
 				}.bind(this));
 		};
-
 	});
 
