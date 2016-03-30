@@ -146,7 +146,7 @@ class Account extends Database
 		$result;
 		$statusCode;
 
-		if(is_null($oldPassword) || is_null($password) || is_null($rePassword)) 
+		if(is_null($oldPassword) || is_null($newPassword) || is_null($rePassword)) 
 		{
 			$result = array(
 				'data' => "All fields must be filled"
@@ -175,15 +175,15 @@ class Account extends Database
 		}
 
 		$checkPasswordSql = "select password from " . $table . " where email = ?";
-		$stmt = $this->conn->prepare($checkEmailSql);
+		$stmt = $this->conn->prepare($checkPasswordSql);
 		$stmt->bind_param('s', $escapeEmail);
 		$stmt->execute();
 		$res = $stmt->get_result();
 		$checkPassword = $res->fetch_all(MYSQLI_ASSOC);
 	    $stmt->close();
-	    
+
 	    // check if password is correct
-	    if (!password_verify($escapeOldPass, $checkPassword["password"]))
+	    if (!password_verify($escapeOldPass, $checkPassword[0]["password"]))
 		{ 
 			$this->disconnect(); 
 			$result = array(
@@ -194,9 +194,9 @@ class Account extends Database
 			return;
 		}
 	
-		$updatePassSql = "update " . $table . "set password=? where email = ?";
+		$updatePassSql = "update " . $table . " set password=? where email = ?";
 		$stmt = $this->conn->prepare($updatePassSql);
-		$stmt->bind_param('s', $hashPass);
+		$stmt->bind_param('ss', $hashPass, $escapeEmail);
 		$stmt->execute();
 		$stmt->close();
 		$result = array(
