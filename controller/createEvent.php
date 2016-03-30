@@ -51,13 +51,14 @@ class CreateEvent extends Database{
 			$table = "PrivateEvent";
 		}
 
-		//$checkIfExists = "SELECT * FROM " . $table . " WHERE eventName=? AND lat= CAST(? AS DECIMAL(10,5)) AND lon=CAST(? AS DECIMAL(10,5)) AND timeStart=? AND timeEnd=?";
-		
 		$checkIfExists = "SELECT * FROM `Event` WHERE eventName=? AND lat= CAST(? AS DECIMAL(10,5)) AND lon=CAST(? AS DECIMAL(10,5)) AND timeStart=? AND timeEnd=?";
 		
 		$checkIfExistsStmt = $this->conn->prepare($checkIfExists);
 		$checkIfExistsStmt->bind_param('sddss', $eventName, $lat, $lon, $timeStart, $timeEnd);
 		$checkIfExistsStmt->execute();
+		if(!$checkIfExistsStmt->execute()){
+			$result = array('data' => "This event already exists", 'code'=> 500);
+		}
 		$checkIfExistsStmt->store_result();
 
 
@@ -67,19 +68,28 @@ class CreateEvent extends Database{
 			
 			$insertEventStmt = $this->conn->prepare($insertEventSql);
 			$insertEventStmt->bind_param('sddssdss', $eventName, $lat, $lon, $timeStart, $timeEnd, $cost, $description, $createdBy);
-			$insertEventStmt->execute();
+			if(!$insertEventStmt->execute()){
+				$this->conn->rollback();
+				$result = array('data' => "There was an error inserting the event into the databse", 'code'=> 500);
+			}
 			$insertEventStmt->close();
 
 			if($privateEvent){
 
 				$insPEventStmt = $this->conn->prepare($insertPrivateEventSQL);
 				$insPEventStmt->bind_param('sddss', $eventName, $lat, $lon, $timeStart, $timeEnd);
-				$insPEventStmt->execute();
+				if(!$insPEventStmt->execute()){
+					$this->conn->rollback();
+					$result = array('data' => "There was an error inserting the event into the databse", 'code'=> 500);
+				}
 				$insPEventStmt->close();
 
 				$insHasInvStmt = $this->conn->prepare($insertHasInvitation);
 				$insHasInvStmt->bind_param('sddsss', $eventName, $lat, $lon, $timeStart, $timeEnd, $message);
-				$insHasInvStmt->execute();
+				if(!$insHasInvStmt->execute()){
+					$this->conn->rollback();
+					$result = array('data' => "There was an error inserting the invitation into the databse", 'code'=> 500);
+				}
 				$iID = $this->conn->insert_id;
 				$insHasInvStmt->close();
 
@@ -87,7 +97,10 @@ class CreateEvent extends Database{
 				$invStmt->bind_param('sdsddsss', $createdBy, $iID, $eventName, $lat, $lon, $timeStart, $timeEnd, $sendToEmail);
 				
 				foreach ($invitees as $sendToEmail) {
-					$invStmt->execute();
+					if(!$invStmt->execute()){
+						$this->conn->rollback();
+						$result = array('data' => "There was an error sending your invitaitons", 'code'=> 500);
+					}
 				}
 				$invStmt->close();
 			}
@@ -95,23 +108,27 @@ class CreateEvent extends Database{
 			$insertEventTypeHasEventStmt = $this->conn->prepare($insertEventTypeHasEvent);
 			$insertEventTypeHasEventStmt->bind_param('dsddss', $typeId, $eventName, $lat, $lon, $timeStart, $timeEnd);
 			foreach ($eventType as $typeId) {
-				$insertEventTypeHasEventStmt->execute();
+				if(!$insertEventTypeHasEventStmt->execute()){
+					$this->conn->rollback();
+					$result = array('data' => $this->conn->error, 'code'=> 500);
+				}
+
 			}
 			$insertEventTypeHasEventStmt->close();
 
 			if($this->conn->error){
 				$this->conn->rollback();
-				$result = array('data' => $this->conn->error);
+				$result = array('data' => $this->conn->error, 'code'=> 500);
 			}else{
 				$this->conn->query("COMMIT");
-				$result = TRUE;
+				$result = array('data' => TRUE, 'code'=> 200);
 			}
 			$this->conn->autocommit(TRUE);
 		}else{
-			$result = FALSE;
+			$result = array('data' => "This event already exists", 'code'=> 500);
 		}
 		$this->disconnect();
-		return json_encode($result);
+		return $result;
 	}
 
 	function startCreateEvent(){
@@ -120,7 +137,7 @@ class CreateEvent extends Database{
 			$json = file_get_contents("php://input");
 			$data = json_decode($json, TRUE);
 			$result = $this->createEvent($data);
-			$this->response($result, 200);
+			$this->response($result["data"], $result["code"]);
 		}else{
 			$result = array(
 				'data' => "Emtpy Data"

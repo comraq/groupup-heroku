@@ -135,7 +135,7 @@ CREATE TABLE EventTypeHasEvent (
         ON UPDATE CASCADE,
     FOREIGN KEY (eventName , lat, lon , timeStart , timeEnd)
         REFERENCES `Event` (eventName , lat, lon , timeStart , timeEnd)
-        ON DELETE NO ACTION
+        ON DELETE CASCADE
         ON UPDATE CASCADE
 );
 
