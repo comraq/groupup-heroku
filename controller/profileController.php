@@ -10,7 +10,7 @@
       return 'testEP5@test.com';
     }
 
-    function getEvents() {
+    function getUsersAndEvents() {
       $method = $_SERVER['REQUEST_METHOD'];
       if ($method != 'GET') {
         $res = array(
@@ -55,7 +55,66 @@
       };
 
       $res = $stmt->get_result();
-      $data = $res->fetch_all(MYSQLI_ASSOC);
+      $data = array();
+      $data['events'] = $res->fetch_all(MYSQLI_ASSOC);
+
+      /*
+       * The following query retrieves all users which attend events created
+       * by current logged in event provider while:
+       * - Providing a count of the number of events attended by each user
+       *   on a per event basis (ie: group by event)
+       * - Provide an additional boolean column indicating whether the user 
+       *   attends all events created by event provider (division query)
+       */
+      $rankUsersSql = "select UE.email, count(E.eventName) as numEvents,
+                              ifnull(D.attendAll, 0) as attendAll
+                       from UserGoesEvent UE
+                       inner join (
+                         select eventName, lat, lon, timeStart, timeEnd
+                         from Event
+                         where createdBy = ?
+                       ) as E
+                         on UE.eventName = E.eventName and
+                            UE.lat = E.lat and
+                            UE.lon = E.lon and
+                            UE.timeStart = E.timeStart and
+                            UE.timeEnd = E.timeEnd
+                       left join (
+                         select distinct UE.email, 1 as attendAll
+                         from UserGoesEvent UE
+                         where not exists (
+                           select *
+                           from Event E
+                           where E.createdBy = ? and
+                                 not exists (
+                                   select *
+                                   from UserGoesEvent U
+                                   where U.eventName = E.eventName and
+                                         U.lat = E.lat and
+                                         U.lon = E.lon and
+                                         U.timeStart = E.timeStart and
+                                         U.timeEnd = E.timeEnd and
+                                         U.email = UE.email
+                           )
+                         )
+                       ) as D
+                         on UE.email = D.email
+                       group by UE.email
+                       order by numEvents desc";
+
+      $stmt = $this->conn->prepare($rankUsersSql);
+      $stmt->bind_param('ss', $escEmail, $escEmail);
+      if (!$stmt->execute()) {
+        $stmt->close();
+        $this->disconnect();
+        $res = array(
+                 'data' => 'Error Retrieving User Information!'
+               );
+        $this->response($res, 500);
+      };
+
+      $res = $stmt->get_result();
+      $data['users'] = $res->fetch_all(MYSQLI_ASSOC);
 
       $stmt->close();
       $this->disconnect();

@@ -77,13 +77,12 @@
 					<li class="page"><a href="#/Group">Group</a></li>														
 				</ul>
 				<ul ng-hide="navBar.isLoggedIn()" class="nav navbar-nav navbar-right">
+  <li><a href="#/Profile">Profile</a></li>
 					<li><a href="#/SignIn">Sign In</a></li>
 					<li><a href="#/Register">Register</a></li>
 				</ul>
 
 				<ul ng-show="navBar.isLoggedIn()" class="nav navbar-nav navbar-right">
-						<li><a
-href="#/Profile">Profile</a></li>
 					<li><a href="#/SignOut">Sign Out</a></li>
 				</ul>
 

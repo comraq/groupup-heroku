@@ -17,14 +17,16 @@ var app = angular.module('groupUpApp')
   this.getEvents = function getEvents() {
     $http({
       method: "GET",
-      url: this.url + "/getEvents",
+      url: this.url + "/getUsersAndEvents",
     }).then(function successCallback(res) {
       if (verbose)
-        console.log("getEvents res: " + JSON.stringify(res));
+        console.log("getUsersAndEvents res: " + JSON.stringify(res));
 
-      this.scope.events = JSON.parse(res.data);
+      var data = JSON.parse(res.data);
+      this.scope.users = data.users;
+      this.scope.events = data.events;
       if (verbose)
-        console.log(this.scope.events);
+        console.log(data);
 
     }.bind(this), function errorCallback(err) {
       alertFactory.add("danger", err.data.data);
