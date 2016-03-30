@@ -8,7 +8,7 @@ angular.module('groupUpApp').service("SessionService", function($http) {
 			return $http.get('controller/login/getSessionInfo')
 				.then(
 					function successCallback(response){
-						this.sessionInfo = response.data;
+						this.sessionInfo = response.data; // accountType: user = 0, eventprovider = 1, admin = 2
 					}.bind(this));
 		},
 		login: function(email, password) {
