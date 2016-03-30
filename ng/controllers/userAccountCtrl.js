@@ -1,6 +1,7 @@
 var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($scope, $http, $location, alertFactory, email){
 	this.addUserUrl = "/controller/userGoesEvent/startUserGoesEvent";
-    this.cancelURL = "/controller/userGoesEvent/startCancelUserGoesEvent";
+    this.cancelUrl = "/controller/userGoesEvent/startCancelUserGoesEvent";
+    this.getProfileUrl = "/controller/account/user";
 	this.url;
 	this.scope = $scope;
 	this.dataLoading;
@@ -27,6 +28,34 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 	this.eveEndOfResult = false;
 	this.evePage = 0;
 	this.events = [];
+	this.getProfile = function getProfile(){
+		var data = {
+			getProfile: {
+						email: this.email
+					}
+		};
+
+		$http({
+	        method: 'POST',
+	        data: data,
+	        url: this.getProfileUrl
+	    	}).then(function successCallback(response) {
+	    		if (response.data){
+	    			var data = response.data.data[0];
+			    	this.firstName = data["firstName"];
+					this.lastName = data["lastName"];
+					this.phone = data["phone"];
+					this.age = data["age"];
+					
+				}
+	    	}.bind(this), function errorCallback(response){
+	    		this.loadingAttend = false; 
+				var message = response.data;
+				alertFactory.add('danger', message);
+
+			}.bind(this));
+	}
+	this.getProfile();
 
 	function loadEvents(eveJson){
 
@@ -39,13 +68,13 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 				lon: eveJson[i]["lon"],
 				timeStart: eveJson[i]["timeStart"],
 				timeEnd: eveJson[i]["timeEnd"],
-				cost: eveJson[i]["cost"],
+				cost: (eveJson[i]["cost"])? eveJson[i]["cost"] : "Free",
 				message: eveJson[i]["message"],
-				eventType: eveJson[i]["category"],
-				groupName: (eveJson[i]["groupName"])?  eveJson[i]["groupName"]: "No Group",
-				groupDescription: eveJson[i]["groupDescription"]
+				eventType: (eveJson[i]["category"])? eveJson[i]["category"] : "None",
+				groupName: (eveJson[i]["groupNames"])? eveJson[i]["groupNames"] : "No Group",
 			};
-		    events.push(event);
+			
+			events.push(event);
 		}
 		return events;
 	}
@@ -167,7 +196,7 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 
 		var data = {
 					password: {
-						email: this.aEmail,
+						email: this.email,
 						oldPassword: this.oldPassword,
 						newPassword: this.newPassword,
 						rePassword: this.rePassword
@@ -218,6 +247,9 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 		        if (JSON.parse(response.data)) {
 		        	invitation.going = 1;
 		            alertFactory.add('success', "Added user to event");
+		            this.evePage = 0;
+					this.events = [];
+					this.getEvents();
 		        } else {
 		            console.log("Unable to add user to event");
 		        }
@@ -245,12 +277,15 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 	    $http({
 	        method: 'POST',
 	        data: data,
-	        url: this.cancelURL
+	        url: this.cancelUrl
 	    	}).then(function successCallback(response) {
 		    	this.loadingAttend = false; 
 		        if (JSON.parse(response.data)) {
 		        	invitation.going = 0;
 		        	alertFactory.add('success', "Removed user from event");
+		        	this.evePage = 0;
+					this.events = [];
+					this.getEvents();
 		        } else {
 		            console.log("Unable to removed user to event");
 		        }

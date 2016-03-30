@@ -13,7 +13,7 @@
 			<div infinite-scroll='ctrl.getEvents()' infinite-scroll-disabled='ctrl.eveEndOfResult' infinite-scroll-distance='3'>
 				<div ng-repeat='event in ctrl.events'>
 				  <div class="row">
-			        <div class="col-md-9">
+			        <div class="col-md-8">
 			          <h3> {{event.eventName}} </h3>
 			          <p>
 					  Cost: ${{event.cost}}<br>
@@ -23,10 +23,9 @@
 			          {{event.description}}
 			          </p>
 			        </div>
-		        	<div class="col-md-3">
+		        	<div class="col-md-4">
 		        	<h3>Group</h3>
-		        	{{event.groupName}}<br>
-		        	{{event.groupDescription}}
+			        	{{event.groupName}}
 		        	</div>
 				  </div>
 				  <hr>
