@@ -14,76 +14,84 @@ class Login extends Database {
 
 		$pre_email = $data["email"];
 		$pre_password = $data["password"];
+        $pre_accountType = $data["accountType"];
+        
 
 		$this->connect();
         
         $email = $this->conn->real_escape_string($pre_email);
         $password = $this->conn->real_escape_string($pre_password);
+        $accountType = $this->conn->real_escape_string($pre_accountType);
 
         
-        $sql_User = "SELECT firstName, lastName, email, password
-                FROM User
-                WHERE email = '" . $email . "';";
-        $result_of_user_login_check = $this->conn->query($sql_User);
+        if ($accountType == "user") {
+            $sql_User = "SELECT firstName, lastName, email, password
+                    FROM User
+                    WHERE email = '" . $email . "';";
+            $result_of_user_login_check = $this->conn->query($sql_User);
 
-        if ($result_of_user_login_check->num_rows == 1) {
+            if ($result_of_user_login_check->num_rows == 1) {
 
-            $result_row = $result_of_user_login_check->fetch_object();
-            $hashPass = $result_row->password;
+                $result_row = $result_of_user_login_check->fetch_object();
+                $hashPass = $result_row->password;
 
-            
-            if (password_verify($password, $hashPass)) {
-                $_SESSION['email'] = $result_row->email;
-                $_SESSION['login_status'] = 1;
-                $_SESSION['account_type'] = 0;
-                return $arr = array('email' => $_SESSION['email'], 'accountType' => $_SESSION['account_type']);
-            } else {
-                $this->response("Wrong password. Try again.", 401);
+                
+                if (password_verify($password, $hashPass)) {
+                    $_SESSION['email'] = $result_row->email;
+                    $_SESSION['login_status'] = 1;
+                    $_SESSION['account_type'] = 0;
+                    return $arr = array('email' => $_SESSION['email'], 'accountType' => $_SESSION['account_type']);
+                } else {
+                    $this->response("Wrong password. Try again.", 401);
+                }
+                return;
             }
-            return;
         }
 
-        $sql_EventProvider = "SELECT firstName, lastName, email, password
-                FROM EventProvider
-                WHERE email = '" . $email . "';";
-        $result_of_eventprovider_login_check = $this->conn->query($sql_EventProvider);
+        else if ($accountType == "eventProvider") {
+            $sql_EventProvider = "SELECT firstName, lastName, email, password
+                    FROM EventProvider
+                    WHERE email = '" . $email . "';";
+            $result_of_eventprovider_login_check = $this->conn->query($sql_EventProvider);
 
-        if ($result_of_eventprovider_login_check->num_rows == 1) {
+            if ($result_of_eventprovider_login_check->num_rows == 1) {
 
-            $result_row = $result_of_eventprovider_login_check->fetch_object();
-            $hashPass = $result_row->password;
+                $result_row = $result_of_eventprovider_login_check->fetch_object();
+                $hashPass = $result_row->password;
 
-            if (password_verify($password, $hashPass)) {
-                $_SESSION['email'] = $result_row->email;
-                $_SESSION['login_status'] = 1;
-                $_SESSION['account_type'] = 1;
-                return $arr = array('email' => $_SESSION['email'], 'accountType' => $_SESSION['account_type']);
-            } else {
-                $this->response("Wrong password. Try again.", 401);
+                if (password_verify($password, $hashPass)) {
+                    $_SESSION['email'] = $result_row->email;
+                    $_SESSION['login_status'] = 1;
+                    $_SESSION['account_type'] = 1;
+                    return $arr = array('email' => $_SESSION['email'], 'accountType' => $_SESSION['account_type']);
+                } else {
+                    $this->response("Wrong password. Try again.", 401);
+                }
+                return;
             }
-            return;
         }
+        else if ($accountType == "admin") {
+            $sql_Admin = "SELECT firstName, lastName, email, password
+                    FROM Admin
+                    WHERE email = '" . $email . "';";
+            $result_of_admin_login_check = $this->conn->query($sql_Admin);
 
-        $sql_Admin = "SELECT firstName, lastName, email, password
-                FROM Admin
-                WHERE email = '" . $email . "';";
-        $result_of_admin_login_check = $this->conn->query($sql_Admin);
+            if ($result_of_admin_login_check->num_rows == 1) {
 
-        if ($result_of_admin_login_check->num_rows == 1) {
+                $result_row = $result_of_admin_login_check->fetch_object();
+                $hashPass = $result_row->password;
 
-            $result_row = $result_of_admin_login_check->fetch_object();
-            $hashPass = $result_row->password;
-
-            if (password_verify($password, $hashPass)) {
-                $_SESSION['email'] = $result_row->email;
-                $_SESSION['login_status'] = 1;
-                $_SESSION['account_type'] = 2;
-                return $arr = array('email' => $_SESSION['email'], 'accountType' => $_SESSION['account_type']);
-            } else {
-                $this->response("Wrong password. Try again.", 401);
+                if (password_verify($password, $hashPass)) {
+                    $_SESSION['email'] = $result_row->email;
+                    $_SESSION['login_status'] = 1;
+                    $_SESSION['account_type'] = 2;
+                    return $arr = array('email' => $_SESSION['email'], 'accountType' => $_SESSION['account_type']);
+                } else {
+                    $this->response("Wrong password. Try again.", 401);
+                }
+                return;
             }
-            return;
-        }
+        }        
         else {
             $this->response("This account does not exist.", 401);
         }
