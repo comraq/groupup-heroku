@@ -34,7 +34,6 @@
     <script type="text/javascript" src="./ng/services/session.js"></script>
     <script type="text/javascript" src="./ng/directives/alert.js"></script>
     <script type="text/javascript" src="components/angular-google-maps/ng-map.min.js"></script>
-    <script type="text/javascript" src="./ng/controllers/newsCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/navbarCtrl.js"></script> 
     <script type="text/javascript" src="./ng/controllers/eventCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/groupCtrl.js"></script>
@@ -71,12 +70,11 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li class="page"><a href="#/">News<span class="sr-only">(current)</span></a></li>
 					<li class="page"><a href="#/Event">Event</a></li>
 					<li class="page"><a href="#/Group">Group</a></li>														
 				</ul>
 				<ul ng-hide="navBar.isLoggedIn()" class="nav navbar-nav navbar-right">
-					<li><a href="#/SignIn">Sign In</a></li>
+					<li><a href="#/SignIn">Sign In<span class="sr-only">(current)</span></a></li>
 					<li><a href="#/Register">Register</a></li>
 				</ul>
 

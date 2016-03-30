@@ -2,9 +2,11 @@
     <title>Events</title>
     <ul class="nav nav-tabs nav-justified">
         <li ng-click="clearCreateData()" class="active">
-            <a data-toggle="tab" data-target="#eventSearchBar">Event Search</a></li>
-        <li ng-click="clearSearchData()"><a data-toggle="tab" data-target="#createEvent">Create Event</a></li>
-        <li><a ng-click="switchToETTab()" data-toggle="tab" data-target="#eventTypePane">Modify Event Types</a></li>
+        <a data-toggle="tab" data-target="#eventSearchBar">Event Search</a></li>
+        <li ng-click="clearSearchData()">
+        <a data-toggle="tab" ng-show="ctrl.accountType==1 || accountType==2" data-target="#createEvent">Create Event</a></li>
+        <li ng-click="switchToETTab()">
+        <a ng-show="ctrl.accountType==1 || accountType==2" data-toggle="tab" data-target="#eventTypePane">Modify Event Types</a></li>
     </ul>
     <div class="tab-content">
         <div id="eventSearchBar" class="tab-pane fade in active">
