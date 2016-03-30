@@ -1,4 +1,14 @@
-var app = angular.module('groupUpApp', ['ngAnimate', 'ngRoute', 'ngSanitize', 'alertService']);
+var app = angular.module('groupUpApp',
+                         [
+                           'ngAnimate',
+                           'ngRoute',
+                           'ngSanitize',
+                           'ngMap',
+                           'alertService',
+                           'selectionModel',
+                           'anguFixedHeaderTable',
+                           'ui.bootstrap.datetimepicker'
+                         ]);
 
 app.config(function ($routeProvider) {
     $routeProvider
@@ -12,6 +22,12 @@ app.config(function ($routeProvider) {
         {
             templateUrl: 'ng/views/event.html',
             controller: 'EventCtrl',
+            controllerAs: 'ctrl'
+        })
+        .when("/Group/:eventName?/:lat?/:lon?/:timeStart?/:timeEnd?/:createdBy?",
+        {
+            templateUrl: 'ng/views/group.html',
+            controller: 'GroupCtrl',
             controllerAs: 'ctrl'
         })
         .when("/Group",
@@ -44,3 +60,4 @@ app.config(function ($routeProvider) {
 app.run(function (SessionService) {
     SessionService.getSessionInfo();
 });
+

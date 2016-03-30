@@ -1,51 +1,59 @@
 <!DOCTYPE html>
 <html ng-app="groupUpApp">
+
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-	<!-- jQuery -->
-	<script src="./components/jquery/jquery-2.2.0.js" type="text/javascript" charset="utf-8"></script>
-	<script src="./components/jqueryUI/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
-	<script src="./components/jqueryUI/jquery-ui-combobox.js" type="text/javascript" charset="utf-8"></script>
-	
-	<!-- bootstrap -->
-	<link rel="stylesheet" type="text/css" href="./components/bootstrap/css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="./components/bootstrap/css/bootstrap-theme.css">
-	<link rel="stylesheet" type="text/css" href="./components/jqueryUI/jquery-ui.css">
-	<link rel="stylesheet" type="text/css" href="./components/jqueryUI/jquery-ui.theme.css">
-	<link rel="stylesheet" type="text/css" href="./components/jqueryUI/jquery-ui-combobox.css">
-	<link rel="stylesheet" type="text/css" href="./components/layout.css">
-	<script src="./components/bootstrap/js/bootstrap.js" type="text/javascript" charset="utf-8" async defer></script>
-
-	 <!-- Angular Js -->
-	 <!--
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- jQuery -->
+    <script src="./components/jquery/jquery-2.2.0.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./components/jqueryUI/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./components/jqueryUI/jquery-ui-combobox.js" type="text/javascript" charset="utf-8"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" type="text/css" href="./components/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="./components/bootstrap/css/bootstrap-theme.css">
+    <link rel="stylesheet" type="text/css" href="./components/jqueryUI/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="./components/jqueryUI/jquery-ui.theme.css">
+    <link rel="stylesheet" type="text/css" href="./components/jqueryUI/jquery-ui-combobox.css">
+    <link rel="stylesheet" href="components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css" />
+    <link rel="stylesheet" type="text/css" href="./components/layout.css">
+    <script src="./components/bootstrap/js/bootstrap.js" type="text/javascript" charset="utf-8" async defer></script>
+    <!-- Angular Js -->
+    <!--
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-resource.min.js">
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.min.js"></script>
 -->
+    <script src="http://maps.google.com/maps/api/js?key=AIzaSyAOa4D0qXOm64G0MOUCdJjHEd-TZKGXkjM"></script>
 
     <script type="text/javascript" src="./components/angular-1.5.0/angular.js"></script>
     <script type="text/javascript" src="./components/angular-1.5.0/angular-route.js"></script>
     <script type="text/javascript" src="./components/angular-1.5.0/angular-animate.js"></script>
     <script type="text/javascript" src="./components/angular-1.5.0/angular-sanitize.js"></script>
     <script type="text/javascript" src="./components/angular-1.5.0/angular-resource.js"></script>
-
+    <script type="text/javascript" src="./components/angular-google-maps/ng-map.min.js"></script>
+    <script type="text/javascript" src="./components/angular-selection-model/selection-model.js"></script>
+    <script type="text/javascript" src="./components/angular-fixed-header-table/angu-fixed-header-table.js"></script>
 
     <script type="text/javascript" src="./ng/app.js"></script>
     <script type="text/javascript" src="./ng/services/session.js"></script>
     <script type="text/javascript" src="./ng/directives/alert.js"></script>
+    <script type="text/javascript" src="components/angular-google-maps/ng-map.min.js"></script>
+    <script type="text/javascript" src="./ng/controllers/newsCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/navbarCtrl.js"></script> 
-    <script type="text/javascript" src="./ng/controllers/newsCtrl.js"></script> 
     <script type="text/javascript" src="./ng/controllers/eventCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/groupCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/signInCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/signOutCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/registerCtrl.js"></script>
     
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" type="text/css" href="./components/custom-stylesheets/group-styles.css">
 
-	<title>GroupUp | Attend Events in a Group</title>
+    <script type="text/javascript" src="components/moment/moment.js"></script>
+    <script type="text/javascript" src="components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
+    <script type="text/javascript" src="components/angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js"></script>
+    <title>GroupUp | Attend Events in a Group</title>
 </head>
 
 <body>
