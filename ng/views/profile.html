@@ -7,13 +7,15 @@
     </li>
   </ul>
 
-  <h3 id="events-view-toggle-label">View By</h3>
-        <toggle-switch data-ng-model="typeView" 
-          on-label="By Type" off-label="By Event">
-        </toggle-switch>
+  <h3 id="events-view-toggle-label">View By:</h3>
+  <toggle-switch data-ng-model="typeView" 
+    on-label="By Type" off-label="By Event">
+  </toggle-switch>
 
+  <div ng-show="!typeView">
+  <h4>Your Events</h4>
         <table fixed-header class="table profile-events-table"
-         id="profile-provider-events-table" ng-show="!typeView"
+         id="profile-provider-events-table"
          name="profile-provider-events-table">
           <thead>
             <tr>
@@ -25,7 +27,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="e in events | orderBy: 'eventName'">
+            <tr ng-repeat="e in events
+                           | orderBy: 'eventName'
+                           | orderBy: '-numUsers'">
               <td>{{ e.eventName }}</td>
               <td>{{ e.timeStart }}</td>
               <td>{{ e.timeEnd }}</td>
@@ -34,4 +38,27 @@
             </tr>
           </tbody>
         </table>
+
+  <h4>Users for Your Events</h4>
+        <table fixed-header class="table profile-user-table"
+         id="profile-provider-user-table"
+         name="profile-provider-user-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Attending Events Count</th>
+              <th>Attending All Events?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="user in users
+                           | orderBy: 'email'
+                           | orderBy: '-numEvents'">
+              <td>{{ user.email }}</td>
+              <td>{{ user.numEvents }}</td>
+              <td>{{ (user.attendAll)? "Yes" : "No" }}</td>
+            </tr>
+          </tbody>
+        </table>
+  </div>
 </div>

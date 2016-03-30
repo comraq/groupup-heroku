@@ -54,8 +54,7 @@ app.config(function($routeProvider) {
             controller: 'RegisterCtrl',
             controllerAs: 'ctrl'
         })
-        .when("/Account",
-        {
+        .when("/Account", {
             templateUrl: 'ng/views/userAccount.html',
             controller: 'UserAccountCtrl',
             controllerAs: 'ctrl',

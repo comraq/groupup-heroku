@@ -33,7 +33,7 @@ CREATE TABLE `Event` (
     timeStart DATETIME,
     timeEnd DATETIME,
     cost DECIMAL(10,2),
-    description VARCHAR(255),
+    description TEXT,
     createdBy VARCHAR(50),
     PRIMARY KEY (eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (createdBy)
@@ -89,18 +89,17 @@ CREATE TABLE `User` (
 
 
 /*
- * HasInvitation(invitationId: int, eventName: char, lat: float, lon: float, 
+ * HasInvitation(eventName: char, lat: float, lon: float, 
  *				 timeStart: time, timeEnd: time, message: char)
  */
 CREATE TABLE HasInvitation (
-    invitationId INT AUTO_INCREMENT,
     eventName VARCHAR(50),
     lat DECIMAL(10,5),
     lon DECIMAL(10,5),
     timeStart DATETIME,
     timeEnd DATETIME,
-    message VARCHAR(255),
-    PRIMARY KEY (invitationId , eventName , lat , lon , timeStart , timeEnd),
+    message TEXT,
+    PRIMARY KEY (eventName , lat , lon , timeStart , timeEnd),
     FOREIGN KEY (eventName , lat , lon , timeStart , timeEnd)
         REFERENCES PrivateEvent (eventName , lat , lon , timeStart , timeEnd)
         ON DELETE CASCADE ON UPDATE CASCADE
@@ -113,7 +112,7 @@ CREATE TABLE HasInvitation (
  CREATE TABLE `Group` (
     groupId INT AUTO_INCREMENT,
     groupName VARCHAR(50),
-    description VARCHAR(255),
+    description TEXT,
     PRIMARY KEY (groupId)
 );
 
@@ -140,49 +139,24 @@ CREATE TABLE EventTypeHasEvent (
 );
 
 /*
- * UserReadsInvitation(email: char, invitationId: int, eventName: char, lat: float, lon: float,
- *						 timeStart: time, timeEnd: time)
- */
- CREATE TABLE UserReadsInvitation (
-    email VARCHAR(50),
-    invitationId INT,
-    eventName VARCHAR(50),
-    lat DECIMAL(10,5),
-    lon DECIMAL(10,5),
-    timeStart DATETIME,
-    timeEnd DATETIME,
-    `read` TINYINT(1)  DEFAULT 0,
-    PRIMARY KEY (email , invitationId , eventName , lat , lon , timeStart , timeEnd),
-    FOREIGN KEY (email)
-        REFERENCES `User` (email)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-    FOREIGN KEY (invitationId , eventName , lat , lon , timeStart , timeEnd)
-        REFERENCES HasInvitation (invitationId , eventName , lat , lon , timeStart , timeEnd)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-);
-
-/*
- * EventProviderSendInvitation(email: char, invitationId: int, eventName: char, 
+ * EventProviderSendInvitation(email: char, eventName: char, 
  * 							   lat: float, lon: float, timeStart: time, timeEnd: time)
  */
 CREATE TABLE EventProviderSendInvitation (
     email VARCHAR(50),
-    invitationId INT,
     eventName VARCHAR(50),
     lat DECIMAL(10,5),
     lon DECIMAL(10,5),
     timeStart DATETIME,
     timeEnd DATETIME,
     sendToEmail VARCHAR(225),
-    PRIMARY KEY (email , invitationId , eventName , lat , lon , timeStart , timeEnd, sendToEmail),
+    PRIMARY KEY (email , eventName , lat , lon , timeStart , timeEnd, sendToEmail),
     FOREIGN KEY (email)
         REFERENCES EventProvider (email)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-    FOREIGN KEY (invitationId , eventName , lat , lon , timeStart , timeEnd)
-        REFERENCES HasInvitation (invitationId , eventName , lat , lon , timeStart , timeEnd)
+    FOREIGN KEY (eventName , lat , lon , timeStart , timeEnd)
+        REFERENCES HasInvitation (eventName , lat , lon , timeStart , timeEnd)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
     FOREIGN KEY (sendToEmail)

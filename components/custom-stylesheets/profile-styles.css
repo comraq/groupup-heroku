@@ -1,4 +1,11 @@
-#events-view-toggle-label { display: inline; }
+#events-view-toggle-label {
+  margin: 1%;
+  display: inline;
+ }
+
+.profile-user-table th { width: 15vw; }
+
+.profile-user-table td { width: 15vw; }
 
 .profile-events-table th { width: 15vw; }
 
