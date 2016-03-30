@@ -120,5 +120,96 @@
       $this->disconnect();
       $this->response(json_encode($data), 200);
     }
+
+    function getEventsByType() {
+      $method = $_SERVER['REQUEST_METHOD'];
+      if ($method != 'GET') {
+        $res = array(
+                 'data' => 'Bad Request Method!'
+               );
+        $this->response($res, 400);
+      }
+
+      $this->connect();
+      $escEmail = $this->conn->real_escape_string(
+                  ProfileController::getEProviderEmail());
+      $eventByTypeSql =
+        "select ifnull(ETHE.eventTypeId, 0) as eventTypeId,
+                ifnull(ET.category, 'None') as category,
+                count(distinct E.eventName, E.lat, E.lon,
+                      E.timeStart, E.timeEnd) as numEvents,
+                AU.avgUsers,
+                count(U.email) as totalUsers
+         from (
+           select *
+           from Event
+           where createdBy = ?
+         ) as E
+         left join EventTypeHasEvent ETHE
+           on E.eventName = ETHE.eventName and
+              E.lat = ETHE.lat and
+              E.lon = ETHE.lon and
+              E.timeStart = ETHE.timeStart and
+              E.timeEnd = ETHE.timeEnd
+         left join EventType ET
+           on ETHE.eventTypeId = ET.eventTypeId
+         left join UserGoesEvent U
+           on E.eventName = U.eventName and
+              E.lat = U.lat and
+              E.lon = U.lon and
+              E.timeStart = U.timeStart and
+              E.timeEnd = U.timeEnd
+         left join (
+           select ET.eventTypeId,
+                  avg(PET.cPerEventPerType) as avgUsers
+           from (
+             select count(U.Email) as cPerEventPerType, E.eventName,
+                    ETHE.eventTypeId
+             from (
+               select *
+               from Event
+               where createdBy = ?
+             ) as E
+             left join EventTypeHasEvent ETHE
+               on E.eventName = ETHE.eventName and
+                  E.lat = ETHE.lat and
+                  E.lon = ETHE.lon and
+                  E.timeStart = ETHE.timeStart and
+                  E.timeEnd = ETHE.timeEnd
+             left join UserGoesEvent U
+               on E.eventName = U.eventName and
+                  E.lat = U.lat and
+                  E.lon = U.lon and
+                  E.timeStart = U.timeStart and
+                  E.timeEnd = U.timeEnd
+             group by E.eventName, E.lat, E.lon, E.timeStart, E.timeEnd,
+                      ETHE.eventTypeId
+            ) PET
+          left join EventType ET
+            on PET.eventTypeId = ET.eventTypeId
+          group by PET.eventTypeId
+         ) AU
+           on ifnull(ETHE.eventTypeId, 0) = ifnull(AU.eventTypeId, 0)
+         group by ETHE.eventTypeId
+         order by ETHE.eventTypeId";
+
+      $stmt = $this->conn->prepare($eventByTypeSql);
+      $stmt->bind_param('ss', $escEmail, $escEmail);
+      if (!$stmt->execute()) {
+        $stmt->close();
+        $this->disconnect();
+        $res = array(
+                 'data' => 'Error Retrieving Events Information!'
+               );
+        $this->response($res, 500);
+      }
+
+      $res = $stmt->get_result();
+      $data = $res->fetch_all(MYSQLI_ASSOC);
+
+      $stmt->close();
+      $this->disconnect();
+      $this->response(json_encode($data), 200);
+    }
   }
 ?>
