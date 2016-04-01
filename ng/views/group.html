@@ -27,10 +27,15 @@
             <p>
               <a class="btn btn-primary btn-lg ng-hide"
                 href="" role="button" ng-show="!group.editing"
-                ng-click=
-                  "ctrl.showJoinGroupsMapModal('join-group-events-map',
-                                                group)">
-                View Details</a>
+                ng-disabled="ctrl.getAccType() != 0"
+                tooltip-enable="ctrl.getAccType() != 0"
+                tooltip-placement="bottom-right"
+                uib-tooltip="Only Users can Go To Events and Join Groups!"
+                ng-click="ctrl.getAccType() != 0 ||
+                  ctrl.showJoinGroupsMapModal(
+                    'join-group-events-map', group
+                  )">
+                Join/Leave Group</a>
             </p>
             <p>
               <a class="btn btn-warning btn-lg ng-hide"
