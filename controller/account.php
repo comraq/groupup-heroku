@@ -306,7 +306,6 @@ class Account extends Database
 		$escapeEmail = $this->conn->real_escape_string($email);
 		$getInvitationSql = "SELECT
 		EPSI.email AS email,
-		EPSI.invitationId AS invitationId,
 		EPSI.eventName AS eventName,
 		EPSI.lat AS lat,
 		EPSI.lon AS lon,
@@ -331,7 +330,6 @@ class Account extends Database
         NATURAL LEFT JOIN EventType ET
 
 		WHERE
-			EPSI.invitationId = HI.invitationId AND
 			EPSI.eventName = HI.eventName AND
 			EPSI.lat = HI.lat AND
 			EPSI.lon = HI.lon AND
