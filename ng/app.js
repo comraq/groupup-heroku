@@ -73,6 +73,9 @@ app.run(function($rootScope, $location, SessionService, alertFactory) {
    *             redirecting-to-a-certain-route-based-on-condition
    */
   $rootScope.$on("$routeChangeStart", function(event, next, current) {
+    console.log("$routeChangeStart: ");
+    console.log(SessionService.sessionInfo);
+
     if (SessionService.sessionInfo == null
         && (next.templateUrl != "ng/views/signIn.html"
             && next.templateUrl != "ng/views/register.html")) {
