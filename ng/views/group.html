@@ -6,6 +6,9 @@
       <a data-toggle="tab" data-target="#group-list">Join Groups</a>
     </li>
     <li ng-click="ctrl.initCreateTab('create-group-events-map')"
+          tooltip-enable="ctrl.getAccType() != 0"
+          tooltip-placement="top-right"
+          uib-tooltip="Only Users can Go To Events and Create Groups!"
       id="create-group-tab">
       <a data-toggle="tab" data-target="#group-create">Create Group</a>
     </li>
@@ -86,8 +89,9 @@
     </div><!-- tabpane -->
 
     <div id="group-create" class="tab-pane fade"> 
-      <form class="form-signin" ng-submit="ctrl.createGroup()"
-        name="createGroup" role="form">
+      <form class="form-signin" name="createGroup" role="form"
+        id="create-group-form"
+        ng-submit="ctrl.getAccType() != 0 || ctrl.createGroup()">
 
         <div class="form-group" ng-class="{
           'has-error': createGroup.name.$dirty &&
@@ -177,7 +181,9 @@
 
         <button class="btn btn-lg btn-block btn-success" type="submit"
           id="create-group-button" ng-bind="createButton"
-          ng-disabled="createGroup.$invalid || ctrl.dataLoading">
+          ng-disabled="ctrl.getAccType() != 0
+                       || createGroup.$invalid
+                       || ctrl.dataLoading">
         </button>
 
       </form>

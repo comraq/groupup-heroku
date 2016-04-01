@@ -7,7 +7,7 @@ var app = angular.module('groupUpApp')
                                                    NgMap, 
                                                    $routeParams,
                                                    modalService,
-                                                   SessionService,
+                                                   sessionInfo,
                                                    alertFactory) {
   var verbose = false;
 
@@ -19,11 +19,11 @@ var app = angular.module('groupUpApp')
        joinGroupMapModalButton = "Confirm Action for Current Group";
 
   this.getAccEmail = function() {
-    return SessionService.sessionInfo["email"];
+    return sessionInfo["email"];
   };
 
   this.getAccType = function() {
-    return SessionService.sessionInfo["accountType"];
+    return sessionInfo["accountType"];
   };
 
   /*
@@ -136,6 +136,10 @@ var app = angular.module('groupUpApp')
     this.newGroup.name = "";
     this.newGroup.description = "";
 
+    // Seleciton-Model keeps permenant reference to newGroup.withEvents
+    // So we use this method to clear the array, retaining refrences
+    this.newGroup.withEvents.length = 0;
+
     if (!this.createGroupMap)
       this.createGroupMap = NgMap.initMap(mapId);
 
@@ -180,7 +184,7 @@ var app = angular.module('groupUpApp')
     $http({
       method: "POST",
       data: this.newGroup,
-      url: this.url + "/createGroup",
+      url: this.url + "/createGroup?email=" + this.getAccEmail()
     }).then(function successCallback(res){
       alertFactory.add("success", res.data.data);
       this.dataLoading = false;
@@ -194,7 +198,6 @@ var app = angular.module('groupUpApp')
       // So we use this method to clear the array, retaining refrences
       this.newGroup.withEvents.length = 0;
     
-
     }.bind(this), function errorCallback(err){
       alertFactory.add("danger", err.data.data);
       console.log(err);
@@ -236,7 +239,7 @@ var app = angular.module('groupUpApp')
   this.getEvents = function getEvents() {
     $http({
       method: "GET",
-      url: this.url + "/getEvents"
+      url: this.url + "/getEvents?email=" + this.getAccEmail()
     }).then(function successCallback(res) {
       if (verbose)
         console.log("getEvents res: " + JSON.stringify(res));
@@ -298,7 +301,7 @@ var app = angular.module('groupUpApp')
     $http({
       method: "POST",
       data: reqBody,
-      url: this.url + "/joinLeaveGroups",
+      url: this.url + "/joinLeaveGroups?email=" + this.getAccEmail()
     }).then(function successCallback(res){
       alertFactory.add("success", res.data.data);
       this.dataLoading = false;
