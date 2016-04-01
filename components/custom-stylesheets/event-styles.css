@@ -38,6 +38,7 @@
 
 #event-type-table {
     width: 100%;
+    overflow: auto;
 }
 
 .going {

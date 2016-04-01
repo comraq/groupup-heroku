@@ -35,8 +35,8 @@ class CreateEvent extends Database{
 		VALUES(?,?,?,?,?)";
 
 		$insertEventProviderSendInvitation = "INSERT INTO 
-		`EventProviderSendInvitation`(`email`,`invitationId`,`eventName`,`lat`,`lon`,`timeStart`,`timeEnd`,`sendToEmail`) 
-		VALUES(?,?,?,?,?,?,?,?)";
+		`EventProviderSendInvitation`(`email`,`eventName`,`lat`,`lon`,`timeStart`,`timeEnd`,`sendToEmail`) 
+		VALUES(?,?,?,?,?,?,?)";
 
 		$insertHasInvitation ="INSERT INTO `HasInvitation`(`eventName`,`lat`,`lon`,`timeStart`,`timeEnd`,`message`)
 		VALUES (?, ?, ?,?, ?, ?)";
@@ -88,11 +88,13 @@ class CreateEvent extends Database{
 					$this->conn->rollback();
 					$result = array('data' => "There was an error inserting the invitation into the databse", 'code'=> 500);
 				}
-				$iID = $this->conn->insert_id;
 				$insHasInvStmt->close();
 
-				$invStmt = $this->conn->prepare($insertEventProviderSendInvitation);
-				$invStmt->bind_param('sdsddsss', $createdBy, $iID, $eventName, $lat, $lon, $timeStart, $timeEnd, $sendToEmail);
+				if(!$invStmt = $this->conn->prepare($insertEventProviderSendInvitation)){
+					$this->conn->rollback();
+					return array('data' => $createdBy, 'code'=> 500);
+				}
+				$invStmt->bind_param('ssddsss', $createdBy, $eventName, $lat, $lon, $timeStart, $timeEnd, $sendToEmail);
 				
 				foreach ($invitees as $sendToEmail) {
 					if(!$invStmt->execute()){

@@ -7,6 +7,7 @@ class Search extends Database
 
 	function __construct(){
 		parent::__construct();
+        mysqli_report(MYSQLI_REPORT_ERROR);
 	}
 
 	function searchEvents($data){		
@@ -46,7 +47,7 @@ class Search extends Database
         $nameQuery = '';
 
         if($searchNameOperator){
-            if ($searchNameOperator == 'LIKE' || $searchNameOperator == 'IS NOT LIKE') {
+            if ($searchNameOperator == 'LIKE' || $searchNameOperator == 'NOT LIKE') {
                 $searchName = '%'.$searchName.'%';
             }
             $nameQuery.="AND eventName ".$searchNameOperator." ";
@@ -59,7 +60,7 @@ class Search extends Database
         $timeStartQuery = '';
         if ($searchTimeStartLogic && $searchTimeStartOperator) {
 
-            if ($searchTimeStartOperator == 'LIKE' || $searchTimeStartOperator == 'IS NOT LIKE') {
+            if ($searchTimeStartOperator == 'LIKE' || $searchTimeStartOperator == 'NOT LIKE') {
                 $searchTimeStart = '%'.$searchTimeStart.'%';
             }
             $timeStartQuery.=$searchTimeStartLogic." timeStart ".$searchTimeStartOperator." ";
@@ -70,7 +71,7 @@ class Search extends Database
 
         $timeEndQuery = '';
         if ($searchTimeEndLogic && $searchTimeEndOperator) {
-         if ($searchTimeEndOperator == 'LIKE' || $searchTimeEndOperator == 'IS NOT LIKE') {
+         if ($searchTimeEndOperator == 'LIKE' || $searchTimeEndOperator == 'NOT LIKE') {
             $searchTimeEnd = '%'.$searchTimeEnd.'%';
         }
         $timeEndQuery.=$searchTimeEndLogic." timeEnd ".$searchTimeEndOperator." ";
@@ -82,7 +83,7 @@ class Search extends Database
     $costQuery = '';
     if ($searchCostLogic && strval($searchCostOperator)) {
         $costQuery.=$searchCostLogic." cost ".$searchCostOperator." ";
-        if ($searchCostOperator == 'LIKE' || $searchCostOperator == 'IS NOT LIKE') {
+        if ($searchCostOperator == 'LIKE' || $searchCostOperator == 'NOT LIKE') {
             $searchCost = '%'.strval($searchCost).'%';
         }
 
@@ -94,7 +95,7 @@ class Search extends Database
     $descriptionQuery = '';
     if ($searchDesctipionLogic && $searchDesctipionOperator) {
 
-        if ($searchDesctipionOperator == 'LIKE' || $searchDesctipionOperator == 'IS NOT LIKE') {
+        if ($searchDesctipionOperator == 'LIKE' || $searchDesctipionOperator == 'NOT LIKE') {
             $searchDesctipion = '%'.$searchDesctipion.'%';
         }
 
@@ -107,7 +108,7 @@ class Search extends Database
     $createdByQuery = '';
     if ($searchCreatedByLogic && $searchCreatedByOperator) {
 
-        if ($searchCreatedByOperator == 'LIKE' || $searchCreatedByOperator == 'IS NOT LIKE') {
+        if ($searchCreatedByOperator == 'LIKE' || $searchCreatedByOperator == 'NOT LIKE') {
             $searchCreatedBy = '%'.$searchCreatedBy.'%';
         }
         $createdByQuery.=$searchCreatedByLogic." createdBy ".$searchCreatedByOperator." ";
@@ -165,12 +166,13 @@ class Search extends Database
     GROUP BY R.eventName , R.lat , R.lon , R.timeStart , R.timeEnd , R.cost , R.description , R.createdBy , R.category
     ";
 
-    $stmt = $this->conn->prepare($searchEventsSQL);
-    if(!$stmt->execute()){
+    if(!$stmt = $this->conn->prepare($searchEventsSQL)){
+        $result = array('data' => "There was an internal error processing your query", 'code'=> 500);
+    } else if(!$stmt->execute()){
         $result = array('data' => "There was an error deleting the event from the databse", 'code'=> 500);
         $stmt->close();
     }else{
-           //referenced http://stackoverflow.com/questions/11892699/how-do-i-properly-use-php-to-encode-mysql-object-into-json
+        //referenced http://stackoverflow.com/questions/11892699/how-do-i-properly-use-php-to-encode-mysql-object-into-json
         $res = $stmt->get_result();
         $rows = $res->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
