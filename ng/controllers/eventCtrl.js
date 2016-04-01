@@ -1,6 +1,7 @@
 var app = angular.module('groupUpApp').controller('EventCtrl',
     function($scope, $window, $location, $http, NgMap,
         alertFactory, SessionService) {
+        this.newEventType = [];
         $scope.positions = [];
         $scope.results;
 
@@ -51,7 +52,6 @@ var app = angular.module('groupUpApp').controller('EventCtrl',
         this.timeEnd;
         this.invitees;
         this.message;
-        this.newEventType = [];
         this.private = false;
         this.editing = false;
         this.etTabView = false;
@@ -195,6 +195,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl',
 
         this.createEvent = function createEvent() {
             var eventTypes = [];
+            console.log(this.newEventType);
             this.newEventType.forEach(function(event) {
                 eventTypes.push(event.eventTypeId);
             });

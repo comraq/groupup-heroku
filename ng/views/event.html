@@ -232,74 +232,84 @@
                                 </th>
                                 <tr>
                                     <td>
-                                        <table id="event-type-table" class="table-hover">
+                                       <table id="event-type-table" class="table-hover">
+                                        <thead>
                                             <th>Event Type</th>
-                                            <tr ng-repeat="eventType in eventTypes" selection-model selection-model-type="checkbox" selection-model-mode="multiple-additive" selection-model-selected-items="ctrl.newEventType" selection-model-selected-class="create-group-events-selected">
-                                                <td>
-                                                    <input type="checkbox" />
-                                                </td>
-                                                <td>{{eventType.category}}</td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <datetimepicker class="dateTimePicker" data-ng-model="ctrl.timeStart"></datetimepicker>
-                                    </td>
-                                    <td>
-                                        <datetimepicker class="dateTimePicker" data-ng-model="ctrl.timeEnd"></datetimepicker>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <toggle-switch ng-model="ctrl.private" on-label="Private" off-label="Public">
-                                    </toggle-switch>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="check-element animate-show" ng-show="ctrl.private">
-                        <div class="input-group">
-                            <label for="invitees" class="sr-only">Invitees</label>
-                            <span class="input-group-addon">@</span>
-                            <input type="text" name="invitees" ng-required="ctrl.private" data-ng-model="ctrl.invitees" id="invitees" class="form-control" placeholder="Emails comma seperated" ng-list>
-                        </div>
-                        <div>
-                            <label for="message" class="sr-only">Invite Message</label>
-                            <textarea maxlength="255" class="form-control" ng-required="ctrl.private" ata-ng-model="ctrl.message" placeholder="Invite Message" rows="3"></textarea>
-                        </div>
-                    </div>
-                    <button ng-disabled="form.$invalid || !ctrl.timeStart ||!ctrl.timeEnd" class="btn btn-lg btn btn-primary btn-block btn-blog" type="submit">Create Event</button>
-                </form>
-            </div>
-            <div id="eventTypePane" class="tab-pane fade in">
-                <form role="form">
-                    <div class="input-group">
-                        <span class="input-group-addon">A</span>
-                        <input type="text" data-ng-model="ctrl.addEventType" class="form-control" placeholder="Enter a new Event Type" required maxlength="50">
-                        <span class="input-group-btn">
-                         <button ng-disabled="form.$invalid" class="btn btn-primary" ng-click="ctrl.addNewEventType()">Add</button>
-                     </span>
-                 </div>
-             </form>
-             <form>
-                 <div id="event-type-modify-table">
-                 <table id="event-type-table" class="table-hover table-striped">
-                        <tr ng-repeat="eventType in eventTypes" selection-model selection-model-type="checkbox" selection-model-mode="single" selection-model-selected-items="ctrl.deleteET" selection-model-selected-class="create-group-events-selected" ng-hide="eventType.delete">
-                            <td>
-                                <div>
-                                    <button class="btn btn-danger" ng-click="ctrl.deleteEventTypes(eventType)">Delete</button>
-                                </div>
+                                        </thead>
+                                        <tbody>
+                                            <tr 
+                                            ng-repeat="eventType in eventTypes" 
+                                            selection-model
+                                            selection-model-type="checkbox"
+                                            selection-model-mode="'multiple-additive'"
+                                            selection-model-selected-items="ctrl.newEventType">
+                                            <td>
+                                                <input type="checkbox"/>
+                                            </td>
+                                            <td>{{eventType.category}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </td>
-                            <td>{{eventType.category}}</td>
+                            <td>
+                                <datetimepicker class="dateTimePicker" data-ng-model="ctrl.timeStart"></datetimepicker>
+                            </td>
+                            <td>
+                                <datetimepicker class="dateTimePicker" data-ng-model="ctrl.timeEnd"></datetimepicker>
+                            </td>
                         </tr>
-                    </table>
+                        <tr>
+                            <td>
+                                <toggle-switch ng-model="ctrl.private" on-label="Private" off-label="Public">
+                            </toggle-switch>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            {{ctrl.newEventType}}
+            <div class="check-element animate-show" ng-show="ctrl.private">
+                <div class="input-group">
+                    <label for="invitees" class="sr-only">Invitees</label>
+                    <span class="input-group-addon">@</span>
+                    <input type="text" name="invitees" ng-required="ctrl.private" data-ng-model="ctrl.invitees" id="invitees" class="form-control" placeholder="Emails comma seperated" ng-list>
                 </div>
-            </form>
-        </div>
+                <div>
+                    <label for="message" class="sr-only">Invite Message</label>
+                    <textarea maxlength="255" class="form-control" ng-required="ctrl.private" ata-ng-model="ctrl.message" placeholder="Invite Message" rows="3"></textarea>
+                </div>
+            </div>
+            <button ng-disabled="form.$invalid || !ctrl.timeStart ||!ctrl.timeEnd" class="btn btn-lg btn btn-primary btn-block btn-blog" type="submit">Create Event</button>
+        </form>
     </div>
-    <!-- https://www.kevinhooke.com/2015/06/15/angularjs-and-google-maps-dynamic-marker-updates/ -->
-    <ng-map ng-hide="this.etTabView" id="event-map" center="[0,0]" zoom="13" on-click="ctrl.mapClick()">
-    <marker ng-repeat="pos in positions" position="{{pos.lat}}, {{pos.lng}}"></marker>
+    <div id="eventTypePane" class="tab-pane fade in">
+        <form role="form">
+            <div class="input-group">
+                <span class="input-group-addon">A</span>
+                <input type="text" data-ng-model="ctrl.addEventType" class="form-control" placeholder="Enter a new Event Type" required maxlength="50">
+                <span class="input-group-btn">
+                 <button ng-disabled="form.$invalid" class="btn btn-primary" ng-click="ctrl.addNewEventType()">Add</button>
+             </span>
+         </div>
+     </form>
+     <form>
+         <div id="event-type-modify-table">
+         <table class="table-hover table-striped">
+                <tr ng-repeat="eventType in eventTypes">
+                    <td>
+                        <div>
+                            <button class="btn btn-danger" ng-click="ctrl.deleteEventTypes(eventType)">Delete</button>
+                        </div>
+                    </td>
+                    <td>{{eventType.category}}</td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+</div>
+<!-- https://www.kevinhooke.com/2015/06/15/angularjs-and-google-maps-dynamic-marker-updates/ -->
+<ng-map ng-hide="this.etTabView" id="event-map" center="[0,0]" zoom="13" on-click="ctrl.mapClick()">
+<marker ng-repeat="pos in positions" position="{{pos.lat}}, {{pos.lng}}"></marker>
 </ng-map>
 </div>
 </div>
