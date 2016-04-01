@@ -1,13 +1,17 @@
-var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($scope, $http, $location, alertFactory, SessionService){
-	SessionService.getSessionInfo();
-	this.addUserUrl = "/controller/userGoesEvent/startUserGoesEvent";
-    this.cancelUrl = "/controller/userGoesEvent/startCancelUserGoesEvent";
-    this.getProfileUrl = "/controller/account/user";
-	this.url;
-	this.scope = $scope;
-	this.dataLoading;
-	this.loadingAttend;
-	this.email = SessionService.sessionInfo["email"];
+var app = angular.module('groupUpApp')
+                 .controller('UserAccountCtrl', function($scope,
+                                                         $http,
+                                                         $location,
+                                                         alertFactory,
+                                                         sessionInfo) {
+  this.addUserUrl = "/controller/userGoesEvent/startUserGoesEvent";
+  this.cancelUrl = "/controller/userGoesEvent/startCancelUserGoesEvent";
+  this.getProfileUrl = "/controller/account/user";
+  this.url;
+  this.scope = $scope;
+  this.dataLoading;
+  this.loadingAttend;
+  this.email = sessionInfo["email"];
 
 	// for updating password
 	this.oldPassword;
@@ -306,4 +310,9 @@ var app = angular.module('groupUpApp').controller('UserAccountCtrl', function($s
 			}.bind(this));
 		}
 
+/*
+  // Event Provider Profile Controller
+  function ProviderCtrl() {
+  }
+*/
 });

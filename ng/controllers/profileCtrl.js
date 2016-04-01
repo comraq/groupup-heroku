@@ -2,18 +2,22 @@ var app = angular.module('groupUpApp')
                  .controller('ProfileCtrl', function($scope,
                                                      $location,
                                                      $http,
-                                                     $window,
-                                                     $timeout,
-                                                     NgMap, 
-                                                     $routeParams,
                                                      modalService,
-                                                     SessionService,
+                                                     sessionInfo,
                                                      alertFactory) {
   var verbose = false;
 
   this.url = "controller/profileController";
   this.scope = $scope;
   this.location = $location;
+
+  this.getAccEmail = function() {
+    return sessionInfo["email"];
+  };
+
+  this.getAccType = function() {
+    return sessionInfo["accountType"];
+  };
 
   this.getUsersAndEvents = function getUsersAndEvents() {
     $http({
@@ -79,7 +83,6 @@ var app = angular.module('groupUpApp')
       this.scope.highlightsAvg = this.maxAvgTypeEvents;
       this.scope.highlightsModalName = "Maximum";
     }
-    console.log(this.scope);
   }
 
   this.getUsersAndEvents();
