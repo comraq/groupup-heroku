@@ -1,0 +1,42 @@
+<div class="event-by-type-highlights-modal-container">
+  <h2 class="modal-header">
+    Events with
+    <span ng-class="{
+      'minRed': !minAvgView,
+      'maxGreen': minAvgView
+    }">
+    {{ highlightsModalName }}
+    </span>
+    Attendance</h2>
+
+  <label for="minMaxToggle"
+    id="event-by-type-highlights-table-label">
+    Show Details for
+
+    <toggle-switch data-ng-model="minAvgView" name="minMaxToggle"
+      ng-change="ctrl.highlightsToggleChanged(!minAvgView)"
+      on-label="Max" off-label="Min">
+    </toggle-switch>
+
+    Averages: </label>
+
+
+    <table fixed-header class="table event-by-type-highlights-table"
+      id="event-by-type-highlights-table"
+      name="event-by-type-highlights-table">
+      <thead>
+        <tr>
+          <th>Event Type</th>
+          <th>Average Attendees</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="type in highlightsAvg
+                       | orderBy: '-eventTypeId'">
+          <td>{{ type.category }}</td>
+          <td>{{ type.avgUsers }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+</div>

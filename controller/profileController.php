@@ -130,37 +130,38 @@
         $this->response($res, 400);
       }
 
+/*
+$driver = new mysqli_driver();
+$driver->report_mode = MYSQLI_REPORT_ALL;
+*/
+
       $this->connect();
       $escEmail = $this->conn->real_escape_string(
                   ProfileController::getEProviderEmail());
-      $eventByTypeSql =
-        "select ifnull(ETHE.eventTypeId, 0) as eventTypeId,
-                ifnull(ET.category, 'None') as category,
-                count(distinct E.eventName, E.lat, E.lon,
-                      E.timeStart, E.timeEnd) as numEvents,
-                AU.avgUsers,
-                count(U.email) as totalUsers
-         from (
-           select *
-           from Event
-           where createdBy = ?
-         ) as E
-         left join EventTypeHasEvent ETHE
-           on E.eventName = ETHE.eventName and
-              E.lat = ETHE.lat and
-              E.lon = ETHE.lon and
-              E.timeStart = ETHE.timeStart and
-              E.timeEnd = ETHE.timeEnd
-         left join EventType ET
-           on ETHE.eventTypeId = ET.eventTypeId
-         left join UserGoesEvent U
-           on E.eventName = U.eventName and
-              E.lat = U.lat and
-              E.lon = U.lon and
-              E.timeStart = U.timeStart and
-              E.timeEnd = U.timeEnd
-         left join (
-           select ET.eventTypeId,
+
+      /*
+       * The following contains a nested aggregation query,
+       * retrieving events by type while:
+       * - Providing the average number of attending users per event of
+       *   the type, as well as the min and max averages
+       * - Creating a temporary table, AvgByType, storing the average
+       *   users per event per type to be reused 
+       */
+
+      $dropTempTableSql = "DROP TEMPORARY TABLE IF EXISTS AvgByType";
+      $stmt = $this->conn->prepare($dropTempTableSql);
+      if (!$stmt->execute()) {
+        $stmt->close();
+        $this->disconnect();
+        $res = array(
+                 'data' => 'Error Retrieving Events Information!'
+               );
+        $this->response($res, 500);
+      }
+
+      $avgByTypeTempTableSql =
+        "CREATE TEMPORARY TABLE IF NOT EXISTS AvgByType as (
+           select ifnull(ET.eventTypeId, 0) as eventTypeId,
                   avg(PET.cPerEventPerType) as avgUsers
            from (
              select count(U.Email) as cPerEventPerType, E.eventName,
@@ -184,17 +185,56 @@
                   E.timeEnd = U.timeEnd
              group by E.eventName, E.lat, E.lon, E.timeStart, E.timeEnd,
                       ETHE.eventTypeId
-            ) PET
-          left join EventType ET
-            on PET.eventTypeId = ET.eventTypeId
-          group by PET.eventTypeId
-         ) AU
-           on ifnull(ETHE.eventTypeId, 0) = ifnull(AU.eventTypeId, 0)
+           ) PET
+           left join EventType ET
+             on PET.eventTypeId = ET.eventTypeId
+           group by PET.eventTypeId
+         )";
+
+      $stmt = $this->conn->prepare($avgByTypeTempTableSql);
+      $stmt->bind_param('s', $escEmail);
+      if (!$stmt->execute()) {
+        $stmt->close();
+        $this->disconnect();
+        $res = array(
+                 'data' => 'Error Retrieving Events Information!'
+               );
+        $this->response($res, 500);
+      }
+
+      $eventByTypeSql =
+        "select ABT.eventTypeId,
+                ifnull(ET.category, 'None') as category,
+                count(distinct E.eventName, E.lat, E.lon,
+                      E.timeStart, E.timeEnd) as numEvents,
+                ABT.avgUsers,
+                count(U.email) as totalUsers
+         from (
+           select *
+           from Event
+           where createdBy = ?
+         ) as E
+         left join EventTypeHasEvent ETHE
+           on E.eventName = ETHE.eventName and
+              E.lat = ETHE.lat and
+              E.lon = ETHE.lon and
+              E.timeStart = ETHE.timeStart and
+              E.timeEnd = ETHE.timeEnd
+         left join EventType ET
+           on ETHE.eventTypeId = ET.eventTypeId
+         left join UserGoesEvent U
+           on E.eventName = U.eventName and
+              E.lat = U.lat and
+              E.lon = U.lon and
+              E.timeStart = U.timeStart and
+              E.timeEnd = U.timeEnd
+         left join AvgByType ABT
+           on ifnull(ETHE.eventTypeId, 0) = ABT.eventTypeId
          group by ETHE.eventTypeId
          order by ETHE.eventTypeId";
 
       $stmt = $this->conn->prepare($eventByTypeSql);
-      $stmt->bind_param('ss', $escEmail, $escEmail);
+      $stmt->bind_param('s', $escEmail);
       if (!$stmt->execute()) {
         $stmt->close();
         $this->disconnect();
@@ -205,11 +245,96 @@
       }
 
       $res = $stmt->get_result();
-      $data = $res->fetch_all(MYSQLI_ASSOC);
-
+      $data = array();
+      $data['avgByType'] = $res->fetch_all(MYSQLI_ASSOC);
       $stmt->close();
+
+      $err = ProfileController::getMinMaxByType($this->conn, $data);
+      if (!is_null($err)) {
+        // Failed to retrieve min/max of averages by type
+        $this->disconnect();
+        $this->response($err['data'], $err['statusCode']);
+      }
+
       $this->disconnect();
       $this->response(json_encode($data), 200);
+    }
+
+    private static function getMinMaxByType($conn, &$data) {
+      // Stores maxAvg as @maxAvg
+      $stmt = $conn->prepare(
+                "select @maxAvg := max(avgUsers)
+                 from AvgByType"
+              );
+      if (!$stmt->execute()) {
+        $stmt->close();
+        $result = array(
+                    'statusCode' => 500,
+                    'data' => 'Error Retrieving Events Information!'
+                  );
+        return $result;
+      }
+      $stmt->free_result();
+
+      // Retrieves the row(s) with avgUsers = @maxAvg
+      $stmt = $conn->prepare(
+                "select ABT.eventTypeId,
+                        ifnull(ET.category, 'None') as category,
+                        ABT.avgUsers
+                 from EventType ET
+                 right join AvgByType ABT
+                   on ifnull(ET.eventTypeId, 0) = ABT.eventTypeId
+                 where ABT.avgUsers = @maxAvg"
+              );
+      if (!$stmt->execute()) {
+        $stmt->close();
+        $result = array(
+                    'statusCode' => 500,
+                    'data' => 'Error Retrieving Events Information!'
+                  );
+        return $result;
+      }
+      $res = $stmt->get_result();
+      $data['maxAvg'] = $res->fetch_all(MYSQLI_ASSOC);
+
+      // Stores minAvg as @minAvg
+      $stmt = $conn->prepare(
+                "select @minAvg := min(avgUsers)
+                 from AvgByType"
+              );
+      if (!$stmt->execute()) {
+        $stmt->close();
+        $result = array(
+                    'statusCode' => 500,
+                    'data' => 'Error Retrieving Events Information!'
+                  );
+        return $result;
+      }
+      $stmt->free_result();
+
+      // Retrieves the row(s) with avgUsers = @minAvg
+      $stmt = $conn->prepare(
+                "select ABT.eventTypeId,
+                        ifnull(ET.category, 'None') as category,
+                        ABT.avgUsers
+                 from EventType ET
+                 right join AvgByType ABT
+                   on ifnull(ET.eventTypeId, 0) = ABT.eventTypeId
+                 where ABT.avgUsers = @minAvg"
+              );
+      if (!$stmt->execute()) {
+        $stmt->close();
+        $result = array(
+                    'statusCode' => 500,
+                    'data' => 'Error Retrieving Events Information!'
+                  );
+        return $result;
+      }
+      $res = $stmt->get_result();
+      $data['minAvg'] = $res->fetch_all(MYSQLI_ASSOC);
+
+      $stmt->close();
+      return null;
     }
   }
 ?>

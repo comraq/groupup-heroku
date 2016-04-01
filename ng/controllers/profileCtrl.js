@@ -6,7 +6,7 @@ var app = angular.module('groupUpApp')
                                                      $timeout,
                                                      NgMap, 
                                                      $routeParams,
-                                                     $uibModal,
+                                                     modalService,
                                                      alertFactory) {
   var verbose = false;
 
@@ -47,9 +47,12 @@ var app = angular.module('groupUpApp')
         console.log(res);
       }
 
-      this.scope.types = JSON.parse(res.data);
-      if (verbose)
-        console.log(JSON.parse(res.data));
+      var data = JSON.parse(res.data);
+      this.scope.types = data.avgByType;
+      this.maxAvgTypeEvents = data.maxAvg;
+      this.minAvgTypeEvents = data.minAvg;
+      if (true)
+        console.log(data);
 
     }.bind(this), function errorCallback(err) {
       alertFactory.add("danger", err.data.data);
@@ -57,11 +60,26 @@ var app = angular.module('groupUpApp')
     });
   }
 
+  this.showMinMax = function showMinMax() {
+    modalService.openModal(this, "ng/views/eventByTypeHighlights.html");
+    this.highlightsToggleChanged(true);
+  };
 
   this.viewChanged = function viewChanged() {
     if (this.scope.typeView && !this.scope.types)
       getEventsByType.call(this);
   };
+
+  this.highlightsToggleChanged = function highlightsToggleChanged(minView) {
+    if (minView) {
+      this.scope.highlightsAvg = this.minAvgTypeEvents;
+      this.scope.highlightsModalName = "Minimum";
+    } else {
+      this.scope.highlightsAvg = this.maxAvgTypeEvents;
+      this.scope.highlightsModalName = "Maximum";
+    }
+    console.log(this.scope);
+  }
 
   this.getUsersAndEvents();
 });
