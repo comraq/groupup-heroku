@@ -5,7 +5,7 @@ angular.module('groupUpApp').controller('SignInCtrl',
 			.then(
 				function successCallback(response){
 					alertFactory.add('success', 'Login Successful');
-					$location.path('/');
+					$location.path('/Event');
 				}.bind(this),
 				function errorCallback(response){
 					var message = response.data;

@@ -16,8 +16,8 @@ var app = angular.module('groupUpApp', [
 app.config(function($routeProvider) {
     $routeProvider
         .when("/", {
-            templateUrl: 'ng/views/news.html',
-            controller: 'NewsCtrl',
+            templateUrl: 'ng/views/signIn.html',
+            controller: 'SignInCtrl',
             controllerAs: 'ctrl'
         })
         .when("/Event", {
@@ -60,7 +60,6 @@ app.config(function($routeProvider) {
             controller: 'UserAccountCtrl',
             controllerAs: 'ctrl',
         });
-    //.otherwise({redirectTo: "/"});
 });
 
 app.run(function(SessionService) {

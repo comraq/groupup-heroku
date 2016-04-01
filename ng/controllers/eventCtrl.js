@@ -11,7 +11,7 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.deleteEventUrl = "/controller/deleteEvent/startDeleteEvent";
     this.addUserUrl = "/controller/userGoesEvent/startUserGoesEvent";
     this.cancelURL = "/controller/userGoesEvent/startCancelUserGoesEvent";
-
+    console.log(SessionService.sessionInfo);
     this.detailEvent;
     //search stuff
     this.searchName;
@@ -55,7 +55,8 @@ var app = angular.module('groupUpApp').controller('EventCtrl', function($scope, 
     this.editing = false;
     this.etTabView = false;
     this.eventTypeDetail;
-  
+    this.accountType = SessionService.sessionInfo.accountType;
+
     var eventTypeToDel;
     var originalEvent;
     var userPosition;

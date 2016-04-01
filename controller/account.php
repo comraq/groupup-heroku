@@ -445,5 +445,4 @@ class Account extends Database
 		}
 	}
 }
-
 ?>
