@@ -5,7 +5,7 @@ USE GroupUpDebug;
 -- EventType(eventTypeId: int, category: char)
 CREATE TABLE EventType (
     eventTypeId INT AUTO_INCREMENT,
-    category VARCHAR(50),
+    category VARCHAR(50) UNIQUE,
     PRIMARY KEY (eventTypeId)
 );
 
