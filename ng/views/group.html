@@ -88,10 +88,12 @@
       </div><!-- jumbotron -->
     </div><!-- tabpane -->
 
-    <div id="group-create" class="tab-pane fade"> 
+    <div id="group-create" class="tab-pane fade">
       <form class="form-signin" name="createGroup" role="form"
         id="create-group-form"
         ng-submit="ctrl.getAccType() != 0 || ctrl.createGroup()">
+
+        <fieldset ng-disabled="ctrl.getAccType() != 0">
 
         <div class="form-group" ng-class="{
           'has-error': createGroup.name.$dirty &&
@@ -160,6 +162,7 @@
               selection-model-mode="multiple-additive"
               selection-model-selected-items="ctrl.newGroup.withEvents"
               selection-model-on-change="ctrl.eventsChanged(e)"
+              selection-model-ignore="ctrl.getAccType() != 0"
               selection-model-selected-class="group-events-selected">
               <td>{{ e.eventName }}</td>
               <td>{{ e.timeStart }}</td>
@@ -173,7 +176,8 @@
         </table>
 
         <ng-map id="create-group-events-map"
-          center="[0,0]" zoom="13"
+          center="[0,0]" zoom-to-include-markers="auto"
+          scrollwheel="false"
           lazy-init="true" default-style="true">
             <marker ng-repeat="e in events | filter: {selected: 'true'}"
               position="{{e.lat}}, {{e.lon}}"></marker>
@@ -186,6 +190,7 @@
                        || ctrl.dataLoading">
         </button>
 
+        </fieldset>
       </form>
     </div> <!-- tabpane -->
   </div> <!-- tabcontent -->

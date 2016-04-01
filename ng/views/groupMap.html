@@ -78,7 +78,7 @@
     </table>
 
     <ng-map id="join-group-events-map"
-      center="[0,0]" zoom="13"
+      center="[0,0]" zoom-to-include-markers="auto"
       default-style="true">
         <marker ng-repeat="e in events | filter: {selected: 'true'}"
           position="{{e.lat}}, {{e.lon}}"></marker>

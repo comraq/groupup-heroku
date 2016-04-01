@@ -51,7 +51,7 @@ var app = angular.module('groupUpApp')
    */
   this.scope.userGoesEventsPerGroupLimit = 3;
 
-  function refreshMap(map, position) {
+  function refreshMap(map, position, force) {
     if (verbose)
       console.log("refreshMap, mapId: " + map.id);
 
@@ -61,8 +61,11 @@ var app = angular.module('groupUpApp')
       bounds.extend(up);
     }
     google.maps.event.trigger(map, "resize");
-    map.setCenter(bounds.getCenter());
-    map.fitBounds(bounds);
+
+    if (force) {
+      map.setCenter(bounds.getCenter());
+      map.fitBounds(bounds);
+    }
   }
 
   this.showJoinGroupsMapModal = function showJoinGroupsMapModal(mapId,
@@ -96,9 +99,9 @@ var app = angular.module('groupUpApp')
                            lat: position.coords.latitude,
                            lon: position.coords.longitude
                          };
-      refreshMap(map, userPosition);
+      refreshMap(map, userPosition, true);
       $timeout(function() {
-        refreshMap(map, userPosition);
+        refreshMap(map, userPosition, true);
       }, 1000);
     });
 
