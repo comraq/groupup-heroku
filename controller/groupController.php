@@ -441,7 +441,7 @@
       $err = GroupController::addUserToEvents($this->conn,
                                               $data['withEvents']);
       if (!is_null($err)) {
-        $this->rollback();
+        $this->conn->rollback();
         $this->disconnect();
         $this->response($err['data'], $err['statusCode']);
       }
@@ -456,7 +456,7 @@
       $stmt->bind_param('ss', $escGroupName, $escDescription);
       if (!$stmt->execute()) {
         $stmt->close();
-        $this->rollback();
+        $this->conn->rollback();
         $this->disconnect();
         $res = array(
                  'data' => 'Error Creating Group!'
@@ -470,7 +470,7 @@
       if (!is_null($err)) {
         // Failed to Add User To Group
         // Rollback, includes deleting previously created Group
-        $this->rollback();
+        $this->conn->rollback();
         $this->disconnect();
         $this->response($err['data'], $err['statusCode']);
       }

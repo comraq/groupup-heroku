@@ -6,7 +6,8 @@ var app = angular.module('groupUpApp')
                                                      $timeout,
                                                      NgMap, 
                                                      $routeParams,
-                                                     $uibModal,
+                                                     modalService,
+                                                     SessionService,
                                                      alertFactory) {
   var verbose = false;
 
@@ -14,13 +15,15 @@ var app = angular.module('groupUpApp')
   this.scope = $scope;
   this.location = $location;
 
-  this.getEvents = function getEvents() {
+  this.getUsersAndEvents = function getUsersAndEvents() {
     $http({
       method: "GET",
       url: this.url + "/getUsersAndEvents",
     }).then(function successCallback(res) {
-      if (verbose)
-        console.log("getUsersAndEvents res: " + JSON.stringify(res));
+      if (verbose) {
+        console.log("getUsersAndEvents res: ");
+        console.log(res);
+      }
 
       var data = JSON.parse(res.data);
       this.scope.users = data.users;
@@ -34,5 +37,50 @@ var app = angular.module('groupUpApp')
     });
   };
 
-  this.getEvents();
+
+  function getEventsByType() {
+    $http({
+      method: "GET",
+      url: this.url + "/getEventsByType"
+    }).then(function successCallback(res) {
+      if (verbose) {
+        console.log("getEventsByType res: ");
+        console.log(res);
+      }
+
+      var data = JSON.parse(res.data);
+      this.scope.types = data.avgByType;
+      this.maxAvgTypeEvents = data.maxAvg;
+      this.minAvgTypeEvents = data.minAvg;
+      if (verbose)
+        console.log(data);
+
+    }.bind(this), function errorCallback(err) {
+      alertFactory.add("danger", err.data.data);
+      console.log(err);
+    });
+  }
+
+  this.showMinMax = function showMinMax() {
+    modalService.openModal(this, "ng/views/eventByTypeHighlights.html");
+    this.highlightsToggleChanged(true);
+  };
+
+  this.viewChanged = function viewChanged() {
+    if (this.scope.typeView && !this.scope.types)
+      getEventsByType.call(this);
+  };
+
+  this.highlightsToggleChanged = function highlightsToggleChanged(minView) {
+    if (minView) {
+      this.scope.highlightsAvg = this.minAvgTypeEvents;
+      this.scope.highlightsModalName = "Minimum";
+    } else {
+      this.scope.highlightsAvg = this.maxAvgTypeEvents;
+      this.scope.highlightsModalName = "Maximum";
+    }
+    console.log(this.scope);
+  }
+
+  this.getUsersAndEvents();
 });

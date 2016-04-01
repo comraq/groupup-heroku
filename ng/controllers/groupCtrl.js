@@ -6,7 +6,8 @@ var app = angular.module('groupUpApp')
                                                    $timeout,
                                                    NgMap, 
                                                    $routeParams,
-                                                   $uibModal,
+                                                   modalService,
+                                                   SessionService,
                                                    alertFactory) {
   var verbose = false;
 
@@ -16,6 +17,12 @@ var app = angular.module('groupUpApp')
   this.joinTab = true;
   this.scope.
        joinGroupMapModalButton = "Confirm Action for Current Group";
+
+  /*
+   * Placeholder function for explicitly dismissing modals,
+   * assigned to the controller by modalService upon opening a modal
+   */
+  this.dismissModal;
 
   this.newGroup = {
     name: "",
@@ -50,46 +57,12 @@ var app = angular.module('groupUpApp')
     map.fitBounds(bounds);
   }
 
-  function openModal(ctrl, view) {
-    var modalInstance = $uibModal.open({
-      animation: true,
-      templateUrl: view,
-      scope: ctrl.scope,
-      size: "lg"
-    });
-
-    modalInstance.result.then(function(result) {
-      ctrl.dismissModal = undefined;
-      if (verbose)
-        console.log("dismissModal reset, modal closed for result")
-
-    }, function(reason) {
-      ctrl.dismissModal = undefined;
-      if (verbose)
-        console.log("dismissModal reset, modal dismissed for reason")
-
-    });
-
-    if (verbose) {
-      console.log("Opened modalInstance from: " + viewPath);
-      console.log(modalInstance);
-    }
-
-    // A Reference to the dismiss function of the opened modal
-    ctrl.dismissModal = modalInstance.dismiss;
-
-    if (verbose) {
-      console.log("Opening modal, setting ctrl.dismissModal: ");
-      console.log(ctrl.dismissModal);
-    }
-  }
-
   this.showJoinGroupsMapModal = function showJoinGroupsMapModal(mapId,
                                                                 group) {
     this.scope.modalGroupName = group.groupName;
     this.joinGroupId = group.groupId;
 
-    openModal(this, "ng/views/groupMap.html");
+    modalService.openModal(this, "ng/views/groupMap.html", "lg");
 
     // this.joinGroupsMap always loses the original joinGroupsMap obj
     // Must use NgMap.getMap with explicit mapId to fetch the correct map
@@ -155,10 +128,6 @@ var app = angular.module('groupUpApp')
     this.newGroup.name = "";
     this.newGroup.description = "";
 
-    // Seleciton-Model keeps permenant reference to newGroup.withEvents
-    // So we use this method to clear the array, retaining refrences
-    this.newGroup.withEvents.length = 0;
-    
     if (!this.createGroupMap)
       this.createGroupMap = NgMap.initMap(mapId);
 
@@ -212,6 +181,11 @@ var app = angular.module('groupUpApp')
       // Clear the groups model so Join Groups tab can query for new data
       this.scope.groups = undefined;
       this.getEvents();
+
+      // Seleciton-Model keeps permenant reference to newGroup.withEvents
+      // So we use this method to clear the array, retaining refrences
+      this.newGroup.withEvents.length = 0;
+    
 
     }.bind(this), function errorCallback(err){
       alertFactory.add("danger", err.data.data);
@@ -340,7 +314,7 @@ var app = angular.module('groupUpApp')
     this.tempGroup.groupName = group.groupName;
     this.tempGroup.description = group.description;
 
-    openModal(this, "ng/views/groupEdit.html");
+    modalService.openModal(this, "ng/views/groupEdit.html", "lg");
   };
 
   this.updateGroup = function updateGroup() {

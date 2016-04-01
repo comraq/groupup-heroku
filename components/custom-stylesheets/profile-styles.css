@@ -3,10 +3,24 @@
   display: inline;
  }
 
-.profile-user-table th { width: 15vw; }
+.minRed { color: #e00; }
 
-.profile-user-table td { width: 15vw; }
+.maxGreen { color: #0a0; }
 
-.profile-events-table th { width: 15vw; }
+.profile-user-table th { width: 33vw; }
 
-.profile-events-table td { width: 15vw; }
+.profile-user-table td { width: 33vw; }
+
+.profile-events-table th { width: 20vw; }
+
+.profile-events-table td { width: 20vw; }
+
+.profile-events-by-type-table th { width: 15vw; }
+
+.profile-events-by-type-table td { width: 15vw; }
+
+.event-by-type-highlights-modal-container { margin: 2% }
+
+.event-by-type-highlights-table th { width: 20vw; }
+
+.event-by-type-highlights-table td { width: 20vw; }

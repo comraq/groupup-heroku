@@ -43,6 +43,7 @@
     <!--Controllers-->
     <script type="text/javascript" src="./ng/app.js"></script>
     <script type="text/javascript" src="./ng/services/session.js"></script>
+    <script type="text/javascript" src="./ng/services/modal.js"></script>
     <script type="text/javascript" src="./ng/directives/alert.js"></script>
     <script type="text/javascript" src="./ng/controllers/userAccountCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/navbarCtrl.js"></script> 
