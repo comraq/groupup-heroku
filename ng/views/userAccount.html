@@ -2,10 +2,16 @@
   <h2 class="title">Account</h2>
 
   <ul class="nav nav-tabs nav-justified">
-    <li class="active">
+    <li ng-if="ctrl.getAccType() == 0">
       <a data-toggle="tab" data-target="#userInfo">Upcoming Events</a>
     </li>
-    <li><a data-toggle="tab" data-target="#invitation">Invitation</a></li>
+    <li ng-if="ctrl.getAccType() == 0">
+      <a data-toggle="tab" data-target="#invitation">Invitation</a>
+    </li>
+    <li ng-if="ctrl.getAccType() == 1">
+      <a data-toggle="tab" data-target="#provider-profile">
+        My Events Statistics</a>
+    </li>
     <li><a data-toggle="tab" data-target="#profile">Profile</a></li>
     <li><a data-toggle="tab" data-target="#password">Password</a></li>
   </ul>
@@ -86,9 +92,98 @@
       </div>
     </div> <!-- tabpane -->
 
+<!-- Start of Provider Profile -->
     <div id="provider-profile" class="tab-pane fade"
-      ng-show="ctrl.getAccType == 1">
+      ng-controller="providerCtrl as ctrl">
+
+  <h3 id="events-view-toggle-label">View By:</h3>
+  <toggle-switch data-ng-model="typeView"
+    ng-change="ctrl.viewChanged()"
+    on-label="By Type" off-label="By Event">
+  </toggle-switch>
+
+  <div ng-show="!typeView">
+    <h4>Your Events</h4>
+    <table fixed-header class="table profile-events-table"
+     id="profile-provider-events-table"
+     name="profile-provider-events-table">
+      <thead>
+        <tr>
+          <th>Event Name</th>
+          <th>Time Start</th>
+          <th>Time End</th>
+          <th>Cost</th>
+          <th>Number of Attendees</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="e in events
+                       | orderBy: 'eventName'
+                       | orderBy: '-numUsers'">
+          <td>{{ e.eventName }}</td>
+          <td>{{ e.timeStart }}</td>
+          <td>{{ e.timeEnd }}</td>
+          <td>{{ e.cost | currency }}</td>
+          <td>{{ e.numUsers }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Users for Your Events</h4>
+    <table fixed-header class="table profile-user-table"
+      id="profile-provider-user-table"
+      name="profile-provider-user-table">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Attending Events Count</th>
+          <th>Attending All Events?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="user in users
+                       | orderBy: 'email'
+                       | orderBy: '-numEvents'">
+          <td>{{ user.email }}</td>
+          <td>{{ user.numEvents }}</td>
+          <td>{{ (user.attendAll)? "Yes" : "No" }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div ng-show="typeView">
+    <h4>Your Events By Type</h4>
+    <table fixed-header class="table profile-events-by-type-table"
+     id="profile-provider-events-by-type-table"
+     name="profile-provider-events-by-type-table">
+      <thead>
+        <tr>
+          <th>Event Type</th>
+          <th>Events Count</th>
+          <th>Average Attendees Per Event of Type</th>
+          <th>Total Number of Attendees</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="type in types
+                       | orderBy: '-eventTypeId'
+                       | orderBy: '-totalUsers'">
+          <td>{{ type.category }}</td>
+          <td>{{ type.numEvents }}</td>
+          <td>{{ type.avgUsers }}</td>
+          <td>{{ type.totalUsers }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="btn btn-info btn-lg" role="button"
+      ng-click="ctrl.showMinMax()">
+      Get Highlights
+    </div>
+  </div>
     </div> <!-- tabpane -->
+<!-- End of Provider Profile -->
   
     <div id="profile" class="tab-pane fade">
       <form class="form-signin" ng-submit="ctrl.updateProfile()"
