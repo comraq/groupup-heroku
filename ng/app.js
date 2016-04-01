@@ -62,6 +62,14 @@ app.config(function($routeProvider) {
         });
 });
 
-app.run(function(SessionService) {
+app.run(function($rootScope, $location, SessionService, alertFactory) {
     SessionService.getSessionInfo();
+    $rootScope.$on("$routeChangeStart", function(event, next, current) {
+      if (SessionService.sessionInfo == null
+          && (next.templateUrl != "ng/views/signIn.html"
+              && next.templateUrl != "ng/views/register.html")) {
+        $location.path("/SignIn");
+	alertFactory.add('danger', 'User Must First Login!');
+      }
+    });
 });
