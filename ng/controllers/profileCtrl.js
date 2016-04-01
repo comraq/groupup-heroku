@@ -7,6 +7,7 @@ var app = angular.module('groupUpApp')
                                                      NgMap, 
                                                      $routeParams,
                                                      modalService,
+                                                     SessionService,
                                                      alertFactory) {
   var verbose = false;
 
@@ -51,7 +52,7 @@ var app = angular.module('groupUpApp')
       this.scope.types = data.avgByType;
       this.maxAvgTypeEvents = data.maxAvg;
       this.minAvgTypeEvents = data.minAvg;
-      if (true)
+      if (verbose)
         console.log(data);
 
     }.bind(this), function errorCallback(err) {

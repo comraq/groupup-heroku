@@ -7,6 +7,7 @@ var app = angular.module('groupUpApp')
                                                    NgMap, 
                                                    $routeParams,
                                                    modalService,
+                                                   SessionService,
                                                    alertFactory) {
   var verbose = false;
 
