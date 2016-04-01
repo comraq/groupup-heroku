@@ -18,6 +18,14 @@ var app = angular.module('groupUpApp')
   this.scope.
        joinGroupMapModalButton = "Confirm Action for Current Group";
 
+  this.getAccEmail = function() {
+    return SessionService.sessionInfo["email"];
+  };
+
+  this.getAccType = function() {
+    return SessionService.sessionInfo["accountType"];
+  };
+
   /*
    * Placeholder function for explicitly dismissing modals,
    * assigned to the controller by modalService upon opening a modal

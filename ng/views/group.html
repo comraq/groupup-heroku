@@ -74,7 +74,7 @@
         </div><!-- row -->
 
         <toggle-switch data-ng-model="group.editing"
-          on-label="Edit" off-label="View">
+          on-label="Edit" off-label="View" ng-show="ctrl.getAccType() == 2">
           Edit
         </toggle-switch>
       </div><!-- jumbotron -->

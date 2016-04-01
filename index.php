@@ -58,44 +58,50 @@
 </head>
 
 <body>
-	<nav class="navbar navbar-default">
-		<div  ng-controller="navbarCtrl as navBar" class="container-fluid">
+  <nav class="navbar navbar-default">
+    <div  ng-controller="navbarCtrl as ctrl" class="container-fluid">
 
-           <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-               <span class="sr-only">Toggle navigation</span>
-               <span class="icon-bar"></span>
-               <span class="icon-bar"></span>
-               <span class="icon-bar"></span>
-           </button>
-           <a class="navbar-brand" href="#/">GroupUp</a>
-       </div>
-       <div class="collapse navbar-collapse">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed"
+          data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+          aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#/">GroupUp</a>
+      </div>
+
+      <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
-           <li class="page"><a href="#/Event">Event</a></li>
-           <li class="page"><a href="#/Group">Group</a></li>														
+          <li class="page"><a href="#/Event">Event</a></li>
+          <li class="page"><a href="#/Group">Group</a></li>
        </ul>
-       <ul ng-hide="navBar.isLoggedIn()" class="nav navbar-nav navbar-right">
-           <li><a href="#/SignIn">Sign In<span class="sr-only">(current)</span></a></li>
-           <li><a href="#/Register">Register</a></li>
+
+       <ul class="nav navbar-nav navbar-right">
+         <!-- Navigation when Signed Out -->
+         <li ng-if="!ctrl.isLoggedIn()">
+           <a href="#/SignIn">
+             Sign In<span class="sr-only">(current)</span>
+           </a>
+         </li>
+         <li ng-if="!ctrl.isLoggedIn()">
+           <a href="#/Register">Register</a>
+         </li>
+
+         <!-- Navigation when Signed In -->
+         <li ng-if="ctrl.isLoggedIn()"><a href="#/Account">Account</a></li>
+         <li ng-if="ctrl.isLoggedIn()"><a href="#/SignOut">Sign Out</a></li>
        </ul>
-       <ul ng-show="navBar.isLoggedIn() && (navBar.accountType() == 0)" class="nav navbar-nav navbar-right">
-        <li><a href="#/Account">Account</a></li>
-        <ul ng-show="navBar.isLoggedIn()" class="nav navbar-nav navbar-right">
-          <li><a href="#/Profile">Profile</a></li>
-          <li><a href="#/SignOut">Sign Out</a></li>
-      </ul>
-      <ul ng-show="(navBar.isLoggedIn() && (navBar.accountType() == 1))" class="nav navbar-nav navbar-right">
-        <li><a href="#/">Event Provider Account</a></li>
-        <li><a href="#/SignOut">Sign Out</a></li>
-    </ul>
-</div>
-</div>
-</nav>
-<alerts></alerts>
-<div class="container-fluid">
-  <div data-ng-view></div>
-</div>
+     </div>
+   </div>
+  </nav>
+
+  <alerts></alerts>
+  <div class="container-fluid">
+    <div data-ng-view></div>
+  </div>
 </body>
 </html>
 

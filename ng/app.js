@@ -63,13 +63,24 @@ app.config(function($routeProvider) {
 });
 
 app.run(function($rootScope, $location, SessionService, alertFactory) {
-    SessionService.getSessionInfo();
-    $rootScope.$on("$routeChangeStart", function(event, next, current) {
-      if (SessionService.sessionInfo == null
-          && (next.templateUrl != "ng/views/signIn.html"
-              && next.templateUrl != "ng/views/register.html")) {
-        $location.path("/SignIn");
-	alertFactory.add('danger', 'User Must First Login!');
-      }
-    });
+  SessionService.getSessionInfo();
+
+  /*
+   * Ovverride the default route change listener to prevent routing
+   * to internal pages prior to sign-in/register
+   *
+   * References: http://stackoverflow.com/questions/11541695/
+   *             redirecting-to-a-certain-route-based-on-condition
+   */
+  $rootScope.$on("$routeChangeStart", function(event, next, current) {
+    console.log("$routeChangeStart: ");
+    console.log(SessionService.sessionInfo);
+
+    if (SessionService.sessionInfo == null
+        && (next.templateUrl != "ng/views/signIn.html"
+            && next.templateUrl != "ng/views/register.html")) {
+      $location.path("/SignIn");
+      alertFactory.add('danger', 'User Must First Login!');
+    }
+  });
 });
