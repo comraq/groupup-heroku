@@ -23,11 +23,11 @@
                             <option value="IS NULL">is null</option>
                             <option value="IS NOT NULL">is not null</option>
                             <option value="LIKE">like</option>
-                            <option value="IS NOT LIKE">is not like</option>
+                            <option value="NOT LIKE">not like</option>
                         </select>
                     </div>
                     <label for="inputSearch" class="sr-only">Search</label>
-                    <input ng-disabled="(!ctrl.searchNameOperator && ctrl.advancedSearch )|| ctrl.searchNameOperator=='IS NOT NULL' || ctrl.searchNameOperator=='IS NULL'" type="text" name="search" data-ng-model="ctrl.searchName" id="inputSearch" class="form-control" placeholder="Event Name" ng-required="ctrl.searchNameOperator=='LIKE' || ctrl.searchNameOperator=='IS NOT LIKE'">
+                    <input ng-disabled="(!ctrl.searchNameOperator && ctrl.advancedSearch )|| ctrl.searchNameOperator=='IS NOT NULL' || ctrl.searchNameOperator=='IS NULL'" type="text" name="search" data-ng-model="ctrl.searchName" id="inputSearch" class="form-control" placeholder="Event Name" ng-required="ctrl.searchNameOperator=='LIKE' || ctrl.searchNameOperator=='NOT LIKE'">
                     <span class="input-group-btn">
                          <button ng-disabled="form.$invalid" class="btn btn-primary" type="submit">Search</button>
                      </span>
@@ -51,7 +51,7 @@
                                 <option value=">=">greater than or equal</option>
                                 <option value="IS NOT NULL">is not null</option>
                                 <option value="LIKE">like</option>
-                                <option value="IS NOT LIKE">is not like</option>
+                                <option value="NOT LIKE">not like</option>
                             </select>
                         </div>
                         <input ng-disabled="!ctrl.searchTimeStartLogic || !ctrl.searchTimeStartOperator|| ctrl.searchTimeStartOperator=='IS NOT NULL'" type="text" name="search" data-ng-model="ctrl.searchTimeStart" class="form-control" placeholder="Time Start" ng-pattern="/(20\d{2})-(0[1-9]|1[0-2])-(1[0-9]|2[0-9]|3[0-1]) (2[0-3]|0[1-9]|1[0-9]):(60|[0-5][0-9]):(60|[0-5][0-9])/" ng-required="ctrl.searchTimeStartOperator!='IS NOT NULL'">
@@ -74,7 +74,7 @@
                                 <option value=">=">greater than or equal</option>
                                 <option value="IS NOT NULL">is not null</option>
                                 <option value="LIKE">like</option>
-                                <option value="IS NOT LIKE">is not like</option>
+                                <option value="NOT LIKE">not like</option>
                             </select>
                         </div>
                         <input ng-disabled="!ctrl.searchTimeEndLogic ||!ctrl.searchTimeEndOperator || ctrl.searchTimeEndOperator=='IS NOT NULL' || ctrl.searchTimeEndOperator=='IS NULL'" type="text " name="search " data-ng-model="ctrl.searchTimeEnd" class="form-control " placeholder="Time End" ng-pattern="/(20\d{2})-(0[1-9]|1[0-2])-(1[0-9]|2[0-9]|3[0-1]) (2[0-3]|0[1-9]|1[0-9]):(60|[0-5][0-9]):(60|[0-5][0-9])/" ng-required="ctrl.searchTimeEndOperator!='IS NOT NULL'">
@@ -93,10 +93,10 @@
                                 <option value="IS NULL">is null</option>
                                 <option value="IS NOT NULL">is not null</option>
                                 <option value="LIKE">like</option>
-                                <option value="IS NOT LIKE">is not like</option>
+                                <option value="NOT LIKE">not like</option>
                             </select>
                         </div>
-                        <input ng-disabled="!ctrl.searchDesctiptionLogic || !ctrl.searchDesctiptionOperator || ctrl.searchDesctiptionOperator=='IS NOT NULL' || ctrl.searchDesctiptionOperator=='IS NULL'" type="text" name="search" data-ng-model="ctrl.searchDesctiption " class="form-control " placeholder="Description" ng-required="ctrl.searchDesctiptionOperator=='LIKE' ||ctrl.searchDesctiptionOperator=='IS NOT LIKE'">
+                        <input ng-disabled="!ctrl.searchDesctiptionLogic || !ctrl.searchDesctiptionOperator || ctrl.searchDesctiptionOperator=='IS NOT NULL' || ctrl.searchDesctiptionOperator=='IS NULL'" type="text" name="search" data-ng-model="ctrl.searchDesctiption " class="form-control " placeholder="Description" ng-required="ctrl.searchDesctiptionOperator=='LIKE' ||ctrl.searchDesctiptionOperator=='NOT LIKE'">
                     </div>
                     <div class="input-group">
                         <div class="input-group-addon min-width-one-six-one">
@@ -117,7 +117,7 @@
                                 <option value="IS NULL">is null</option>
                                 <option value="IS NOT NULL">is not null</option>
                                 <option value="LIKE">like</option>
-                                <option value="IS NOT LIKE">is not like</option>
+                                <option value="NOT LIKE">not like</option>
                             </select>
                         </div>
                         <input ng-disabled="!ctrl.searchCostLogic || !ctrl.searchCostOperator || ctrl.searchCostOperator=='IS NOT NULL' || ctrl.searchCostOperator=='IS NULL'" type="text" name="search" data-ng-model="ctrl.searchCost " class="form-control " placeholder="Cost" ng-required="ctrl.searchCostOperator!='IS NOT NULL' ||ctrl.searchCostOperator!='IS NULL'">
@@ -136,10 +136,10 @@
                                 <option value="IS NULL">is null</option>
                                 <option value="IS NOT NULL">is not null</option>
                                 <option value="LIKE">like</option>
-                                <option value="IS NOT LIKE">is not like</option>
+                                <option value="NOT LIKE">not like</option>
                             </select>
                         </div>
-                        <input ng-disabled="!ctrl.searchCreatedByLogic || !ctrl.searchCreatedByOperator || ctrl.searchCreatedByOperator=='IS NOT NULL' || ctrl.searchCreatedByOperator=='IS NULL'" type="text" name="search" data-ng-model="ctrl.searchCreatedBy " class="form-control " placeholder="Created By" ng-required="ctrl.searchCreatedByOperator=='LIKE' ||ctrl.searchCreatedByOperator=='IS NOT LIKE'">
+                        <input ng-disabled="!ctrl.searchCreatedByLogic || !ctrl.searchCreatedByOperator || ctrl.searchCreatedByOperator=='IS NOT NULL' || ctrl.searchCreatedByOperator=='IS NULL'" type="text" name="search" data-ng-model="ctrl.searchCreatedBy " class="form-control " placeholder="Created By" ng-required="ctrl.searchCreatedByOperator=='LIKE' ||ctrl.searchCreatedByOperator=='NOT LIKE'">
                     </div>
                 </div>
                 <!-- referenced: http://jsfiddle.net/mjaric/pj5br/ -->
