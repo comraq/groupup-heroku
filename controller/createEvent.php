@@ -5,7 +5,7 @@ class CreateEvent extends Database{
 
 	function __construct(){
 		parent::__construct();
-		mysqli_report(MYSQLI_REPORT_ERROR);
+		mysqli_report(MYSQLI_REPORT_ALL);
 	}
 
 	function createEvent($data){
@@ -73,7 +73,6 @@ class CreateEvent extends Database{
 			$insertEventStmt->close();
 
 			if($privateEvent){
-
 				$insPEventStmt = $this->conn->prepare($insertPrivateEventSQL);
 				$insPEventStmt->bind_param('sddss', $eventName, $lat, $lon, $timeStart, $timeEnd);
 				if(!$insPEventStmt->execute()){

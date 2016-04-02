@@ -3,10 +3,10 @@
     <ul class="nav nav-tabs nav-justified">
         <li ng-click="clearCreateData()" class="active">
             <a data-toggle="tab" data-target="#eventSearchBar">Event Search</a></li>
-            <li ng-click="clearSearchData()">
-                <a data-toggle="tab" ng-show="ctrl.canEdit" data-target="#createEvent">Create Event</a></li>
-                <li ng-click="switchToETTab()">
-                    <a ng-show="ctrl.canEdit" data-toggle="tab" data-target="#eventTypePane">Modify Event Types</a></li>
+            <li ng-show="ctrl.isEventProvider" ng-click="clearSearchData()">
+                <a data-toggle="tab" data-target="#createEvent">Create Event</a></li>
+                <li ng-show="ctrl.canEdit" ng-click="switchToETTab()">
+                    <a data-toggle="tab" data-target="#eventTypePane">Modify Event Types</a></li>
                 </ul>
                 <div class="tab-content">
                     <div id="eventSearchBar" class="tab-pane fade in active">
@@ -14,7 +14,7 @@
                             <div class="input-group">
                                 <div class="input-group-addon min-width-one-six-one">
                                     <label>
-                                        <input type="checkbox" data-ng-model="ctrl.advancedSearch"></input> Advanced
+                                        <input type="checkbox" data-ng-model="ctrl.advancedSearch"></input>Advanced
                                     </label>
                                 </div>
                                 <div ng-bind="ctrl.keyOptions">
@@ -169,7 +169,7 @@
                         <div class="modal-body">
                             <form>
                                 <div>
-                                    <input ng-readonly="!ctrl.editing" type="text" data-ng-model="ctrl.detailEvent.eventName" class="form-control" required>
+                                    <input maxlength="50" ng-readonly="!ctrl.editing" type="text" data-ng-model="ctrl.detailEvent.eventName" class="form-control" required>
                                 </div>
                                 <div>
                                     <input ng-readonly="!ctrl.editing" type="text" data-ng-model="ctrl.detailEvent.timeStart" class="form-control" required>
@@ -208,7 +208,7 @@
                     <form class="form-createEvent" ng-submit="ctrl.createEvent()" name="createEvent" role="form">
                         <div>
                             <label for="eventName" class="sr-only">Event Name</label>
-                            <input type="text" name="eventName" data-ng-model="ctrl.eventName" id="eventName" class="form-control" placeholder="Event Name" required autofocus>
+                            <input maxlength="50" type="text" name="eventName" data-ng-model="ctrl.eventName" id="eventName" class="form-control" placeholder="Event Name" required autofocus>
                         </div>
                         <div>
                             <label for="eventDescription" class="sr-only">Event Description</label>
@@ -266,7 +266,6 @@
                     </tr>
                 </table>
             </div>
-            {{ctrl.newEventType}}
             <div class="check-element animate-show" ng-show="ctrl.private">
                 <div class="input-group">
                     <label for="invitees" class="sr-only">Invitees</label>
@@ -292,9 +291,9 @@
          </div>
      </form>
      <form>
-         <div id="event-type-modify-table">
-         <table class="table-hover table-striped">
-                <tr ng-repeat="eventType in eventTypes">
+         <div>
+         <table id="event-type-modify-table" class="table-hover table-striped">
+                <tr ng-repeat="eventType in eventTypes" ng-hide="eventType.delete">
                     <td>
                         <div>
                             <button class="btn btn-danger" ng-click="ctrl.deleteEventTypes(eventType)">Delete</button>

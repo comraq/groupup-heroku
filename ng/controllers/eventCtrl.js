@@ -61,6 +61,8 @@ var app = angular.module('groupUpApp').controller('EventCtrl',
         if (this.sessionService) {
             this.accountType = this.sessionService.accountType;
             this.canEdit = this.accountType == 1 || this.accountType == 2;
+            this.isEventProvider = this.accountType == 1;
+            this.isAdmin = this.accountType == 2;
         }
 
         var eventTypeToDel;
@@ -195,7 +197,6 @@ var app = angular.module('groupUpApp').controller('EventCtrl',
 
         this.createEvent = function createEvent() {
             var eventTypes = [];
-            console.log(this.newEventType);
             this.newEventType.forEach(function(event) {
                 eventTypes.push(event.eventTypeId);
             });
@@ -308,7 +309,6 @@ var app = angular.module('groupUpApp').controller('EventCtrl',
                 data: data,
                 url: this.deleteEventTypeUrl
             }).then(function successCallback(response) {
-                console.log(response.data);
                 if (JSON.parse(response.data)) {
                     alertFactory.add('success', 'Event Type deletion successful');
                     var idx;
