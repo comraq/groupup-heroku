@@ -398,8 +398,6 @@ var app = angular.module('groupUpApp')
     }
   }
 
-  this.getUsersAndEvents();
-
   // Initialization Methods for Account Partial View
   if (this.accType == 0) {
     // If User is Currently Logged in
@@ -409,6 +407,8 @@ var app = angular.module('groupUpApp')
     $timeout(function() {
       angular.element('#provider-profile-tab a').trigger('click');
     });
+    this.getUsersAndEvents();
+
   } else if (this.accType == 2) {
     $timeout(function() {
       angular.element('#account-profile-tab a').trigger('click');

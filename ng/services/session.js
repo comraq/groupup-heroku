@@ -5,9 +5,11 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
 
   return {
     sessionInfo: null,
+
     isLoggedIn: function() {
       return this.sessionInfo != null;
     },
+
     getSessionInfo: function() {
       return $http.get('controller/login/getSessionInfo').then(
            function successCallback(response) {
@@ -15,6 +17,7 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
              this.sessionInfo = response.data;
            }.bind(this));
     },
+
     sessionSignedIn: function() {
       var reason = "signedInReject";
 
@@ -57,10 +60,8 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
              this.sessionInfo = response.data;
              if (response.data)
                session.reject(reason);
-             else {
+             else
                session.resolve(response.data);
-               logoutAttempt = false;
-             }
 
            }.bind(this));
 
@@ -88,6 +89,8 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
              this.sessionInfo = null;
              logAttempt = false;
              logoutAttempt = true;
+             console.log(this.sessionInfo);
+             console.log(logoutAttempt);
            }.bind(this));
     }
   };
