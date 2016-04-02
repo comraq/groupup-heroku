@@ -1,3 +1,4 @@
+# password of each user is email without @test.com
 INSERT INTO `GroupUpDebug`.`Admin`
 (`email`,
 `password`,
@@ -6,7 +7,7 @@ INSERT INTO `GroupUpDebug`.`Admin`
 `phone`)
 VALUES
 ("test1@test.com",
-"password1",
+"$2y$10$0flxHQvyMJ9.qv/zR3IcmeCIjPHJz2ropVN6R3xkUgJgtZ9Uc3uSS",
 "test1FirstName",
 "test1LastName",
 1234567);
@@ -19,7 +20,7 @@ INSERT INTO `GroupUpDebug`.`Admin`
 `phone`)
 VALUES
 ("test2@test.com",
-"password2",
+"$2y$10$cl5524njfsUqhT2EQ0u6a.ts2JOkH/2bS4EzYrX8SlpLcFZkTPnAG",
 "test2FirstName",
 "test2LastName",
 2345678);
@@ -32,7 +33,7 @@ INSERT INTO `GroupUpDebug`.`Admin`
 `phone`)
 VALUES
 ("test3@test.com",
-"password1",
+"$2y$10$aP71EeogXFVYzQ9fJ3DgZeFHkxvvXrz2WqVFHzPrBdrOSnvpIp3Vm",
 "test3FirstName",
 "test3LastName",
 3456789);
@@ -45,7 +46,7 @@ INSERT INTO `GroupUpDebug`.`Admin`
 `phone`)
 VALUES
 ("test4@test.com",
-"password1",
+"$2y$10$gAAP4cvNCKJItmpGORduhOyN5t3cETFhNx/f0Z7OouM4r5qZDXTzu",
 "test4FirstName",
 "test4LastName",
 4567891);
@@ -58,7 +59,7 @@ INSERT INTO `GroupUpDebug`.`Admin`
 `phone`)
 VALUES
 ("test5@test.com",
-"password1",
+"$2y$10$I3KjYi6avPLRETncaV/3R.FAXvtVmuaV/79O1wb2L6GUuoe.dH2Cq",
 "test5FirstName",
 "test5LastName",
 5678912);
@@ -71,7 +72,7 @@ INSERT INTO `GroupUpDebug`.`EventProvider`
 `phone`)
 VALUES
 ("testEP1@test.com",
-"password",
+"$2y$10$.vUn/HCZ8OtDkKph1hnEfOEjBD50dKNt2/wUIcM0Ctk5rCmVu.J/q",
 "test",
 "EventProvider",
 6789123);
@@ -84,7 +85,7 @@ INSERT INTO `GroupUpDebug`.`EventProvider`
 `phone`)
 VALUES
 ("testEP2@test.com",
-"password",
+"$2y$10$rqj5F/v/C.pwqJfBF7jpfOCA9CupmI6lPV.k.E3CtijZBVn/f/rxi",
 "test",
 "EventProvider2",
 6789124);
@@ -97,7 +98,7 @@ INSERT INTO `GroupUpDebug`.`EventProvider`
 `phone`)
 VALUES
 ("testEP3@test.com",
-"password",
+"$2y$10$m/cw.bTNHY0kC2VKCHyywOx2fFZwrj37jCZJr4i7FybHV9tmKcpe.",
 "test",
 "EventProvider3",
 6789125);
@@ -110,7 +111,7 @@ INSERT INTO `GroupUpDebug`.`EventProvider`
 `phone`)
 VALUES
 ("testEP4@test.com",
-"password",
+"$2y$10$PFUMcxcuk0v8ptuKtljMP.eX3BkML6.RLpOpuyMep3vcTTSe5BR4q",
 "test",
 "EventProvider4",
 6789126);
@@ -123,7 +124,7 @@ INSERT INTO `GroupUpDebug`.`EventProvider`
 `phone`)
 VALUES
 ("testEP5@test.com",
-"password",
+"$2y$10$Zeco.3gEKebvfRLJU0XUIeFz1Byg8oOLY4Oh8AQX0p9gNdZ7oMz6a",
 "test",
 "EventProvider5",
 6789127);
@@ -931,7 +932,7 @@ INSERT INTO `GroupUpDebug`.`User`
 `age`)
 VALUES
 ("testUser1@test.com",
-"password",
+"$2y$10$UAMvk8wDaKErVHoX3PDkfuGGhqd5.NG8CRJNVsafG3.PohqNwYhku",
 "User1",
 "Test",
 2222222,
@@ -946,7 +947,7 @@ INSERT INTO `GroupUpDebug`.`User`
 `age`)
 VALUES
 ("testUser2@test.com",
-"password",
+"$2y$10$mpbx97U0zY7PeG0MzGQCbuqYhXgAdpJuWiwG9yDkT4p9qhjw/3Kwq",
 "User2",
 "Test",
 2222223,
@@ -961,7 +962,7 @@ INSERT INTO `GroupUpDebug`.`User`
 `age`)
 VALUES
 ("testUser3@test.com",
-"password",
+"$2y$10$ffjvMaNvTDaPSnrv1bKwKOc7oEYaXkilEOBTV.xhQcAk3d1tyNPnS",
 "User3",
 "Test",
 2222224,
@@ -976,7 +977,7 @@ INSERT INTO `GroupUpDebug`.`User`
 `age`)
 VALUES
 ("testUser4@test.com",
-"password",
+"$2y$10$0eZO6OOakVnE0BMQR2aPGuQ8kQvtVm50kceUcDQEHWyIJkNQsZ.1a",
 "User4",
 "Test",
 2222225,
@@ -991,7 +992,7 @@ INSERT INTO `GroupUpDebug`.`User`
 `age`)
 VALUES
 ("testUser5@test.com",
-"password",
+"$2y$10$cE0Q3JG8e3glIEMjE6cI/uGi7Xkvl/Kl6SpMzB1FOFo8t4QaG6opW",
 "User5",
 "Test",
 "2222227",
