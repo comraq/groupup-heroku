@@ -82,6 +82,19 @@ app.config(function($routeProvider) {
  * retrieve valid session info!
  */
 app.run(function($rootScope, $location, SessionService, alertFactory) {
+  $rootScope.$on("$routeChangeStart", function(event,
+                                               current,
+                                               previous) {
+    console.log("routeChangeStart, event:");
+    console.log(event);
+
+    console.log("routeChangeStart, current:");
+    console.log(current);
+
+    console.log("routeChangeStart, event:");
+    console.log(previous);
+  });
+
   $rootScope.$on("$routeChangeError", function(event,
                                                current,
                                                previous,

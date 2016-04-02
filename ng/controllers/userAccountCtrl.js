@@ -319,89 +319,80 @@ var app = angular.module('groupUpApp')
 		}
 
   // Event Provider Profile Controller
-//  this.scope.providerCtrl = function ProviderCtrl() {
-    var verbose = true;
+  var verbose = true;
 
-    this.providerUrl = "controller/profileController";
+  this.providerUrl = "controller/profileController";
 
-    this.getUsersAndEvents = function getUsersAndEvents() {
-      $http({
-        method: "GET",
-        url: this.providerUrl + "/getUsersAndEvents?email="
-             + this.getAccEmail()
-      }).then(function successCallback(res) {
-        if (verbose) {
-          console.log("getUsersAndEvents res: ");
-          console.log(res);
-        }
-
-        var data = JSON.parse(res.data);
-        this.scope.users = data.users;
-        this.scope.events = data.events;
-        if (verbose)
-          console.log(data);
-
-      }.bind(this), function errorCallback(err) {
-        alertFactory.add("danger", err.data.data);
-        console.log(err);
-      });
-    };
-
-    function getEventsByType() {
-      $http({
-        method: "GET",
-        url: this.providerUrl + "/getEventsByType?email="
-             + this.getAccEmail()
-      }).then(function successCallback(res) {
-        if (verbose) {
-          console.log("getEventsByType res: ");
-          console.log(res);
-        }
-
-        var data = JSON.parse(res.data);
-        this.scope.types = data.avgByType;
-        this.maxAvgTypeEvents = data.maxAvg;
-        this.minAvgTypeEvents = data.minAvg;
-        if (verbose)
-          console.log(data);
-
-      }.bind(this), function errorCallback(err) {
-        alertFactory.add("danger", err.data.data);
-        console.log(err);
-      });
-    }
-
-    this.showMinMax = function showMinMax() {
-      modalService.openModal(this, "ng/views/eventByTypeHighlights.html");
-      this.highlightsToggleChanged(true);
-    };
-
-    this.viewChanged = function viewChanged() {
-      if (this.scope.typeView && !this.scope.types)
-        getEventsByType.call(this);
- 
-/*
-      console.log("inside providerCtrl viewChanged:");
-      console.log("this:");
-      console.log(this);
-      console.log("this.scope:");
-      console.log(this.scope);
-*/
-    };
-
-    this.highlightsToggleChanged =
-      function highlightsToggleChanged(minView) {
-      if (minView) {
-        this.scope.highlightsAvg = this.minAvgTypeEvents;
-        this.scope.highlightsModalName = "Minimum";
-      } else {
-        this.scope.highlightsAvg = this.maxAvgTypeEvents;
-        this.scope.highlightsModalName = "Maximum";
+  this.getUsersAndEvents = function getUsersAndEvents() {
+    $http({
+      method: "GET",
+      url: this.providerUrl + "/getUsersAndEvents?email="
+           + this.getAccEmail()
+    }).then(function successCallback(res) {
+      if (verbose) {
+        console.log("getUsersAndEvents res: ");
+        console.log(res);
       }
-    }
 
-    this.getUsersAndEvents();
-//  }
+      var data = JSON.parse(res.data);
+      this.scope.users = data.users;
+      this.scope.events = data.events;
+      if (verbose)
+        console.log(data);
+
+    }.bind(this), function errorCallback(err) {
+      alertFactory.add("danger", err.data.data);
+      console.log(err);
+    });
+  };
+
+  function getEventsByType() {
+    $http({
+      method: "GET",
+      url: this.providerUrl + "/getEventsByType?email="
+           + this.getAccEmail()
+    }).then(function successCallback(res) {
+      if (verbose) {
+        console.log("getEventsByType res: ");
+        console.log(res);
+      }
+
+      var data = JSON.parse(res.data);
+      this.scope.types = data.avgByType;
+      this.maxAvgTypeEvents = data.maxAvg;
+      this.minAvgTypeEvents = data.minAvg;
+      if (verbose)
+        console.log(data);
+
+    }.bind(this), function errorCallback(err) {
+      alertFactory.add("danger", err.data.data);
+      console.log(err);
+    });
+  }
+
+  this.showMinMax = function showMinMax() {
+    modalService.openModal(this,
+                           "ng/views/eventByTypeHighlights.html",
+                           verbose);
+    this.highlightsToggleChanged(true);
+  };
+
+  this.viewChanged = function viewChanged() {
+    if (this.scope.typeView && !this.scope.types)
+      getEventsByType.call(this);
+  };
+
+  this.highlightsToggleChanged = function highlightsToggleChanged(minView) {
+    if (minView) {
+      this.scope.highlightsAvg = this.minAvgTypeEvents;
+      this.scope.highlightsModalName = "Minimum";
+    } else {
+      this.scope.highlightsAvg = this.maxAvgTypeEvents;
+      this.scope.highlightsModalName = "Maximum";
+    }
+  }
+
+  this.getUsersAndEvents();
 
   // Initialization Methods for Account Partial View
   if (this.getAccType() == 0) {
@@ -411,6 +402,10 @@ var app = angular.module('groupUpApp')
   } else if (this.getAccType() == 1) {
     $timeout(function() {
       angular.element('#provider-profile-tab a').trigger('click');
+    });
+  } else if (this.getAccType() == 2) {
+    $timeout(function() {
+      angular.element('#account-profile-tab a').trigger('click');
     });
   }
 

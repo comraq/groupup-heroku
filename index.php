@@ -49,7 +49,6 @@
     <script type="text/javascript" src="./ng/controllers/navbarCtrl.js"></script> 
     <script type="text/javascript" src="./ng/controllers/eventCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/groupCtrl.js"></script>
-    <script type="text/javascript" src="./ng/controllers/profileCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/signInCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/signOutCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/registerCtrl.js"></script>
