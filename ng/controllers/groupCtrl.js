@@ -86,7 +86,7 @@ var app = angular.module('groupUpApp')
  
     if (verbose)
       console.log("prepareMap, joinTab = " + this.joinTab + ", mapId: "
-                  + this.joinGroupsMap.id);
+                  + map.id);
 
     $window.navigator.geolocation.getCurrentPosition(function(position) {
       var userPosition = {
