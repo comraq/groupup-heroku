@@ -118,7 +118,7 @@ class Search extends Database
     }
 
     $whenQuery = $nameQuery.$timeStartQuery.$timeEndQuery.$costQuery.$descriptionQuery.$createdByQuery;
-    
+
     $searchEventsSQL = "SELECT 
     R.eventName AS eventName,
     R.lat AS lat,
