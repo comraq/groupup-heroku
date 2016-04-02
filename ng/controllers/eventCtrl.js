@@ -129,7 +129,6 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
     this.logics = { "Choose Conjunction": "", "and": "AND", "or": "OR" };
 
     this.searchEvents = function searchEvents() {
-        console.log(this.searchTimeEnd);
         var data = {
             searchNameOperator: this.searchNameOperator,
             searchName: this.searchName,
