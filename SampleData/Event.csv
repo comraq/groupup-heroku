@@ -1,0 +1,6 @@
+eventName,lat,lon,timeStart,timeEnd,cost,description,createdBy
+"Test Event 1",-128.8,3.45,14:53:28,14:53:28,10.89,"test description",testEP1@test.com
+"Test Event 2",-128.9,3.46,14:53:28,14:53:28,10.9,"test description",testEP2@test.com
+"Test Event 3",-129,3.47,14:53:28,14:53:28,10.96,"test description",testEP3@test.com
+"Test Event 4",-128.7,3.2,14:53:28,14:53:28,1000.08,"test description",testEP4@test.com
+"Test Event 5",-128.8,3.45,14:53:28,14:53:28,1827.77,"test description",testEP5@test.com

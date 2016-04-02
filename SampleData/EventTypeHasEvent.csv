@@ -1,0 +1,6 @@
+eventTypeId,eventName,lat,lon,timeStart,timeEnd
+1,"Test Event 1",-128.8,3.45,14:53:28,14:53:28
+2,"Test Event 1",-128.8,3.45,14:53:28,14:53:28
+1,"Test Event 2",-128.9,3.46,14:53:28,14:53:28
+3,"Test Event 2",-128.9,3.46,14:53:28,14:53:28
+4,"Test Event 2",-128.9,3.46,14:53:28,14:53:28

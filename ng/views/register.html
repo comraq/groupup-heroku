@@ -1,0 +1,131 @@
+<div class="container">
+	<h2 class="title">Register</h2>
+
+	<ul class="nav nav-tabs nav-justified">
+		<li class="active"><a data-toggle="tab" data-target="#userRegister">User</a></li>
+		<li><a data-toggle="tab" data-target="#eventProviderRegister">Event Provider</a></li>
+		<li><a data-toggle="tab" data-target="#adminRegister">Admin</a></li>
+	</ul>
+
+	<div class="tab-content">
+		<div id="userRegister" class="tab-pane fade in active">
+			<form class="form-signin" ng-submit="ctrl.registerUser()" name="registerUser" role="form">
+				<div class="form-group" ng-class="{ 'has-error': registerUser.email.$dirty && (registerUser.email.$error.required || registerUser.email.$invalid)}">
+				    <input maxlength="50" type="email" name="email" data-ng-model="ctrl.email" id="inputEmail" class="form-control" placeholder="Email address"  required autofocus>
+				    <span ng-show="registerUser.email.$dirty && (registerUser.email.$error.required || registerUser.email.$invalid)" class="help-block">Valid Email is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': registerUser.password.$dirty && registerUser.password.$error.required}">
+				    <input maxlength="60" type="password" name="password" data-ng-model="ctrl.password" id="inputPassword" class="form-control" placeholder="Password" required>
+					<span ng-show="registerUser.password.$dirty && registerUser.password.$error.required" class="help-block">Password is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': registerUser.rePassword.$dirty && registerUser.rePassword.$error.required }">
+				    <input maxlength="60" type="password" name="rePassword" id="inputRePassword" data-ng-model="ctrl.rePassword" class="form-control" placeholder="Re-Password" required>
+				    <span ng-show="registerUser.rePassword.$dirty && registerUser.rePassword.$error.required" class="help-block">Re-Password is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': registerUser.firstName.$dirty && registerUser.firstName.$error.required }">
+				    <input maxlength="50" type="text" name="firstName" id="inputFirstName" data-ng-model="ctrl.firstName" class="form-control" placeholder="First Name" required>
+				    <span ng-show="registerUser.firstName.$dirty && registerUser.firstName.$error.required" class="help-block">First Name is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': registerUser.lastName.$dirty && registerUser.lastName.$error.required }">
+				    <input maxlength="50" type="text" name="lastName" id="inputLastName" data-ng-model="ctrl.lastName" class="form-control" placeholder="Last Name" required>
+				    <span ng-show="registerUser.lastName.$dirty && registerUser.lastName.$error.required" class="help-block">Last Name is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': registerUser.phone.$dirty && (registerUser.phone.$error.required||registerUser.phone.$invalid) }">
+				    <input min="0" max="999999999999" type="number" name="phone" id="inputPhone" data-ng-model="ctrl.phone" class="form-control" placeholder="Phone Number" required>
+				    <span ng-show="registerUser.phone.$dirty && (registerUser.phone.$error.required||registerUser.phone.$invalid)" class="help-block">Valid Phone Number is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': registerUser.age.$dirty && (registerUser.age.$error.required || registerUser.age.$invalid || ctrl.checkAge())}">
+				    <input maxlength="3" min="0" max="200" type="number" name="age" id="inputAge" data-ng-model="ctrl.age" class="form-control" placeholder="Age" required>
+				    <span ng-show="registerUser.age.$dirty && (registerUser.age.$error.required || registerUser.age.$invalid || ctrl.checkAge())" class="help-block">Valid Age is required</span>
+				</div>
+
+				<button class="btn btn-lg btn-block btn-blog" type="submit" ng-disabled="ctrl.dataLoading">Register</button>
+
+				<hr class="href-divider">
+				<a href="#/SignIn"><p class="text-href">Already have an account?</p></a>
+			</form>
+		</div>
+	  
+		<div id="eventProviderRegister" class="tab-pane fade">
+			<form class="form-signin" ng-submit="ctrl.registerEProvider()" name="registerEProvider" role="form">
+				<div class="form-group" ng-class="{ 'has-error': registerEProvider.email.$dirty && (registerEProvider.email.$error.required || registerEProvider.email.$invalid)}">
+				    <input maxlength="50" type="email" name="email" data-ng-model="ctrl.eEmail" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+				    <span ng-show="registerEProvider.email.$dirty && (registerEProvider.email.$error.required || registerEProvider.email.$invalid)" class="help-block">Valid Email is required</span>
+		        </div>
+		        
+		        <div class="form-group" ng-class="{ 'has-error': registerEProvider.password.$dirty && registerEProvider.password.$error.required }">
+				    <input maxlength="60" type="password" name="password" data-ng-model="ctrl.ePassword" id="inputPassword" class="form-control" placeholder="Password" required>
+					<span ng-show="registerEProvider.password.$dirty && registerEProvider.password.$error.required" class="help-block">Password is required</span>
+		        </div>
+
+		        <div class="form-group" ng-class="{ 'has-error': registerEProvider.rePassword.$dirty && registerEProvider.rePassword.$error.required }">
+				    <input maxlength="60" type="password" name="rePassword" id="inputRePassword" data-ng-model="ctrl.eRePassword" class="form-control" placeholder="Re-Password" required>
+				    <span ng-show="registerEProvider.rePassword.$dirty && registerEProvider.rePassword.$error.required" class="help-block">Re-Password is required</span>
+		        </div>
+
+		        <div class="form-group" ng-class="{ 'has-error': registerEProvider.firstName.$dirty && registerEProvider.firstName.$error.required }">
+				    <input maxlength="50" type="text" name="firstName" id="inputFirstName" data-ng-model="ctrl.eFirstName" class="form-control" placeholder="First Name" required>
+				    <span ng-show="registerEProvider.firstName.$dirty && registerEProvider.firstName.$error.required" class="help-block">First Name is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': registerEProvider.lastName.$dirty && registerEProvider.lastName.$error.required }">
+				    <input maxlength="50" type="text" name="lastName" id="inputLastName" data-ng-model="ctrl.eLastName" class="form-control" placeholder="Last Name" required>
+				    <span ng-show="registerEProvider.lastName.$dirty && registerEProvider.lastName.$error.required" class="help-block">Last Name is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': registerEProvider.phone.$dirty && (registerEProvider.phone.$error.required || registerEProvider.phone.$invalid) }">
+				    <input maxlength="12" min="0" max="999999999999" type="tel" name="phone" id="inputPhone" data-ng-model="ctrl.ePhone" class="form-control" placeholder="Phone Number" required>
+				    <span ng-show="registerEProvider.phone.$dirty && registerEProvider.phone.$error.required" class="help-block">Valid Phone Number is required</span>
+				</div>
+		    	
+		    	<button class="btn btn-lg btn-block btn-blog" type="submit" ng-disabled="registerEProvider.$invalid || ctrl.dataLoading">Register</button>
+		    	<hr class="href-divider">
+				<a href="#/SignIn"><p class="text-href">Already have an account?</p></a>
+			</form>
+		</div>
+
+		<div id="adminRegister" class="tab-pane fade">
+			<form class="form-signin" ng-submit="ctrl.registerAdmin()" name="registerAdmin" role="form">
+				<div class="form-group" ng-class="{ 'has-error': registerAdmin.email.$dirty && (registerAdmin.email.$error.required || registerAdmin.email.$invalid)}">
+				    <input maxlength="50" type="email" name="email" data-ng-model="ctrl.aEmail" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+				    <span ng-show="registerAdmin.email.$dirty && (registerAdmin.email.$error.required || registerAdmin.email.$invalid)" class="help-block">Valid Email is required</span>
+		        </div>
+		        
+		        <div class="form-group" ng-class="{ 'has-error': registerAdmin.password.$dirty && registerAdmin.password.$error.required }">
+				    <input maxlength="60" type="password" name="password" data-ng-model="ctrl.aPassword" id="inputPassword" class="form-control" placeholder="Password" required>
+					<span ng-show="registerAdmin.password.$dirty && registerAdmin.password.$error.required" class="help-block">Password is required</span>
+		        </div>
+
+		        <div class="form-group" ng-class="{ 'has-error': registerAdmin.rePassword.$dirty && registerAdmin.rePassword.$error.required }">
+				    <input maxlength="60" type="password" name="rePassword" id="inputRePassword" data-ng-model="ctrl.aRePassword" class="form-control" placeholder="Re-Password" required>
+				    <span ng-show="registerAdmin.rePassword.$dirty && registerAdmin.rePassword.$error.required" class="help-block">Re-Password is required</span>
+		        </div>
+
+		        <div class="form-group" ng-class="{ 'has-error': registerAdmin.firstName.$dirty && registerAdmin.firstName.$error.required }">
+				    <input maxlength="50" type="text" name="firstName" id="inputFirstName" data-ng-model="ctrl.aFirstName" class="form-control" placeholder="First Name" required>
+				    <span ng-show="registerAdmin.firstName.$dirty && registerAdmin.firstName.$error.required" class="help-block">First Name is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': registerAdmin.lastName.$dirty && registerAdmin.lastName.$error.required }">
+				    <input maxlength="50" type="text" name="lastName" id="inputLastName" data-ng-model="ctrl.aLastName" class="form-control" placeholder="Last Name" required>
+				    <span ng-show="registerAdmin.lastName.$dirty && registerAdmin.lastName.$error.required" class="help-block">Last Name is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': registerAdmin.phone.$dirty && (registerAdmin.phone.$error.required || registerAdmin.phone.$invalid)}">
+				    <input maxlength="12" min="0" max="999999999999" type="tel" name="phone" id="inputPhone" data-ng-model="ctrl.aPhone" class="form-control" placeholder="Phone Number" required>
+				    <span ng-show="registerAdmin.phone.$dirty && (registerAdmin.phone.$error.required || registerAdmin.phone.$invalid)" class="help-block">Valid Phone Number is required</span>
+				</div>
+		    	
+		    	<button class="btn btn-lg btn-block btn-blog" type="submit" ng-disabled="registerAdmin.$invalid || ctrl.dataLoading">Register</button>
+		    	<hr class="href-divider">
+				<a href="#/SignIn"><p class="text-href">Already have an account?</p></a>
+			</form>
+		</div>
+	</div>
+</div> <!-- /container -->

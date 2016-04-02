@@ -1,0 +1,6 @@
+email,invitationId,eventName,lat,lon,timeStart,timeEnd
+testEP1@test.com,1,"Private Test Event 5",-128.8,3.33,14:53:28,14:53:28
+testEP1@test.com,2,"Private Test Event 5",-128.8,3.33,14:53:28,14:53:28
+testEP1@test.com,3,"Private Test Event 5",-128.8,3.33,14:53:28,14:53:28
+testEP1@test.com,4,"Private Test Event 5",-128.8,3.33,14:53:28,14:53:28
+testEP1@test.com,5,"Private Test Event 5",-128.8,3.33,14:53:28,14:53:28

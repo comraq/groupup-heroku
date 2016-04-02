@@ -1,0 +1,6 @@
+groupId,email,eventName,lat,lon,timeStart,timeEnd
+1,testUser1@test.com,"Test Event 1",-128.8,3.45,14:53:28,14:53:28
+1,testUser2@test.com,"Test Event 1",-128.8,3.45,14:53:28,14:53:28
+1,testUser3@test.com,"Test Event 1",-128.8,3.45,14:53:28,14:53:28
+1,testUser4@test.com,"Test Event 1",-128.8,3.45,14:53:28,14:53:28
+1,testUser5@test.com,"Test Event 1",-128.8,3.45,14:53:28,14:53:28

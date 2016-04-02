@@ -1,0 +1,6 @@
+email,password,firstName,lastName,phone
+testEP1@test.com,password,test,EventProvider,6789123
+testEP2@test.com,password,test,EventProvider2,6789124
+testEP3@test.com,password,test,EventProvider3,6789125
+testEP4@test.com,password,test,EventProvider4,6789126
+testEP5@test.com,password,test,EventProvider5,6789127

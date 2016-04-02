@@ -1,0 +1,6 @@
+eventName,lat,lon,timeStart,timeEnd,cost,description,createdBy
+"Private Test Event 1",-128.8,3.45,14:53:28,14:53:28,1827.77,"test description",testEP1@test.com
+"Private Test Event 2",-128.9,3.47,14:53:28,14:53:28,1827.77,"test description",testEP2@test.com
+"Private Test Event 3",-128.1,3.99,14:53:28,14:53:28,1827.77,"test description",testEP3@test.com
+"Private Test Event 4",-128.8,3.45,14:53:28,14:53:28,1827.77,"test description",testEP4@test.com
+"Private Test Event 5",-128.8,3.33,14:53:28,14:53:28,1827.77,"test description",testEP5@test.com
