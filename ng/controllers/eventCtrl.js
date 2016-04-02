@@ -131,6 +131,7 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
 
     this.searchEvents = function searchEvents() {
         var data = {
+            email: this.currentEmail,
             searchNameOperator: this.searchNameOperator,
             searchName: this.searchName,
             searchTimeStart: this.searchTimeStart,
@@ -255,7 +256,7 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
         this.newEventType.forEach( function ( event ) {
             eventTypes.push( event.eventTypeId );
         } );
-        if ( this.timeStart >= this.timeEnd ) {
+        if ( this.timeStart > this.timeEnd ) {
             alertFactory.add( 'danger',
                 'Time Start must be before time end' );
             return;
@@ -292,7 +293,7 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
     };
 
     this.deleteEvent = function deleteEvent( event ) {
-        if ( event.createdBy != this.currentEmail ) {
+        if ( event.createdBy != this.currentEmail && this.accountType != 2) {
             alertFactory.add( 'danger',
                 'You can only modify events you have created' );
             return;
@@ -324,7 +325,7 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
 
     this.modifyEvent = function () {
 
-        if ( originalEvent.createdBy != this.currentEmail ) {
+        if ( originalEvent.createdBy != this.currentEmail && this.accountType != 2) {
             alertFactory.add( 'danger',
                 'You can only modify events you have created' );
             return;
@@ -347,7 +348,7 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
             privateEvent: this.detailEvent.private
         }
 
-        if ( new Date( data.timeStart ) >= new Date( data.timeEnd ) ) {
+        if ( new Date( data.timeStart ) > new Date( data.timeEnd ) ) {
             alertFactory.add( 'danger',
                 'Time Start must be before time end' );
             return;
