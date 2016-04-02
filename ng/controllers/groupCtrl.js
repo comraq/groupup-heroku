@@ -17,14 +17,8 @@ var app = angular.module('groupUpApp')
   this.joinTab = true;
   this.scope.
        joinGroupMapModalButton = "Confirm Action for Current Group";
-
-  this.getAccEmail = function() {
-    return sessionInfo["email"];
-  };
-
-  this.getAccType = function() {
-    return sessionInfo["accountType"];
-  };
+  this.email = sessionInfo["email"];
+  this.accType = sessionInfo["accountType"];
 
   /*
    * Placeholder function for explicitly dismissing modals,
@@ -187,7 +181,7 @@ var app = angular.module('groupUpApp')
     $http({
       method: "POST",
       data: this.newGroup,
-      url: this.url + "/createGroup?email=" + this.getAccEmail()
+      url: this.url + "/createGroup?email=" + this.email
     }).then(function successCallback(res){
       alertFactory.add("success", res.data.data);
       this.dataLoading = false;
@@ -242,7 +236,7 @@ var app = angular.module('groupUpApp')
   this.getEvents = function getEvents() {
     $http({
       method: "GET",
-      url: this.url + "/getEvents?email=" + this.getAccEmail()
+      url: this.url + "/getEvents?email=" + this.email
     }).then(function successCallback(res) {
       if (verbose)
         console.log("getEvents res: " + JSON.stringify(res));
@@ -304,7 +298,7 @@ var app = angular.module('groupUpApp')
     $http({
       method: "POST",
       data: reqBody,
-      url: this.url + "/joinLeaveGroups?email=" + this.getAccEmail()
+      url: this.url + "/joinLeaveGroups?email=" + this.email
     }).then(function successCallback(res){
       alertFactory.add("success", res.data.data);
       this.dataLoading = false;

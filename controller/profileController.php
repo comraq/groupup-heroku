@@ -7,7 +7,7 @@
     }
 
     private static function getEProviderEmail() {
-      return 'testEP5@test.com';
+      return $_GET['email'];
     }
 
     function getUsersAndEvents() {

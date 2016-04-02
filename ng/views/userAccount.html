@@ -2,13 +2,13 @@
   <h2 class="title">Account</h2>
 
   <ul class="nav nav-tabs nav-justified">
-    <li ng-if="ctrl.getAccType() == 0">
+    <li ng-if="ctrl.accType == 0">
       <a data-toggle="tab" data-target="#userInfo">Upcoming Events</a>
     </li>
-    <li ng-if="ctrl.getAccType() == 0">
+    <li ng-if="ctrl.accType == 0">
       <a data-toggle="tab" data-target="#invitation">Invitation</a>
     </li>
-    <li id="provider-profile-tab" ng-if="ctrl.getAccType() == 1">
+    <li id="provider-profile-tab" ng-if="ctrl.accType == 1">
       <a data-toggle="tab" data-target="#provider-profile">
         My Events Statistics</a>
     </li>

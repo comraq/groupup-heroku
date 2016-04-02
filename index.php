@@ -69,7 +69,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <p class="navbar-brand">GroupUp</p>
+        <a class="navbar-brand" href="#/">GroupUp</a>
       </div>
 
       <div class="collapse navbar-collapse">

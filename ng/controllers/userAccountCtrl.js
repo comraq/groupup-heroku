@@ -14,15 +14,7 @@ var app = angular.module('groupUpApp')
   this.dataLoading;
   this.loadingAttend;
   this.email = sessionInfo["email"];
-
-  // Controller and Account Type Checking for userAccount.html
-  this.getAccEmail = function() {
-    return sessionInfo["email"];
-  };
-
-  this.getAccType = function() {
-    return sessionInfo["accountType"];
-  };
+  this.accType = sessionInfo["accountType"];
 
 	// for updating password
 	this.oldPassword;
@@ -319,7 +311,7 @@ var app = angular.module('groupUpApp')
 		}
 
   // Event Provider Profile Controller
-  var verbose = true;
+  var verbose = false;
 
   this.providerUrl = "controller/profileController";
 
@@ -327,7 +319,7 @@ var app = angular.module('groupUpApp')
     $http({
       method: "GET",
       url: this.providerUrl + "/getUsersAndEvents?email="
-           + this.getAccEmail()
+           + this.email
     }).then(function successCallback(res) {
       if (verbose) {
         console.log("getUsersAndEvents res: ");
@@ -350,7 +342,7 @@ var app = angular.module('groupUpApp')
     $http({
       method: "GET",
       url: this.providerUrl + "/getEventsByType?email="
-           + this.getAccEmail()
+           + this.email
     }).then(function successCallback(res) {
       if (verbose) {
         console.log("getEventsByType res: ");
@@ -395,15 +387,15 @@ var app = angular.module('groupUpApp')
   this.getUsersAndEvents();
 
   // Initialization Methods for Account Partial View
-  if (this.getAccType() == 0) {
+  if (this.accType == 0) {
     // If User is Currently Logged in
     this.getEvents();
     this.getInvitations();
-  } else if (this.getAccType() == 1) {
+  } else if (this.accType == 1) {
     $timeout(function() {
       angular.element('#provider-profile-tab a').trigger('click');
     });
-  } else if (this.getAccType() == 2) {
+  } else if (this.accType == 2) {
     $timeout(function() {
       angular.element('#account-profile-tab a').trigger('click');
     });
