@@ -121,7 +121,7 @@ class Login extends Database {
 			$data = json_decode($json,TRUE);
 			$result = $this->dologinWithPostData($data);
             if ($result == null) {
-                $this->response("Not logged in", 401);
+                $this->response("Wrong password. Try again.", 401);
             }
             else {
                 $this->response($result, 200);

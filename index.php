@@ -49,7 +49,6 @@
     <script type="text/javascript" src="./ng/controllers/navbarCtrl.js"></script> 
     <script type="text/javascript" src="./ng/controllers/eventCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/groupCtrl.js"></script>
-    <script type="text/javascript" src="./ng/controllers/profileCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/signInCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/signOutCtrl.js"></script>
     <script type="text/javascript" src="./ng/controllers/registerCtrl.js"></script>
@@ -63,7 +62,7 @@
 
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed"
-          data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+          data-toggle="collapse" data-target=".navbar-collapse"
           aria-expanded="false">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -104,4 +103,3 @@
   </div>
 </body>
 </html>
-

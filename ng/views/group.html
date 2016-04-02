@@ -6,6 +6,9 @@
       <a data-toggle="tab" data-target="#group-list">Join Groups</a>
     </li>
     <li ng-click="ctrl.initCreateTab('create-group-events-map')"
+      tooltip-enable="ctrl.accType != 0"
+      tooltip-placement="top-right"
+      uib-tooltip="Only Users can Go To Events and Create Groups!"
       id="create-group-tab">
       <a data-toggle="tab" data-target="#group-create">Create Group</a>
     </li>
@@ -27,11 +30,11 @@
             <p>
               <a class="btn btn-primary btn-lg ng-hide"
                 href="" role="button" ng-show="!group.editing"
-                ng-disabled="ctrl.getAccType() != 0"
-                tooltip-enable="ctrl.getAccType() != 0"
+                ng-disabled="ctrl.accType != 0"
+                tooltip-enable="ctrl.accType != 0"
                 tooltip-placement="bottom-right"
                 uib-tooltip="Only Users can Go To Events and Join Groups!"
-                ng-click="ctrl.getAccType() != 0 ||
+                ng-click="ctrl.accType != 0 ||
                   ctrl.showJoinGroupsMapModal(
                     'join-group-events-map', group
                   )">
@@ -79,107 +82,120 @@
         </div><!-- row -->
 
         <toggle-switch data-ng-model="group.editing"
-          on-label="Edit" off-label="View" ng-show="ctrl.getAccType() == 2">
+          on-label="Edit" off-label="View" ng-show="ctrl.accType == 2">
           Edit
         </toggle-switch>
       </div><!-- jumbotron -->
     </div><!-- tabpane -->
 
-    <div id="group-create" class="tab-pane fade"> 
-      <form class="form-signin" ng-submit="ctrl.createGroup()"
-        name="createGroup" role="form">
+    <div id="group-create" class="tab-pane fade">
+      <form class="form-signin" name="createGroup" role="form"
+        id="create-group-form"
+        ng-submit="ctrl.accType != 0 || ctrl.createGroup()">
 
-        <div class="form-group" ng-class="{
-          'has-error': createGroup.name.$dirty &&
-          (createGroup.name.$error.required
-          || createGroup.name.$invalid)}">
-          <label for="inputName" class="sr-only">Group Name</label>
-          <input type="name" name="name" data-ng-model="ctrl.newGroup.name"
-            id="input-name" class="form-control"
-            placeholder="Group Name" required autofocus>
-          <span ng-show="createGroup.name.$dirty &&
-            (createGroup.name.$error.required
-            || createGroup.name.$invalid)"
-            class="help-block">Valid Group Name is Required</span>
-        </div>
+        <fieldset ng-disabled="ctrl.accType != 0">
 
-        <div class="form-group" ng-class="{
-          'has-error': createGroup.description.$dirty
-          && createGroup.description.$error.required}">
-          <label for="inputDescription" class="sr-only">
-            Group Description</label>
-          <textarea type="description" name="description" rows="5"
-            data-ng-model="ctrl.newGroup.description"
-            id="textarea-description" class="form-control"
-            placeholder="Group Description" required>
-            </textarea>
-          <span ng-show="createGroup.description.$dirty
-            && createGroup.description.$error.required"
-            class="help-block">Group Description is Required</span>
-        </div>
+          <div class="form-group"
+            ng-class=
+            "{
+               'has-error': createGroup.name.$dirty
+                            && (createGroup.name.$error.required
+                                || createGroup.name.$invalid)
+             }">
+            <label for="inputName" class="sr-only">Group Name</label>
+            <input type="name" name="name" id="input-name" 
+              data-ng-model="ctrl.newGroup.name" class="form-control"
+              placeholder="Group Name" required autofocus>
+            <span ng-show="createGroup.name.$dirty
+              && (createGroup.name.$error.required
+                  || createGroup.name.$invalid)" class="help-block">
+              Valid Group Name is Required</span>
+          </div>
 
-        <div class="form-group events-filter">
-          <label for="eventsFilter" class="sr-only">
-            Filter Events
-          </label>
-          <input type="filter" name="eventsFilter"
-            data-ng-model="eventsFilter"
-            id="events-filter-input" class="form-control"
-            placeholder="Filter Events" autofocus>
-        </div>
+          <div class="form-group"
+            ng-class=
+              "{
+                  'has-error': createGroup.description.$dirty
+                               && createGroup.description.$error.required
+               }">
+            <label for="inputDescription" class="sr-only">
+              Group Description</label>
+            <textarea type="description" name="description" rows="5"
+              data-ng-model="ctrl.newGroup.description"
+              id="textarea-description" class="form-control"
+              placeholder="Group Description" required>
+              </textarea>
+            <span ng-show="createGroup.description.$dirty
+                           && createGroup.description.$error.required"
+              class="help-block">Group Description is Required</span>
+          </div>
+
+          <div class="form-group events-filter">
+            <label for="eventsFilter" class="sr-only">
+              Filter Events
+            </label>
+            <input type="filter" name="eventsFilter"
+              data-ng-model="eventsFilter"
+              id="events-filter-input" class="form-control"
+              placeholder="Filter Events" autofocus>
+          </div>
  
-        <label for="create-group-events-table"
-          id="create-group-events-table-label">
-          Create Group For Attending Events</label>
-        <table fixed-header class="table group-events-table"
-         id="create-group-events-table" name="create-group-events-table">
-          <thead>
-            <tr>
-              <th>Event Name</th>
-              <th>Time Start</th>
-              <th>Time End</th>
-              <th>Cost</th>
-              <th>Category(ies)</th>
-              <th>Attending Event?</th>
-              <th>Go With Group?</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="e in events
-                           | filter: eventsFilter
-                           | orderBy: '-selected'
-                           | orderBy: '-attendPreference'"
-              ng-class=
-                "{ 'group-events-table-user-attend-event': e.attending }"
-              selection-model
-              selection-model-type="checkbox"
-              selection-model-mode="multiple-additive"
-              selection-model-selected-items="ctrl.newGroup.withEvents"
-              selection-model-on-change="ctrl.eventsChanged(e)"
-              selection-model-selected-class="group-events-selected">
-              <td>{{ e.eventName }}</td>
-              <td>{{ e.timeStart }}</td>
-              <td>{{ e.timeEnd }}</td>
-              <td>{{ e.cost | currency }}</td>
-              <td>{{ e.category }} {{ e.remaining }}</td>
-              <td>{{ e.attendPreference }}</td>
-              <td><input type="checkbox" /></td>
-            </tr>
-          </tbody>
-        </table>
+          <label for="create-group-events-table"
+            id="create-group-events-table-label">
+            Create Group For Attending Events</label>
+          <table fixed-header class="table group-events-table"
+            id="create-group-events-table" name="create-group-events-table">
+            <thead>
+              <tr>
+                <th>Event Name</th>
+                <th>Time Start</th>
+                <th>Time End</th>
+                <th>Cost</th>
+                <th>Category(ies)</th>
+                <th>Attending Event?</th>
+                <th>Go With Group?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="e in events
+                             | filter: eventsFilter
+                             | orderBy: '-selected'
+                             | orderBy: '-attendPreference'"
+                ng-class=
+                  "{ 'group-events-table-user-attend-event': e.attending }"
+                selection-model
+                selection-model-type="checkbox"
+                selection-model-mode="multiple-additive"
+                selection-model-selected-items="ctrl.newGroup.withEvents"
+                selection-model-on-change="ctrl.eventsChanged(e)"
+                selection-model-ignore="ctrl.accType != 0"
+                selection-model-selected-class="group-events-selected">
+                <td>{{ e.eventName }}</td>
+                <td>{{ e.timeStart }}</td>
+                <td>{{ e.timeEnd }}</td>
+                <td>{{ e.cost | currency }}</td>
+                <td>{{ e.category }} {{ e.remaining }}</td>
+                <td>{{ e.attendPreference }}</td>
+                <td><input type="checkbox" /></td>
+              </tr>
+            </tbody>
+          </table>
 
-        <ng-map id="create-group-events-map"
-          center="[0,0]" zoom="13"
-          lazy-init="true" default-style="true">
-            <marker ng-repeat="e in events | filter: {selected: 'true'}"
-              position="{{e.lat}}, {{e.lon}}"></marker>
-        </ng-map>
+          <ng-map id="create-group-events-map"
+            center="[0,0]" zoom-to-include-markers="auto"
+            lazy-init="true" default-style="true">
+              <marker ng-repeat="e in events | filter: {selected: 'true'}"
+                position="{{e.lat}}, {{e.lon}}"></marker>
+          </ng-map>
 
-        <button class="btn btn-lg btn-block btn-success" type="submit"
-          id="create-group-button" ng-bind="createButton"
-          ng-disabled="createGroup.$invalid || ctrl.dataLoading">
-        </button>
+          <button class="btn btn-lg btn-block btn-success" type="submit"
+            id="create-group-button" ng-bind="createButton"
+            ng-disabled="ctrl.accType != 0
+                         || createGroup.$invalid
+                         || ctrl.dataLoading">
+          </button>
 
+        </fieldset>
       </form>
     </div> <!-- tabpane -->
   </div> <!-- tabcontent -->

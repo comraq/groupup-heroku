@@ -30,7 +30,7 @@ class Authentication extends Database
 		$firstName = $data["firstName"];
 		$lastName = $data["lastName"];
 		$phone = $data["phone"];
-		$age;
+		$age = $data["age"];
 		$result;
 		$statusCode;
 
@@ -82,64 +82,100 @@ class Authentication extends Database
 
 		// check User
 		$checkEmailSql = "select * from " . $database . " where email = ?";
-
-		$stmt = $this->conn->prepare($checkEmailSql);
-		$stmt->bind_param('s', $escapeEmail);
-		$stmt->execute();
-		$stmt->store_result();
-
-		if ($stmt->num_rows == 0)
-		{	
-			$createSql = "insert into " . $database;
-			if ($database == "User")
-			{
-				$columns = "(email, password, firstname, lastname, phone, age) VALUES (?,?,?,?,?,?)";
-				$sql = $createSql.$columns;
-				$stmt = $this->conn->prepare($sql);
-				$stmt->bind_param('ssssdd', $escapeEmail, $hashPass, $escapeFName, $escapeLName, $escapePhone, $escapeAge);
-				$stmt->execute();
-				$stmt->close();
-
+		$checkPhoneSql = "select * from " . $database . " where phone = ?";
+		
+		if ($escapeAge){
+			$checkNameAgeSql = "select * from " . $database . " where firstName = ? AND lastName = ? AND age = ?";
+			$stmtCheckNameAge = $this->conn->prepare($checkNameAgeSql);
+			$stmtCheckNameAge->bind_param('ssi', $escapeFName, $escapeLName, $escapeAge);
+			$stmtCheckNameAge->execute();
+			$stmtCheckNameAge->store_result();
+			if($stmtCheckNameAge->num_rows != 0){
 				$result = array(
-					'data' => True
-				);
-				$statusCode = 200;
+					'data' => "First & Last Name, Age combination already registered"
+					);
+				$statusCode = 400;
+				$stmtCheckNameAge->close();
+				$this->disconnect();
+				$this->response($result, $statusCode);
 			}
+		}
 
-			if ($database == "EventProvider")
-			{
-				$columns = "(email, password, firstname, lastname, phone) VALUES (?,?,?,?,?)";
-				$sql = $createSql.$columns;
-				$stmt = $this->conn->prepare($sql);
-				$stmt->bind_param('ssssd', $escapeEmail, $hashPass, $escapeFName, $escapeLName, $escapePhone);
-				$stmt->execute();
-				$stmt->close();
-
-				$result = array(
-					'data' => True
-				);
-				$statusCode = 200;
-			}
-
-			if ($database == "Admin")
-			{
-				$columns = "(email, password, firstname, lastname, phone) VALUES (?,?,?,?,?)";
-				$sql = $createSql.$columns;
-				$stmt = $this->conn->prepare($sql);
-				$stmt->bind_param('ssssd', $escapeEmail, $hashPass, $escapeFName, $escapeLName, $escapePhone);
-				$stmt->execute();
-				$stmt->close();
-				
-				$result = array(
-					'data' => True
-				);
-				$statusCode = 200;
-			}
-		}else{
+		$stmtCheckEmail = $this->conn->prepare($checkEmailSql);
+		$stmtCheckEmail->bind_param('s', $escapeEmail);
+		$stmtCheckEmail->execute();
+		$stmtCheckEmail->store_result();
+		
+		if($stmtCheckEmail->num_rows != 0){
 			$result = array(
-				'data' => "Email already exists"
+				'data' => "Email already registered"
 				);
 			$statusCode = 400;
+			$stmtCheckEmail->close();
+			$this->disconnect();
+			$this->response($result, $statusCode);
+		}
+
+		$stmtCheckPhone = $this->conn->prepare($checkPhoneSql);
+		$stmtCheckPhone->bind_param('i', $escapePhone);
+		$stmtCheckPhone->execute();
+		$stmtCheckPhone->store_result();
+		
+		if($stmtCheckPhone->num_rows != 0){
+			$result = array(
+				'data' => "Phone Number already registered"
+				);
+			$statusCode = 400;
+			$stmtCheckPhone->close();
+			$this->disconnect();
+			$this->response($result, $statusCode);
+		}
+
+		
+		$createSql = "insert into " . $database;
+		if ($database == "User")
+		{
+			$columns = "(email, password, firstname, lastname, phone, age) VALUES (?,?,?,?,?,?)";
+			$sql = $createSql.$columns;
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bind_param('ssssdd', $escapeEmail, $hashPass, $escapeFName, $escapeLName, $escapePhone, $escapeAge);
+			$stmt->execute();
+			$stmt->close();
+
+			$result = array(
+				'data' => True
+			);
+			$statusCode = 200;
+		}
+
+		if ($database == "EventProvider")
+		{
+			$columns = "(email, password, firstname, lastname, phone) VALUES (?,?,?,?,?)";
+			$sql = $createSql.$columns;
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bind_param('ssssd', $escapeEmail, $hashPass, $escapeFName, $escapeLName, $escapePhone);
+			$stmt->execute();
+			$stmt->close();
+
+			$result = array(
+				'data' => True
+			);
+			$statusCode = 200;
+		}
+
+		if ($database == "Admin")
+		{
+			$columns = "(email, password, firstname, lastname, phone) VALUES (?,?,?,?,?)";
+			$sql = $createSql.$columns;
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bind_param('ssssd', $escapeEmail, $hashPass, $escapeFName, $escapeLName, $escapePhone);
+			$stmt->execute();
+			$stmt->close();
+			
+			$result = array(
+				'data' => True
+			);
+			$statusCode = 200;
 		}
 		
 		$this->disconnect();

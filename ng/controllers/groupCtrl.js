@@ -7,7 +7,7 @@ var app = angular.module('groupUpApp')
                                                    NgMap, 
                                                    $routeParams,
                                                    modalService,
-                                                   SessionService,
+                                                   sessionInfo,
                                                    alertFactory) {
   var verbose = false;
 
@@ -17,14 +17,8 @@ var app = angular.module('groupUpApp')
   this.joinTab = true;
   this.scope.
        joinGroupMapModalButton = "Confirm Action for Current Group";
-
-  this.getAccEmail = function() {
-    return SessionService.sessionInfo["email"];
-  };
-
-  this.getAccType = function() {
-    return SessionService.sessionInfo["accountType"];
-  };
+  this.email = sessionInfo["email"];
+  this.accType = sessionInfo["accountType"];
 
   /*
    * Placeholder function for explicitly dismissing modals,
@@ -51,7 +45,7 @@ var app = angular.module('groupUpApp')
    */
   this.scope.userGoesEventsPerGroupLimit = 3;
 
-  function refreshMap(map, position) {
+  function refreshMap(map, position, force) {
     if (verbose)
       console.log("refreshMap, mapId: " + map.id);
 
@@ -61,8 +55,11 @@ var app = angular.module('groupUpApp')
       bounds.extend(up);
     }
     google.maps.event.trigger(map, "resize");
-    map.setCenter(bounds.getCenter());
-    map.fitBounds(bounds);
+
+    if (force) {
+      map.setCenter(bounds.getCenter());
+      map.fitBounds(bounds);
+    }
   }
 
   this.showJoinGroupsMapModal = function showJoinGroupsMapModal(mapId,
@@ -96,9 +93,9 @@ var app = angular.module('groupUpApp')
                            lat: position.coords.latitude,
                            lon: position.coords.longitude
                          };
-      refreshMap(map, userPosition);
+      refreshMap(map, userPosition, true);
       $timeout(function() {
-        refreshMap(map, userPosition);
+        refreshMap(map, userPosition, true);
       }, 1000);
     });
 
@@ -135,6 +132,10 @@ var app = angular.module('groupUpApp')
     // Resetting the properties of newGroup
     this.newGroup.name = "";
     this.newGroup.description = "";
+
+    // Seleciton-Model keeps permenant reference to newGroup.withEvents
+    // So we use this method to clear the array, retaining refrences
+    this.newGroup.withEvents.length = 0;
 
     if (!this.createGroupMap)
       this.createGroupMap = NgMap.initMap(mapId);
@@ -180,7 +181,7 @@ var app = angular.module('groupUpApp')
     $http({
       method: "POST",
       data: this.newGroup,
-      url: this.url + "/createGroup",
+      url: this.url + "/createGroup?email=" + this.email
     }).then(function successCallback(res){
       alertFactory.add("success", res.data.data);
       this.dataLoading = false;
@@ -194,7 +195,6 @@ var app = angular.module('groupUpApp')
       // So we use this method to clear the array, retaining refrences
       this.newGroup.withEvents.length = 0;
     
-
     }.bind(this), function errorCallback(err){
       alertFactory.add("danger", err.data.data);
       console.log(err);
@@ -236,7 +236,7 @@ var app = angular.module('groupUpApp')
   this.getEvents = function getEvents() {
     $http({
       method: "GET",
-      url: this.url + "/getEvents"
+      url: this.url + "/getEvents?email=" + this.email
     }).then(function successCallback(res) {
       if (verbose)
         console.log("getEvents res: " + JSON.stringify(res));
@@ -298,7 +298,7 @@ var app = angular.module('groupUpApp')
     $http({
       method: "POST",
       data: reqBody,
-      url: this.url + "/joinLeaveGroups",
+      url: this.url + "/joinLeaveGroups?email=" + this.email
     }).then(function successCallback(res){
       alertFactory.add("success", res.data.data);
       this.dataLoading = false;

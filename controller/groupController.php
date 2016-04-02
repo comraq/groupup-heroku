@@ -7,7 +7,7 @@
     }
 
     private static function getUserEmail() {
-      return 'testUser1@test.com';
+      return $_GET['email'];
     }
 
     function getGroups() {
