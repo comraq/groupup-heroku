@@ -77,18 +77,22 @@ app.config(function($routeProvider) {
  * Re-route to /SignIn if resolve could not
  * retrieve valid session info!
  */
-app.run(function($rootScope, $location, SessionService) {
+app.run(function($rootScope, $location, SessionService, alertFactory) {
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
       var templateUrl = next.templateUrl;
-      if(SessionService.sessionSignedIn()) {
+      var promise = SessionService.sessionSignedIn();
+
+      promise.then(function(data) {
         if (templateUrl == "ng/views/signIn.html" || templateUrl == "ng/views/register.html") {
           $location.path("/Event");
         }
-      }else{
+      })
+      .catch(function() {
         if (templateUrl != "ng/views/signIn.html" && templateUrl != "ng/views/register.html") {
           $location.path("/SignIn");
         }
-      }
+      });
+      
   })
 });
 

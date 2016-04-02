@@ -98,13 +98,16 @@ class Login extends Database {
     }
 
     public function doLogout() {
-        $_SESSION = array();
+        session_unset();
         session_destroy();
+        $_SESSION = array();
+        
         $this->response("You have been logged out.", 200);
     }
 
     public function getSessionInfo() {
-        if ($_SESSION != ""
+        if ($_SESSION != "" 
+            AND !is_null($_SESSION)
             AND isset($_SESSION['login_status'])
             AND $_SESSION['login_status'] == 1) {
             $arr = array('email' => $_SESSION['email'], 'accountType' => $_SESSION['account_type']);

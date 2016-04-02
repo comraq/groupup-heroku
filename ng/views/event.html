@@ -17,13 +17,13 @@
                             <input type="checkbox" data-ng-model="ctrl.advancedSearch"></input>Advanced
                         </label>
                     </div>
-                    <div ng-bind="ctrl.keyOptions">
+                    <div class="input-group-addon min-width-one-six-six">
                         <select class="min-width-one-forty" ng-model="ctrl.searchNameOperator" ng-change="ctrl.searchName=''">
                             <option ng-repeat="(name, op) in ctrl.stringOperators" value="{{op}}">{{name}}</option>
                         </select>
                     </div>
                     <label for="inputSearch" class="sr-only">Search</label>
-                    <input ng-disabled="ctrl.canSearchName" type="text" name="search" data-ng-model="ctrl.searchName" id="inputSearch" class="form-control" placeholder="Event Name" ng-required="ctrl.nameInputRequired">
+                    <input ng-disabled="ctrl.canSearchName()" type="text" name="search" data-ng-model="ctrl.searchName" id="inputSearch" class="form-control" placeholder="Event Name" ng-required="ctrl.nameInputRequired()">
                     <span class="input-group-btn">
                         <button ng-disabled="form.$invalid" class="btn btn-primary" type="submit">Search</button>
                     </span>
