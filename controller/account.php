@@ -63,17 +63,21 @@ class Account extends Database
 		$firstName = $data["firstName"];
 		$lastName = $data["lastName"];
 		$phone = $data["phone"];
-		$age = $data["age"];
+		$age;
+		
+		if($table == 'User'){
+			$age = $data["age"];
+			if ($age < 0)
+			{
+				$result = array(
+					'data' => "Age should not be negative"
+					);
+				$statusCode = 400;
+				$this->response($result, $statusCode);
+			}
+		}
 		$result;
 		$statusCode;
-
-		if ($age < 0){
-			$result = array(
-				'data' => "Age should not be negative"
-				);
-			$statusCode = 400;
-			$this->response($result, $statusCode);
-		}
 
 		if(is_null($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) 
 		{
@@ -85,15 +89,30 @@ class Account extends Database
 			return;
 		}
 
-		if (is_null($firstName) || is_null($lastName) || is_null($phone) || is_null($age))
+		if ($table == 'User')
 		{
-			$result = array(
-				'data' => "All fields must be filled"
-				);
-			$statusCode = 400;
-			$this->response($result, $statusCode);
-			return;
+			if(is_null($firstName) || is_null($lastName) || is_null($phone) || is_null($age))
+			{
+				$result = array(
+					'data' => "All fields must be filled"
+					);
+				$statusCode = 400;
+				$this->response($result, $statusCode);
+				return;
+			}
+		}else if($table == 'EventProvider'){
+			
+			if(is_null($firstName) || is_null($lastName) || is_null($phone))
+			{
+				$result = array(
+					'data' => "All fields must be filled"
+					);
+				$statusCode = 400;
+				$this->response($result, $statusCode);
+				return;
+			}
 		}
+
 
 		$this->connect();
 		$escapeEmail = $this->conn->real_escape_string($email);
@@ -110,7 +129,7 @@ class Account extends Database
 		}else{
 			$updateProfileSql = "UPDATE " . $table . " set firstname=?, lastname=?, phone=? where email = ?";
 			$stmt = $this->conn->prepare($updateProfileSql);
-			$stmt->bind_param('ssds', $escapeFName, $escapeLName, $escapePhone, $escapeEmail);
+			$stmt->bind_param('ssis', $escapeFName, $escapeLName, $escapePhone, $escapeEmail);
 		}
 
 		$stmt->execute();
@@ -417,8 +436,14 @@ class Account extends Database
 			$dataObj = json_decode($json,TRUE);
 
 			if (isset($dataObj["profile"])){
+				
 				$data = $dataObj["profile"];
 				$this->updateProfile($table, $data);
+			}
+
+			if (isset($dataObj["getProfile"])){
+				$data = $dataObj["getProfile"];
+				$this->getProfile($table, $data);
 			}
 
 			if (isset($dataObj["password"])){
