@@ -317,6 +317,7 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
     };
 
     this.modifyEvent = function () {
+
         var data = {
             origEventName: originalEvent.eventName,
             origTimeStart: originalEvent.timeStart,
@@ -334,8 +335,9 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
             message: this.detailEvent.message,
             privateEvent: this.detailEvent.private
         }
+        console.log(data);
         this.detailEvent = false;
-        if ( this.detailEvent.timeStart >= this.detailEvent.timeEnd ) {
+        if ( moment(this.detailEvent.timeStart) >= moment(this.detailEvent.timeEnd)) {
             alertFactory.add( 'danger',
                 'Time Start must be before time end' );
             return;
@@ -393,6 +395,7 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
     }
 
     this.viewDetails = function ( event ) {
+        this.editing = false;
         this.detailEvent = event;
     }
 
