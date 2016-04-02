@@ -2,6 +2,7 @@ var app = angular.module('groupUpApp')
                  .controller('UserAccountCtrl', function($scope,
                                                          $http,
                                                          $location,
+                                                         $timeout,
                                                          alertFactory,
                                                          modalService,
                                                          sessionInfo) {
@@ -13,15 +14,7 @@ var app = angular.module('groupUpApp')
   this.dataLoading;
   this.loadingAttend;
   this.email = sessionInfo["email"];
-
-  // Controller and Account Type Checking for userAccount.html
-  this.getAccEmail = function() {
-    return sessionInfo["email"];
-  };
-
-  this.getAccType = function() {
-    return sessionInfo["accountType"];
-  };
+  this.accType = sessionInfo["accountType"];
 
 	// for updating password
 	this.oldPassword;
@@ -337,103 +330,95 @@ var app = angular.module('groupUpApp')
 			}.bind(this));
 		}
 
-
   // Event Provider Profile Controller
-  this.scope.providerCtrl = function ProviderCtrl() {
-    var verbose = false;
+  var verbose = false;
 
-    this.url = "controller/profileController";
-    this.scope = $scope;
-    this.location = $location;
+  this.providerUrl = "controller/profileController";
 
-    this.getAccEmail = function() {
-      return sessionInfo["email"];
-    };
-
-    this.getAccType = function() {
-      return sessionInfo["accountType"];
-    };
-
-    this.getUsersAndEvents = function getUsersAndEvents() {
-      $http({
-        method: "GET",
-        url: this.url + "/getUsersAndEvents?email=" + this.getAccEmail()
-      }).then(function successCallback(res) {
-        if (verbose) {
-          console.log("getUsersAndEvents res: ");
-          console.log(res);
-        }
-
-        var data = JSON.parse(res.data);
-        this.scope.users = data.users;
-        this.scope.events = data.events;
-        if (verbose)
-          console.log(data);
-
-      }.bind(this), function errorCallback(err) {
-        alertFactory.add("danger", err.data.data);
-        console.log(err);
-      });
-    };
-
-    function getEventsByType() {
-      $http({
-        method: "GET",
-        url: this.url + "/getEventsByType?email=" + this.getAccEmail()
-      }).then(function successCallback(res) {
-        if (verbose) {
-          console.log("getEventsByType res: ");
-          console.log(res);
-        }
-
-        var data = JSON.parse(res.data);
-        this.scope.types = data.avgByType;
-        this.maxAvgTypeEvents = data.maxAvg;
-        this.minAvgTypeEvents = data.minAvg;
-        if (verbose)
-          console.log(data);
-
-      }.bind(this), function errorCallback(err) {
-        alertFactory.add("danger", err.data.data);
-        console.log(err);
-      });
-    }
-
-    this.showMinMax = function showMinMax() {
-      modalService.openModal(this, "ng/views/eventByTypeHighlights.html");
-      this.highlightsToggleChanged(true);
-    };
-
-    this.viewChanged = function viewChanged() {
-      if (this.scope.typeView && !this.scope.types)
-        getEventsByType.call(this);
- 
-      console.log("inside providerCtrl:");
-      console.log("this:");
-      console.log(this);
-      console.log("this.scope:");
-      console.log(this.scope);
-    };
-
-    this.highlightsToggleChanged =
-      function highlightsToggleChanged(minView) {
-      if (minView) {
-        this.scope.highlightsAvg = this.minAvgTypeEvents;
-        this.scope.highlightsModalName = "Minimum";
-      } else {
-        this.scope.highlightsAvg = this.maxAvgTypeEvents;
-        this.scope.highlightsModalName = "Maximum";
+  this.getUsersAndEvents = function getUsersAndEvents() {
+    $http({
+      method: "GET",
+      url: this.providerUrl + "/getUsersAndEvents?email="
+           + this.email
+    }).then(function successCallback(res) {
+      if (verbose) {
+        console.log("getUsersAndEvents res: ");
+        console.log(res);
       }
-    }
 
-    this.getUsersAndEvents();
+      var data = JSON.parse(res.data);
+      this.scope.users = data.users;
+      this.scope.events = data.events;
+      if (verbose)
+        console.log(data);
+
+    }.bind(this), function errorCallback(err) {
+      alertFactory.add("danger", err.data.data);
+      console.log(err);
+    });
+  };
+
+  function getEventsByType() {
+    $http({
+      method: "GET",
+      url: this.providerUrl + "/getEventsByType?email="
+           + this.email
+    }).then(function successCallback(res) {
+      if (verbose) {
+        console.log("getEventsByType res: ");
+        console.log(res);
+      }
+
+      var data = JSON.parse(res.data);
+      this.scope.types = data.avgByType;
+      this.maxAvgTypeEvents = data.maxAvg;
+      this.minAvgTypeEvents = data.minAvg;
+      if (verbose)
+        console.log(data);
+
+    }.bind(this), function errorCallback(err) {
+      alertFactory.add("danger", err.data.data);
+      console.log(err);
+    });
   }
 
+  this.showMinMax = function showMinMax() {
+    modalService.openModal(this,
+                           "ng/views/eventByTypeHighlights.html",
+                           verbose);
+    this.highlightsToggleChanged(true);
+  };
+
+  this.viewChanged = function viewChanged() {
+    if (this.scope.typeView && !this.scope.types)
+      getEventsByType.call(this);
+  };
+
+  this.highlightsToggleChanged = function highlightsToggleChanged(minView) {
+    if (minView) {
+      this.scope.highlightsAvg = this.minAvgTypeEvents;
+      this.scope.highlightsModalName = "Minimum";
+    } else {
+      this.scope.highlightsAvg = this.maxAvgTypeEvents;
+      this.scope.highlightsModalName = "Maximum";
+    }
+  }
+
+  this.getUsersAndEvents();
+
   // Initialization Methods for Account Partial View
-  if (this.getAccType() == 0) {
+  if (this.accType == 0) {
     // If User is Currently Logged in
     this.getEvents();
     this.getInvitations();
+  } else if (this.accType == 1) {
+    $timeout(function() {
+      angular.element('#provider-profile-tab a').trigger('click');
+    });
+  } else if (this.accType == 2) {
+    $timeout(function() {
+      angular.element('#account-profile-tab a').trigger('click');
+    });
   }
 
   // Applicable to All Account Types

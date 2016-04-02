@@ -14,18 +14,14 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
              this.sessionInfo = response.data;
            }.bind(this));
     },
+    sessionSignedIn: function() {
+      var reason = "signedInReject";
 
-/*
- * Testing Promise Resolve
- * TODO: sessionInfo is now resolved into every controller, unnecessary
- *       public reference in this service?
- */
-    sessionResolve: function() {
       if(this.sessionInfo)
         return this.sessionInfo;
 
       if (!logAttempt)
-        return $q.reject("User Must First Log In!");
+        return $q.reject(reason);
 
       var session = $q.defer();
       $http.get('controller/login/getSessionInfo').then(
@@ -36,14 +32,34 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
                session.resolve(response.data);
              else {
                logAttempt = false;
-               session.reject("User Must First Log In!");
+               session.reject(reason);
              }
  
            }.bind(this));
 
       return session.promise;
     },
-/* End Promise Resolve Testing */
+
+    sessionSignedOut: function() {
+      var reason = "signedOutReject";
+
+      if(this.sessionInfo)
+        return $q.reject(reason);
+
+      var session = $q.defer();
+      $http.get('controller/login/getSessionInfo').then(
+           function successCallback(response) {
+             // accountType: user = 0, eventprovider = 1, admin = 2
+             this.sessionInfo = response.data;
+             if (response.data)
+               session.reject(reason);
+             else
+               session.resolve(response.data);
+ 
+           }.bind(this));
+
+      return session.promise;
+    },
 
     login: function(email, password, accountType) {
       return $http({

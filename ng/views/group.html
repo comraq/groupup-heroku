@@ -6,9 +6,9 @@
       <a data-toggle="tab" data-target="#group-list">Join Groups</a>
     </li>
     <li ng-click="ctrl.initCreateTab('create-group-events-map')"
-          tooltip-enable="ctrl.getAccType() != 0"
-          tooltip-placement="top-right"
-          uib-tooltip="Only Users can Go To Events and Create Groups!"
+      tooltip-enable="ctrl.accType != 0"
+      tooltip-placement="top-right"
+      uib-tooltip="Only Users can Go To Events and Create Groups!"
       id="create-group-tab">
       <a data-toggle="tab" data-target="#group-create">Create Group</a>
     </li>
@@ -30,11 +30,11 @@
             <p>
               <a class="btn btn-primary btn-lg ng-hide"
                 href="" role="button" ng-show="!group.editing"
-                ng-disabled="ctrl.getAccType() != 0"
-                tooltip-enable="ctrl.getAccType() != 0"
+                ng-disabled="ctrl.accType != 0"
+                tooltip-enable="ctrl.accType != 0"
                 tooltip-placement="bottom-right"
                 uib-tooltip="Only Users can Go To Events and Join Groups!"
-                ng-click="ctrl.getAccType() != 0 ||
+                ng-click="ctrl.accType != 0 ||
                   ctrl.showJoinGroupsMapModal(
                     'join-group-events-map', group
                   )">
@@ -82,7 +82,7 @@
         </div><!-- row -->
 
         <toggle-switch data-ng-model="group.editing"
-          on-label="Edit" off-label="View" ng-show="ctrl.getAccType() == 2">
+          on-label="Edit" off-label="View" ng-show="ctrl.accType == 2">
           Edit
         </toggle-switch>
       </div><!-- jumbotron -->
@@ -91,9 +91,9 @@
     <div id="group-create" class="tab-pane fade">
       <form class="form-signin" name="createGroup" role="form"
         id="create-group-form"
-        ng-submit="ctrl.getAccType() != 0 || ctrl.createGroup()">
+        ng-submit="ctrl.accType != 0 || ctrl.createGroup()">
 
-        <fieldset ng-disabled="ctrl.getAccType() != 0">
+        <fieldset ng-disabled="ctrl.accType != 0">
 
           <div class="form-group"
             ng-class=
@@ -168,7 +168,7 @@
                 selection-model-mode="multiple-additive"
                 selection-model-selected-items="ctrl.newGroup.withEvents"
                 selection-model-on-change="ctrl.eventsChanged(e)"
-                selection-model-ignore="ctrl.getAccType() != 0"
+                selection-model-ignore="ctrl.accType != 0"
                 selection-model-selected-class="group-events-selected">
                 <td>{{ e.eventName }}</td>
                 <td>{{ e.timeStart }}</td>
@@ -190,7 +190,7 @@
 
           <button class="btn btn-lg btn-block btn-success" type="submit"
             id="create-group-button" ng-bind="createButton"
-            ng-disabled="ctrl.getAccType() != 0
+            ng-disabled="ctrl.accType != 0
                          || createGroup.$invalid
                          || ctrl.dataLoading">
           </button>

@@ -18,7 +18,12 @@ app.config(function($routeProvider) {
         .when("/SignIn", {
             templateUrl: 'ng/views/signIn.html',
             controller: 'SignInCtrl',
-            controllerAs: 'ctrl'
+            controllerAs: 'ctrl',
+            resolve: {
+              sessionInfo: function(SessionService) {
+                return SessionService.sessionSignedOut();
+              }
+            }
         })
         .when("/Event", {
             templateUrl: 'ng/views/event.html',
@@ -26,7 +31,7 @@ app.config(function($routeProvider) {
             controllerAs: 'ctrl',
             resolve: {
               sessionInfo: function(SessionService) {
-                return SessionService.sessionResolve();
+                return SessionService.sessionSignedIn();
               }
             }
         })
@@ -36,7 +41,7 @@ app.config(function($routeProvider) {
             controllerAs: 'ctrl',
             resolve: {
               sessionInfo: function(SessionService) {
-                return SessionService.sessionResolve();
+                return SessionService.sessionSignedIn();
               }
             }
         })
@@ -46,17 +51,7 @@ app.config(function($routeProvider) {
             controllerAs: 'ctrl',
             resolve: {
               sessionInfo: function(SessionService) {
-                return SessionService.sessionResolve();
-              }
-            }
-        })
-        .when("/Profile", {
-            templateUrl: 'ng/views/profile.html',
-            controller: 'ProfileCtrl',
-            controllerAs: 'ctrl',
-            resolve: {
-              sessionInfo: function(SessionService) {
-                return SessionService.sessionResolve();
+                return SessionService.sessionSignedIn();
               }
             }
         })
@@ -68,7 +63,12 @@ app.config(function($routeProvider) {
         .when("/Register", {
             templateUrl: 'ng/views/register.html',
             controller: 'RegisterCtrl',
-            controllerAs: 'ctrl'
+            controllerAs: 'ctrl',
+            resolve: {
+              sessionInfo: function(SessionService) {
+                return SessionService.sessionSignedOut();
+              }
+            }
         })
         .when("/Account", {
             templateUrl: 'ng/views/userAccount.html',
@@ -76,7 +76,7 @@ app.config(function($routeProvider) {
             controllerAs: 'ctrl',
             resolve: {
               sessionInfo: function(SessionService) {
-                return SessionService.sessionResolve();
+                return SessionService.sessionSignedIn();
               }
             }
         })
@@ -92,7 +92,10 @@ app.run(function($rootScope, $location, SessionService, alertFactory) {
                                                current,
                                                previous,
                                                rejection) {
-    $location.path("/SignIn");
-    alertFactory.add('danger', rejection);
+    if (rejection == "signedInReject") {
+      $location.path("/SignIn");
+      alertFactory.add('danger', "User Must First Log In!");
+    } else
+      $location.path("/Event");
   });
 });
