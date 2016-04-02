@@ -83,7 +83,6 @@ var app = angular.module('groupUpApp')
 				alertFactory.add('danger', message);
 
 			}.bind(this));
-	console.log(this.profileUrl);
 	}
 
 
