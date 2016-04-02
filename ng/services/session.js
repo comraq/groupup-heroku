@@ -1,6 +1,7 @@
 angular.module('groupUpApp').service("SessionService", function($http, $q){
   // To cache login status, avoids unnecessary HTTP requests to server
   var logAttempt = true;
+  var logoutAttempt = true;
 
   return {
     sessionInfo: null,
@@ -46,6 +47,9 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
       if(this.sessionInfo)
         return $q.reject(reason);
 
+      if (!logoutAttempt)
+        return $q.reject(reason);
+
       var session = $q.defer();
       $http.get('controller/login/getSessionInfo').then(
            function successCallback(response) {
@@ -53,9 +57,11 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
              this.sessionInfo = response.data;
              if (response.data)
                session.reject(reason);
-             else
+             else {
                session.resolve(response.data);
- 
+               logoutAttempt = false;
+             }
+
            }.bind(this));
 
       return session.promise;
@@ -73,6 +79,7 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
       }).then(function successCallback(response) {
         this.sessionInfo = response.data;
         logAttempt = true;
+        logoutAttempt = false;
       }.bind(this));
     },
     logout: function() {
@@ -80,6 +87,7 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
            function successCallback(response) {
              this.sessionInfo = null;
              logAttempt = false;
+             logoutAttempt = true;
            }.bind(this));
     }
   };
