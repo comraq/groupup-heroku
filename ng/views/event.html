@@ -103,7 +103,7 @@
                         <th>Time End</th>
                         <th>Cost</th>
                     </tr>
-                    <tr ng-hide="event.delete" ng-repeat="event in events" data-toggle="modal" data-target="#viewDetailModal" ng-click="ctrl.viewDetails(event)" ng-class="{'going': event.going==1}">
+                    <tr ng-hide="event.delete" ng-repeat="event in events" data-toggle="modal" data-target="#viewDetailModal" ng-click="ctrl.viewDetails(event)" ng-class="{'going': event.going==1 && !ctrl.canEdit}">
                         <td>{{event.eventName}}</td>
                         <td>{{event.timeStart}}</td>
                         <td>{{event.timeEnd}}</td>

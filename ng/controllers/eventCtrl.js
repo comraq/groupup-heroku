@@ -71,14 +71,14 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
     };
 
     this.canSearchName = function () {
-        return ( !this.searchNameOperator && this.advancedSearch ) ||
+        return !this.searchNameOperator ||
             this.searchNameOperator == 'IS NOT NULL' || this.searchNameOperator ==
             'IS NULL';
     };
 
     this.canSearchTimeStart = function () {
         return !this.searchTimeStartLogic || !this.searchTimeStartOperator ||
-            this.searchTimeStartOperator == 'IS NOT NULL';
+            this.searchTimeStartOperator == 'IS NOT NULL' || this.searchTimeStartOperator == 'IS NULL';
     };
 
     this.canSearchTimeEnd = function () {
