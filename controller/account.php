@@ -100,7 +100,7 @@ class Account extends Database
 				$this->response($result, $statusCode);
 				return;
 			}
-		}else if($table == 'EventProvider'){
+		}else{
 			
 			if(is_null($firstName) || is_null($lastName) || is_null($phone))
 			{
@@ -462,9 +462,24 @@ class Account extends Database
 		{
 			$table = "Admin";
 			$json = file_get_contents("php://input");
-			$data = json_decode($json, TRUE);
-			$result = $this->createUser($table, $data);
-			$this->response($result, 200);
+			$dataObj = json_decode($json, TRUE);
+			if (isset($dataObj["profile"])){
+				
+				$data = $dataObj["profile"];
+				$this->updateProfile($table, $data);
+			}
+
+			if (isset($dataObj["getProfile"])){
+				$data = $dataObj["getProfile"];
+				$this->getProfile($table, $data);
+			}
+
+			if (isset($dataObj["password"])){
+				$data = $dataObj["password"];
+				$this->updatePassword($table, $data);
+			}
+		}else{
+			$this->response("Method Not Allowed", 405);
 		}
 	}
 }
