@@ -1,7 +1,6 @@
 angular.module('groupUpApp').service("SessionService", function($http, $q){
   // To cache login status, avoids unnecessary HTTP requests to server
   var logAttempt = true;
-  var logoutAttempt = true;
 
   return {
     sessionInfo: null,
@@ -16,13 +15,13 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
            }.bind(this));
     },
     sessionSignedIn: function() {
-      var reason = "signedInReject";
 
-      if(this.sessionInfo)
+      if(this.sessionInfo){
         return this.sessionInfo;
+      }
 
       if (!logAttempt)
-        return $q.reject(reason);
+        return false;
 
       var session = $q.defer();
       $http.get('controller/login/getSessionInfo').then(
@@ -41,32 +40,6 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
       return session.promise;
     },
 
-    sessionSignedOut: function() {
-      var reason = "signedOutReject";
-
-      if(this.sessionInfo)
-        return $q.reject(reason);
-
-      if (!logoutAttempt)
-        return $q.reject(reason);
-
-      var session = $q.defer();
-      $http.get('controller/login/getSessionInfo').then(
-           function successCallback(response) {
-             // accountType: user = 0, eventprovider = 1, admin = 2
-             this.sessionInfo = response.data;
-             if (response.data)
-               session.reject(reason);
-             else {
-               session.resolve(response.data);
-               logoutAttempt = false;
-             }
-
-           }.bind(this));
-
-      return session.promise;
-    },
-
     login: function(email, password, accountType) {
       return $http({
         method: 'POST',
@@ -79,7 +52,6 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
       }).then(function successCallback(response) {
         this.sessionInfo = response.data;
         logAttempt = true;
-        logoutAttempt = false;
       }.bind(this));
     },
     logout: function() {
@@ -87,7 +59,6 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
            function successCallback(response) {
              this.sessionInfo = null;
              logAttempt = false;
-             logoutAttempt = true;
            }.bind(this));
     }
   };

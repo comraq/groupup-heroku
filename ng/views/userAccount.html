@@ -2,7 +2,7 @@
   <h2 class="title">Account</h2>
 
   <ul class="nav nav-tabs nav-justified">
-    <li ng-if="ctrl.accType == 0">
+    <li class="active" ng-if="ctrl.accType == 0">
       <a data-toggle="tab" data-target="#userInfo">Upcoming Events</a>
     </li>
     <li ng-if="ctrl.accType == 0">
@@ -45,7 +45,7 @@
           <hr>
         </div>
 
-        <div ng-show="ctrl.getAccType == 0 && ctrl.eveEndOfResult"
+        <div ng-show="ctrl.accType == 0 && ctrl.eveEndOfResult"
           class="jumbotron center">
           End Of Invitations
         </div>
@@ -240,7 +240,7 @@
             Valid Phone Number is required</span>
         </div>
 
-        <div ng-hide="ctrl.getAccType() != 0 " class="form-group"
+        <div ng-hide="ctrl.accType != 0 " class="form-group"
           ng-class=
             "{
                'has-error': userProfile.age.$dirty
@@ -252,7 +252,7 @@
           <input type="number" name="age" id="updateAge"
             data-ng-model="ctrl.age" class="form-control"
             placeholder="Age"
-            ng-required="ctrl.getAccType() == 0">
+            ng-required="ctrl.accType == 0">
           <span class="help-block"
             ng-show="userProfile.age.$dirty
                      && (userProfile.age.$error.required
