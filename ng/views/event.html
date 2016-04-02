@@ -144,7 +144,7 @@
                             <input ng-readonly="true" type="text" data-ng-model="ctrl.detailEvent.createdBy" class="form-control" required>
                         </div>
                         <div>
-                            <toggle-switch ng-show="ctrl.canEdit" ng-change="ctrl.saveOriginalEvent()" on-label="Edit" off-label="View" data-ng-model="ctrl.editing">Edit</toggle-switch>
+                            <toggle-switch ng-show="ctrl.canEdit && ctrl.detailEvent.createdBy == ctrl.currentEmail" ng-change="ctrl.saveOriginalEvent()" on-label="Edit" off-label="View" data-ng-model="ctrl.editing">Edit</toggle-switch>
                         </div>
                     </form>
                 </div>

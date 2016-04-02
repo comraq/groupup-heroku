@@ -55,6 +55,7 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
     this.sessionService = SessionService.sessionInfo;
     if ( this.sessionService ) {
         this.accountType = this.sessionService.accountType;
+        this.currentEmail = this.sessionService.email;
         this.canEdit = this.accountType == 1 || this.accountType == 2;
         this.isEventProvider = this.accountType == 1;
         this.isAdmin = this.accountType == 2;
@@ -291,6 +292,11 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
     };
 
     this.deleteEvent = function deleteEvent( event ) {
+        if ( event.createdBy != this.currentEmail ) {
+            alertFactory.add( 'danger',
+                'You can only modify events you have created' );
+            return;
+        }
         var data = {
             eventName: event.eventName,
             timeStart: event.timeStart,
@@ -318,6 +324,11 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
 
     this.modifyEvent = function () {
 
+        if ( originalEvent.createdBy != this.currentEmail ) {
+            alertFactory.add( 'danger',
+                'You can only modify events you have created' );
+            return;
+        }
         var data = {
             origEventName: originalEvent.eventName,
             origTimeStart: originalEvent.timeStart,
@@ -335,9 +346,8 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
             message: this.detailEvent.message,
             privateEvent: this.detailEvent.private
         }
-        console.log(data);
-        this.detailEvent = false;
-        if ( moment(this.detailEvent.timeStart) >= moment(this.detailEvent.timeEnd)) {
+
+        if ( new Date( data.timeStart ) >= new Date( data.timeEnd ) ) {
             alertFactory.add( 'danger',
                 'Time Start must be before time end' );
             return;
