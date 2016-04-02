@@ -18,7 +18,12 @@ app.config(function($routeProvider) {
         .when("/SignIn", {
             templateUrl: 'ng/views/signIn.html',
             controller: 'SignInCtrl',
-            controllerAs: 'ctrl'
+            controllerAs: 'ctrl',
+            resolve: {
+              sessionInfo: function(SessionService) {
+                return SessionService.sessionSignedOut();
+              }
+            }
         })
         .when("/Event", {
             templateUrl: 'ng/views/event.html',
@@ -58,7 +63,12 @@ app.config(function($routeProvider) {
         .when("/Register", {
             templateUrl: 'ng/views/register.html',
             controller: 'RegisterCtrl',
-            controllerAs: 'ctrl'
+            controllerAs: 'ctrl',
+            resolve: {
+              sessionInfo: function(SessionService) {
+                return SessionService.sessionSignedOut();
+              }
+            }
         })
         .when("/Account", {
             templateUrl: 'ng/views/userAccount.html',
@@ -78,21 +88,15 @@ app.config(function($routeProvider) {
  * retrieve valid session info!
  */
 app.run(function($rootScope, $location, SessionService, alertFactory) {
-    $rootScope.$on( "$routeChangeStart", function(event, next, current) {
-      var templateUrl = next.templateUrl;
-      var promise = SessionService.sessionSignedIn();
-
-      promise.then(function(data) {
-        if (templateUrl == "ng/views/signIn.html" || templateUrl == "ng/views/register.html") {
-          $location.path("/Event");
-        }
-      })
-      .catch(function() {
-        if (templateUrl != "ng/views/signIn.html" && templateUrl != "ng/views/register.html") {
-          $location.path("/SignIn");
-        }
-      });
-      
-  })
+  $rootScope.$on("$routeChangeError", function(event,
+                                               current,
+                                               previous,
+                                               rejection) {
+    if (rejection == "signedInReject") {
+      $location.path("/SignIn");
+      alertFactory.add('danger', "User Must First Log In!");
+    } else
+      $location.path("/Event");
+  });
 });
 
