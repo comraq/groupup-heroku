@@ -9,7 +9,7 @@ var app = angular.module('groupUpApp')
                                                    modalService,
                                                    sessionInfo,
                                                    alertFactory) {
-  var verbose = false;
+  var verbose = true;
 
   this.url = "controller/groupController";
   this.scope = $scope;

@@ -98,7 +98,7 @@
                 E.lat, E.lon, ifnull(T.category, "None") as category,
                 if(count(*) - 1 > 0, concat("+ ", count(*) - 1, " more"),
                 NULL) as remaining,
-                ifnull(U.attending, false) as attending,
+                if(U.eventName is null, false, true) as attending,
                 G.groupIds
          from Event E
            left join EventTypeHasEvent ET
