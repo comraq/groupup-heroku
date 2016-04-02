@@ -1,7 +1,12 @@
--- drop and create db
-DROP DATABASE IF EXISTS GroupUpDebug;
-CREATE DATABASE IF NOT EXISTS GroupUpDebug;
-USE GroupUpDebug;
+/*
+ * Do not have permission to drop and create db
+ * on remote mysql hosted on db4free.net for heroku branch
+ *
+ * -- drop and create db
+ * DROP DATABASE IF EXISTS GroupUpDebug;
+ * CREATE DATABASE IF NOT EXISTS GroupUpDebug;
+ * USE GroupUpDebug;
+*/
 
 -- drop existing tables
 DROP TABLE IF EXISTS `Admin`;
