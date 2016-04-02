@@ -33,9 +33,9 @@ class Search extends Database
         $searchCost =$data["searchCost"];
         $searchCostLogic =$data["searchCostLogic"];
         $searchCostOperator =$data["searchCostOperator"];
-        $searchDesctipion =$data["searchDesctipion"];
-        $searchDesctipionLogic =$data["searchDesctipionLogic"];
-        $searchDesctipionOperator =$data["searchDesctipionOperator"];
+        $searchDesc =$data["searchDesc"];
+        $searchDescLogic =$data["searchDescLogic"];
+        $searchDescOperator =$data["searchDescOperator"];
         $searchEventType =$data["searchEventType"];
         $searchEventTypeLogic =$data["searchEventTypeLogic"];
         $searchEventTypeOperator =$data["searchEventTypeOperator"];
@@ -93,15 +93,16 @@ class Search extends Database
     }
 
     $descriptionQuery = '';
-    if ($searchDesctipionLogic && $searchDesctipionOperator) {
 
-        if ($searchDesctipionOperator == 'LIKE' || $searchDesctipionOperator == 'NOT LIKE') {
-            $searchDesctipion = '%'.$searchDesctipion.'%';
+    if ($searchDescLogic && $searchDescOperator) {
+
+        if ($searchDescOperator == 'LIKE' || $searchDescOperator == 'NOT LIKE') {
+            $searchDesc = '%'.$searchDesc.'%';
         }
 
-        $descriptionQuery.=$searchDesctipionLogic." desctiption ".$searchDesctipionOperator." ";
-        if ($searchDesctipion) {
-            $descriptionQuery.="'".$searchDesctipion."' ";
+        $descriptionQuery.=$searchDescLogic." description ".$searchDescOperator." ";
+        if ($searchDesc) {
+            $descriptionQuery.="'".$searchDesc."' ";
         }
     };
 
@@ -118,7 +119,6 @@ class Search extends Database
     }
 
     $whenQuery = $nameQuery.$timeStartQuery.$timeEndQuery.$costQuery.$descriptionQuery.$createdByQuery;
-
     $searchEventsSQL = "SELECT 
     R.eventName AS eventName,
     R.lat AS lat,
