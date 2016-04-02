@@ -16,7 +16,7 @@ class Database extends Rest {
   }
 
   public function connect(){
-    $this->conn = new mysqli($this->servername . ':' . $port,
+    $this->conn = new mysqli($this->servername . ':' . $this->port,
                              $this->username,
                              $this->password);
 

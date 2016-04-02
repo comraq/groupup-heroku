@@ -1,6 +1,8 @@
+/*
 DROP DATABASE IF EXISTS GroupUpDebug;
 CREATE DATABASE IF NOT EXISTS GroupUpDebug;
 USE GroupUpDebug;
+*/
 
 -- EventType(eventTypeId: int, category: char)
 CREATE TABLE EventType (
