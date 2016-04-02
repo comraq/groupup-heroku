@@ -99,3 +99,4 @@ app.run(function($rootScope, $location, SessionService, alertFactory) {
       $location.path("/Event");
   });
 });
+

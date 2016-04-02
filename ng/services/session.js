@@ -38,7 +38,7 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
                logAttempt = false;
                session.reject(reason);
              }
- 
+
            }.bind(this));
 
       return session.promise;
@@ -80,18 +80,18 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
       }).then(function successCallback(response) {
         this.sessionInfo = response.data;
         logAttempt = true;
-        logoutAttempt = false;
       }.bind(this));
     },
+
     logout: function() {
+
       return $http.get('/controller/login/doLogout').then(
            function successCallback(response) {
              this.sessionInfo = null;
              logAttempt = false;
-             logoutAttempt = true;
-             console.log(this.sessionInfo);
-             console.log(logoutAttempt);
            }.bind(this));
+
     }
+
   };
 });
