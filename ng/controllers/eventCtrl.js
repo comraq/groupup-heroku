@@ -29,9 +29,9 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
     this.searchCost;
     this.searchCostLogic;
     this.searchCostOperator;
-    this.searchDesctipion;
-    this.searchDesctipionLogic;
-    this.searchDesctipionOperator;
+    this.searchDesc;
+    this.searchDescLogic;
+    this.searchDescOperator;
     this.searchEventType;
     this.searchEventTypeLogic;
     this.searchEventTypeOperator;
@@ -55,6 +55,7 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
     this.sessionService = SessionService.sessionInfo;
     if ( this.sessionService ) {
         this.accountType = this.sessionService.accountType;
+        this.currentEmail = this.sessionService.email;
         this.canEdit = this.accountType == 1 || this.accountType == 2;
         this.isEventProvider = this.accountType == 1;
         this.isAdmin = this.accountType == 2;
@@ -71,14 +72,14 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
     };
 
     this.canSearchName = function () {
-        return ( !this.searchNameOperator && this.advancedSearch ) ||
+        return !this.searchNameOperator ||
             this.searchNameOperator == 'IS NOT NULL' || this.searchNameOperator ==
             'IS NULL';
     };
 
     this.canSearchTimeStart = function () {
         return !this.searchTimeStartLogic || !this.searchTimeStartOperator ||
-            this.searchTimeStartOperator == 'IS NOT NULL';
+            this.searchTimeStartOperator == 'IS NOT NULL' || this.searchTimeStartOperator == 'IS NULL';
     };
 
     this.canSearchTimeEnd = function () {
@@ -141,9 +142,9 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
             searchCost: this.searchCost,
             searchCostLogic: this.searchCostLogic,
             searchCostOperator: this.searchCostOperator,
-            searchDesctipion: this.searchDesctipion,
-            searchDesctipionLogic: this.searchDesctipionLogic,
-            searchDesctipionOperator: this.searchDesctipionOperator,
+            searchDesc: this.searchDesc,
+            searchDescLogic: this.searchDescLogic,
+            searchDescOperator: this.searchDescOperator,
             searchCreatedBy: this.searchCreatedBy,
             searchCreatedByLogic: this.searchCreatedByLogic,
             searchCreatedByOperator: this.searchCreatedByOperator
@@ -291,6 +292,11 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
     };
 
     this.deleteEvent = function deleteEvent( event ) {
+        if ( event.createdBy != this.currentEmail ) {
+            alertFactory.add( 'danger',
+                'You can only modify events you have created' );
+            return;
+        }
         var data = {
             eventName: event.eventName,
             timeStart: event.timeStart,
@@ -317,6 +323,12 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
     };
 
     this.modifyEvent = function () {
+
+        if ( originalEvent.createdBy != this.currentEmail ) {
+            alertFactory.add( 'danger',
+                'You can only modify events you have created' );
+            return;
+        }
         var data = {
             origEventName: originalEvent.eventName,
             origTimeStart: originalEvent.timeStart,
@@ -334,8 +346,8 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
             message: this.detailEvent.message,
             privateEvent: this.detailEvent.private
         }
-        this.detailEvent = false;
-        if ( this.detailEvent.timeStart >= this.detailEvent.timeEnd ) {
+
+        if ( new Date( data.timeStart ) >= new Date( data.timeEnd ) ) {
             alertFactory.add( 'danger',
                 'Time Start must be before time end' );
             return;
@@ -393,6 +405,7 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
     }
 
     this.viewDetails = function ( event ) {
+        this.editing = false;
         this.detailEvent = event;
     }
 

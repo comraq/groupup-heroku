@@ -5,6 +5,7 @@ class UpdateEvent extends Database{
 
 	function __construct(){
 		parent::__construct();
+		mysqli_report(MYSQLI_REPORT_ERROR);
 	}
 
 	function updateEvent($data){
@@ -22,7 +23,6 @@ class UpdateEvent extends Database{
 		$description = $data["eventDescription"];
 		$lat=$data["lat"];
 		$lon=$data["lng"];
-		//TODO Change this
 		$createdBy = $data["createdBy"];
 		$privateEvent = $data["privateEvent"];
 		
@@ -32,20 +32,24 @@ class UpdateEvent extends Database{
 		}
 
 		$updateSQL = "UPDATE `Event` SET eventName=?, lat=?, lon=?, timeStart=?, timeEnd=?, cost=?, description=? WHERE eventName = ? AND lat=? AND lon=? AND timeStart=? AND timeEnd=?";
-		$updateStmt = $this->conn->prepare($updateSQL);
-		ECHO $this->conn->error;
-		$updateStmt->bind_param('sddssdssddss', $eventName, $lat, $lon, $timeStart, $timeEnd, $cost, $description, $origEventName, $origLat, $origLon, $origTimeStart, $origTimeEnd);
-
-		if(!$updateStmt->execute()){
+		if(!$updateStmt = $this->conn->prepare($updateSQL)){
 			$result = array('data' => "There was an error deleting the event from the databse", 'code'=> 500);
-			$updateStmt->close();
 		}else{
-			$result = array('data' => TRUE, 'code'=> 200);
-			$this->disconnect();
-			return $result;
+			$updateStmt->bind_param('sddssdssddss', $eventName, $lat, $lon, $timeStart, $timeEnd, $cost, $description, $origEventName, $origLat, $origLon, $origTimeStart, $origTimeEnd);
+			if(!$updateStmt->execute()){
+				$result = array('data' => "There was an error deleting the event from the databse", 'code'=> 500);
+			}else{
+				if($updateStmt->affected_rows > 0){
+					$result = array('data' => TRUE, 'code'=> 200);
+				}else{
+					$result = array('data' => "Update was not successful".$this->conn->error, 'code'=> 500);
+				}
+			}
 		}
+		$updateStmt->close();
+		$this->disconnect();
+		return $result;
 	}
-
 	function startUpdateEvent(){
 		$reqMethod = $_SERVER['REQUEST_METHOD'];
 		if ($reqMethod == 'POST'){

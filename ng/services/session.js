@@ -1,7 +1,6 @@
 angular.module('groupUpApp').service("SessionService", function($http, $q){
   // To cache login status, avoids unnecessary HTTP requests to server
-  var logAttempt = true;
-  var logoutAttempt = true;
+  var logAttempt = false;
 
   return {
     sessionInfo: null,
@@ -19,50 +18,17 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
     },
 
     sessionSignedIn: function() {
-      var reason = "signedInReject";
 
-      if(this.sessionInfo)
-        return this.sessionInfo;
-
-      if (!logAttempt)
-        return $q.reject(reason);
-
-      var session = $q.defer();
+        var session = $q.defer();
       $http.get('controller/login/getSessionInfo').then(
            function successCallback(response) {
              // accountType: user = 0, eventprovider = 1, admin = 2
              this.sessionInfo = response.data;
-             if (response.data)
+             if (!response.data){
+              session.reject("Need to be logged in");
+             }else if (response.data){
                session.resolve(response.data);
-             else {
-               logAttempt = false;
-               session.reject(reason);
-             }
- 
-           }.bind(this));
-
-      return session.promise;
-    },
-
-    sessionSignedOut: function() {
-      var reason = "signedOutReject";
-
-      if(this.sessionInfo)
-        return $q.reject(reason);
-
-      if (!logoutAttempt)
-        return $q.reject(reason);
-
-      var session = $q.defer();
-      $http.get('controller/login/getSessionInfo').then(
-           function successCallback(response) {
-             // accountType: user = 0, eventprovider = 1, admin = 2
-             this.sessionInfo = response.data;
-             if (response.data)
-               session.reject(reason);
-             else
-               session.resolve(response.data);
-
+             } 
            }.bind(this));
 
       return session.promise;
@@ -80,18 +46,18 @@ angular.module('groupUpApp').service("SessionService", function($http, $q){
       }).then(function successCallback(response) {
         this.sessionInfo = response.data;
         logAttempt = true;
-        logoutAttempt = false;
       }.bind(this));
     },
+
     logout: function() {
+
       return $http.get('/controller/login/doLogout').then(
            function successCallback(response) {
              this.sessionInfo = null;
              logAttempt = false;
-             logoutAttempt = true;
-             console.log(this.sessionInfo);
-             console.log(logoutAttempt);
            }.bind(this));
+
     }
+
   };
 });
