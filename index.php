@@ -70,7 +70,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#/">GroupUp</a>
+        <p class="navbar-brand">GroupUp</p>
       </div>
 
       <div class="collapse navbar-collapse">
@@ -104,4 +104,3 @@
   </div>
 </body>
 </html>
-

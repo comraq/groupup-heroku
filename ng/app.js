@@ -15,6 +15,11 @@ var app = angular.module('groupUpApp', [
 
 app.config(function($routeProvider) {
     $routeProvider
+        .when("/", {
+            templateUrl: 'ng/views/signIn.html',
+            controller: 'SignInCtrl',
+            controllerAs: 'ctrl'
+        })
         .when("/SignIn", {
             templateUrl: 'ng/views/signIn.html',
             controller: 'SignInCtrl',
@@ -50,16 +55,6 @@ app.config(function($routeProvider) {
               }
             }
         })
-        .when("/Profile", {
-            templateUrl: 'ng/views/profile.html',
-            controller: 'ProfileCtrl',
-            controllerAs: 'ctrl',
-            resolve: {
-              sessionInfo: function(SessionService) {
-                return SessionService.sessionResolve();
-              }
-            }
-        })
         .when("/SignOut", {
             templateUrl: 'ng/views/signOut.html',
             controller: 'SignOutCtrl',
@@ -80,7 +75,6 @@ app.config(function($routeProvider) {
               }
             }
         })
-        .otherwise({ redirectTo: "/SignIn" });
 });
 
 /*

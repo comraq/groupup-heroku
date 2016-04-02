@@ -2,6 +2,7 @@ var app = angular.module('groupUpApp')
                  .controller('UserAccountCtrl', function($scope,
                                                          $http,
                                                          $location,
+                                                         $timeout,
                                                          alertFactory,
                                                          modalService,
                                                          sessionInfo) {
@@ -317,27 +318,17 @@ var app = angular.module('groupUpApp')
 			}.bind(this));
 		}
 
-
   // Event Provider Profile Controller
-  this.scope.providerCtrl = function ProviderCtrl() {
-    var verbose = false;
+//  this.scope.providerCtrl = function ProviderCtrl() {
+    var verbose = true;
 
-    this.url = "controller/profileController";
-    this.scope = $scope;
-    this.location = $location;
-
-    this.getAccEmail = function() {
-      return sessionInfo["email"];
-    };
-
-    this.getAccType = function() {
-      return sessionInfo["accountType"];
-    };
+    this.providerUrl = "controller/profileController";
 
     this.getUsersAndEvents = function getUsersAndEvents() {
       $http({
         method: "GET",
-        url: this.url + "/getUsersAndEvents?email=" + this.getAccEmail()
+        url: this.providerUrl + "/getUsersAndEvents?email="
+             + this.getAccEmail()
       }).then(function successCallback(res) {
         if (verbose) {
           console.log("getUsersAndEvents res: ");
@@ -359,7 +350,8 @@ var app = angular.module('groupUpApp')
     function getEventsByType() {
       $http({
         method: "GET",
-        url: this.url + "/getEventsByType?email=" + this.getAccEmail()
+        url: this.providerUrl + "/getEventsByType?email="
+             + this.getAccEmail()
       }).then(function successCallback(res) {
         if (verbose) {
           console.log("getEventsByType res: ");
@@ -388,11 +380,13 @@ var app = angular.module('groupUpApp')
       if (this.scope.typeView && !this.scope.types)
         getEventsByType.call(this);
  
-      console.log("inside providerCtrl:");
+/*
+      console.log("inside providerCtrl viewChanged:");
       console.log("this:");
       console.log(this);
       console.log("this.scope:");
       console.log(this.scope);
+*/
     };
 
     this.highlightsToggleChanged =
@@ -407,13 +401,17 @@ var app = angular.module('groupUpApp')
     }
 
     this.getUsersAndEvents();
-  }
+//  }
 
   // Initialization Methods for Account Partial View
   if (this.getAccType() == 0) {
     // If User is Currently Logged in
     this.getEvents();
     this.getInvitations();
+  } else if (this.getAccType() == 1) {
+    $timeout(function() {
+      angular.element('#provider-profile-tab a').trigger('click');
+    });
   }
 
   // Applicable to All Account Types
