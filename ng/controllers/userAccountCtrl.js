@@ -8,7 +8,7 @@ var app = angular.module('groupUpApp')
                                                          sessionInfo) {
   this.addUserUrl = "/controller/userGoesEvent/startUserGoesEvent";
   this.cancelUrl = "/controller/userGoesEvent/startCancelUserGoesEvent";
-  this.getProfileUrl = "/controller/account/user";
+  this.profileUrl;
   this.url;
   this.scope = $scope;
   this.dataLoading;
@@ -37,6 +37,13 @@ var app = angular.module('groupUpApp')
 	this.evePage = 0;
 	this.events = [];
 
+	if(this.getAccType() == 0){
+		this.profileUrl = "/controller/account/user";
+	}else if(this.getAccType() == 1){
+		this.profileUrl = "/controller/account/eventProvider";
+	}
+
+
 	this.checkAge = function checkAge(){
 		if (this.age >= 0){
 			return false;
@@ -54,15 +61,16 @@ var app = angular.module('groupUpApp')
 		$http({
 	        method: 'POST',
 	        data: data,
-	        url: this.getProfileUrl
+	        url: this.profileUrl
 	    	}).then(function successCallback(response) {
 	    		if (response.data){
 	    			var data = response.data.data[0];
 			    	this.firstName = data["firstName"];
 					this.lastName = data["lastName"];
 					this.phone = data["phone"];
-					this.age = data["age"];
-					
+					if(data["age"]){
+						this.age = data["age"];
+					}
 				}
 	    	}.bind(this), function errorCallback(response){
 	    		this.loadingAttend = false; 
@@ -70,7 +78,9 @@ var app = angular.module('groupUpApp')
 				alertFactory.add('danger', message);
 
 			}.bind(this));
+	console.log(this.profileUrl);
 	}
+
 
 	function loadEvents(eveJson){
 
@@ -166,7 +176,12 @@ var app = angular.module('groupUpApp')
 	};
 
 	this.updateProfile = function(){
-		this.url = "/controller/account/user";
+		if(this.getAccType() == 0){
+			this.profileUrl = "/controller/account/user";
+		}else if(this.getAccType() == 1){
+			this.profileUrl = "/controller/account/eventProvider";
+		}
+
 		this.dataLoading = true;
 		if(!validatePassword(this.aPassword, this.aRePassword)){
 			this.dataLoading = false;
@@ -185,7 +200,7 @@ var app = angular.module('groupUpApp')
 		$http({
 			method: 'POST',
 			data: data,
-			url: this.url,
+			url: this.profileUrl,
 		}).then(function successCallback(response){
 			alertFactory.add('success', 'Update Successful');
 			this.dataLoading = false;
@@ -200,7 +215,12 @@ var app = angular.module('groupUpApp')
 	};
 
 	this.updatePassword = function(){
-		this.url = "/controller/account/user";
+		if(this.getAccType() == 0){
+			this.updatePasswordUrl = "/controller/account/user";
+		}else if(this.getAccType() == 1){
+			this.updatePasswordUrl = "/controller/account/EventProvider";
+		}
+		
 		this.dataLoading = true;
 		if(!validatePassword(this.newPassword, this.rePassword)){
 			this.dataLoading = false;
@@ -219,7 +239,7 @@ var app = angular.module('groupUpApp')
 		$http({
 			method: 'POST',
 			data: data,
-			url: this.url,
+			url: this.updatePasswordUrl,
 		}).then(function successCallback(response){
 			alertFactory.add('success', 'Update Successful');
 			this.dataLoading = false;

@@ -240,7 +240,7 @@
             Valid Phone Number is required</span>
         </div>
 
-        <div class="form-group"
+        <div ng-hide="ctrl.getAccType() == 1" class="form-group"
           ng-class=
             "{
                'has-error': userProfile.age.$dirty
@@ -251,7 +251,8 @@
           <label for="updateAge">Age</label>
           <input type="number" name="age" id="updateAge"
             data-ng-model="ctrl.age" class="form-control"
-            placeholder="Age" required>
+            placeholder="Age"
+            ng-required="ctrl.getAccType() == 0">
           <span class="help-block"
             ng-show="userProfile.age.$dirty
                      && (userProfile.age.$error.required
