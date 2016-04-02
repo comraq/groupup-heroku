@@ -29,9 +29,9 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
     this.searchCost;
     this.searchCostLogic;
     this.searchCostOperator;
-    this.searchDesctipion;
-    this.searchDesctipionLogic;
-    this.searchDesctipionOperator;
+    this.searchDesc;
+    this.searchDescLogic;
+    this.searchDescOperator;
     this.searchEventType;
     this.searchEventTypeLogic;
     this.searchEventTypeOperator;
@@ -141,9 +141,9 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
             searchCost: this.searchCost,
             searchCostLogic: this.searchCostLogic,
             searchCostOperator: this.searchCostOperator,
-            searchDesctipion: this.searchDesctipion,
-            searchDesctipionLogic: this.searchDesctipionLogic,
-            searchDesctipionOperator: this.searchDesctipionOperator,
+            searchDesc: this.searchDesc,
+            searchDescLogic: this.searchDescLogic,
+            searchDescOperator: this.searchDescOperator,
             searchCreatedBy: this.searchCreatedBy,
             searchCreatedByLogic: this.searchCreatedByLogic,
             searchCreatedByOperator: this.searchCreatedByOperator

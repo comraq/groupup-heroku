@@ -57,16 +57,16 @@
                     </div>
                     <div class="input-group">
                         <div class="input-group-addon min-width-one-six-one">
-                            <select ng-model="ctrl.searchDesctiptionLogic">
+                            <select ng-model="ctrl.searchDescLogic">
                                <option ng-repeat="(name, op) in ctrl.logics" value="{{op}}">{{name}}</option>
                             </select>
                         </div>
                         <div class="input-group-addon min-width-one-six-six">
-                            <select class="min-width-one-forty" ng-model="ctrl.searchDesctiptionOperator" ng-change="ctrl.searchDesctiption=''">
+                            <select class="min-width-one-forty" ng-model="ctrl.searchDescOperator" ng-change="ctrl.searchDesc=''">
                                 <option ng-repeat="(name, op) in ctrl.stringOperators" value="{{op}}">{{name}}</option>
                             </select>
                         </div>
-                        <input ng-disabled="ctrl.canSearchDesc()" type="text" name="search" data-ng-model="ctrl.searchDesctiption " class="form-control " placeholder="Description" ng-required="ctrl.searchDesctiptionOperator=='LIKE' || ctrl.searchDesctiptionOperator=='NOT LIKE'">
+                        <input ng-disabled="ctrl.canSearchDesc()" type="text" name="search" data-ng-model="ctrl.searchDesc" class="form-control " placeholder="Description" ng-required="ctrl.searchDescOperator=='LIKE' || ctrl.searchDescOperator=='NOT LIKE'">
                     </div>
                     <div class="input-group">
                         <div class="input-group-addon min-width-one-six-one">
