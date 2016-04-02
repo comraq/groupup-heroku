@@ -37,10 +37,15 @@ var app = angular.module('groupUpApp')
 	this.evePage = 0;
 	this.events = [];
 
-	if(this.getAccType() == 0){
+	if(this.accType == 0){
 		this.profileUrl = "/controller/account/user";
-	}else if(this.getAccType() == 1){
+		this.updatePasswordUrl = "/controller/account/user";
+	}else if(this.accType == 1){
 		this.profileUrl = "/controller/account/eventProvider";
+		this.updatePasswordUrl = "/controller/account/EventProvider";
+	}else if(this.accType == 2){
+		this.profileUrl = "/controller/account/admin";
+		this.updatePasswordUrl = "/controller/account/admin";
 	}
 
 
@@ -176,12 +181,6 @@ var app = angular.module('groupUpApp')
 	};
 
 	this.updateProfile = function(){
-		if(this.getAccType() == 0){
-			this.profileUrl = "/controller/account/user";
-		}else if(this.getAccType() == 1){
-			this.profileUrl = "/controller/account/eventProvider";
-		}
-
 		this.dataLoading = true;
 		if(!validatePassword(this.aPassword, this.aRePassword)){
 			this.dataLoading = false;
@@ -215,11 +214,6 @@ var app = angular.module('groupUpApp')
 	};
 
 	this.updatePassword = function(){
-		if(this.getAccType() == 0){
-			this.updatePasswordUrl = "/controller/account/user";
-		}else if(this.getAccType() == 1){
-			this.updatePasswordUrl = "/controller/account/EventProvider";
-		}
 		
 		this.dataLoading = true;
 		if(!validatePassword(this.newPassword, this.rePassword)){

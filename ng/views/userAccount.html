@@ -240,7 +240,7 @@
             Valid Phone Number is required</span>
         </div>
 
-        <div ng-hide="ctrl.getAccType() == 1" class="form-group"
+        <div ng-hide="ctrl.getAccType() != 0 " class="form-group"
           ng-class=
             "{
                'has-error': userProfile.age.$dirty
