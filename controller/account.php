@@ -454,33 +454,6 @@ class Account extends Database
 			$this->response("Method Not Allowed", 405);
 		}
 	}
-
-	public function admin()
-	{
-		$method = $_SERVER['REQUEST_METHOD'];
-		if ($method == 'POST')
-		{
-			$table = "Admin";
-			$json = file_get_contents("php://input");
-			$dataObj = json_decode($json, TRUE);
-			if (isset($dataObj["profile"])){
-				
-				$data = $dataObj["profile"];
-				$this->updateProfile($table, $data);
-			}
-
-			if (isset($dataObj["getProfile"])){
-				$data = $dataObj["getProfile"];
-				$this->getProfile($table, $data);
-			}
-
-			if (isset($dataObj["password"])){
-				$data = $dataObj["password"];
-				$this->updatePassword($table, $data);
-			}
-		}else{
-			$this->response("Method Not Allowed", 405);
-		}
-	}
 }
+
 ?>

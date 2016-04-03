@@ -14,6 +14,8 @@ DROP TABLE IF EXISTS `HasInvitation`;
 DROP TABLE IF EXISTS `PrivateEvent`;
 DROP TABLE IF EXISTS `User`;
 DROP TABLE IF EXISTS `With`;
+DROP TABLE IF EXISTS `UserGoesEvent`;
+DROP TABLE IF EXISTS `EventProviderSendInvitation`;
 
 -- create tables 
 

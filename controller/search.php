@@ -21,7 +21,7 @@ class Search extends Database
 			exit;
 		}
         $this->connect();
-
+        $email = $data["email"];
         $searchName =$data["searchName"];
         $searchNameOperator = $data["searchNameOperator"];
         $searchTimeStart =$data["searchTimeStart"];
@@ -130,7 +130,7 @@ class Search extends Database
     R.createdBy AS createdBy,
     R.category AS category,
     SUM(CASE
-    WHEN uge.email = 'testUser1@test.com' THEN 1
+    WHEN uge.email = '".$email."' THEN 1
     ELSE 0
     END) AS going
     FROM
