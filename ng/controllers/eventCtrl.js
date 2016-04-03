@@ -283,17 +283,32 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
             if ( JSON.parse( response.data ) ) {
                 alertFactory.add( 'success',
                     'Event creation successful' );
+
+                this.eventName = '';
+                this.eventDescription = '';
+                this.eventCost = '';
+                this.timeStart = '';
+                this.timeEnd = '';
+                eventTypes.length = 0;
+                this.invitees = '';
+                this.message = '';
+                this.private = false;
+
+                this.newEventType.forEach( function ( event ) {
+                    event.selected = false;
+                } );
+
             } else {
                 alertFactory.add( 'danger',
                     'The server sent malformed data' );
             }
-        }, function errorCallback( response ) {
+        }.bind( this ), function errorCallback( response ) {
             alertFactory.add( 'danger', response.data );
         } );
     };
 
     this.deleteEvent = function deleteEvent( event ) {
-        if ( event.createdBy != this.currentEmail && this.accountType != 2) {
+        if ( event.createdBy != this.currentEmail && this.accountType != 2 ) {
             alertFactory.add( 'danger',
                 'You can only modify events you have created' );
             return;
@@ -325,7 +340,7 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
 
     this.modifyEvent = function () {
 
-        if ( originalEvent.createdBy != this.currentEmail && this.accountType != 2) {
+        if ( originalEvent.createdBy != this.currentEmail && this.accountType != 2 ) {
             alertFactory.add( 'danger',
                 'You can only modify events you have created' );
             return;
