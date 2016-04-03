@@ -23,7 +23,7 @@ class Authentication extends Database
 			return;
 		}
 		
-		$database = $db;
+		$table = $db;
 		$email = $data["email"];
 		$password = $data["password"];
 		$rePassword = $data["rePassword"];
@@ -81,11 +81,11 @@ class Authentication extends Database
 		}
 
 		// check User
-		$checkEmailSql = "select * from " . $database . " where email = ?";
-		$checkPhoneSql = "select * from " . $database . " where phone = ?";
+		$checkEmailSql = "select * from " . $table . " where email = ?";
+		$checkPhoneSql = "select * from " . $table . " where phone = ?";
 		
 		if ($escapeAge){
-			$checkNameAgeSql = "select * from " . $database . " where firstName = ? AND lastName = ? AND age = ?";
+			$checkNameAgeSql = "select * from " . $table . " where firstName = ? AND lastName = ? AND age = ?";
 			$stmtCheckNameAge = $this->conn->prepare($checkNameAgeSql);
 			$stmtCheckNameAge->bind_param('ssi', $escapeFName, $escapeLName, $escapeAge);
 			$stmtCheckNameAge->execute();
@@ -132,8 +132,8 @@ class Authentication extends Database
 		}
 
 		
-		$createSql = "insert into " . $database;
-		if ($database == "User")
+		$createSql = "insert into " . $table;
+		if ($table == "User")
 		{
 			$columns = "(email, password, firstname, lastname, phone, age) VALUES (?,?,?,?,?,?)";
 			$sql = $createSql.$columns;
@@ -148,7 +148,7 @@ class Authentication extends Database
 			$statusCode = 200;
 		}
 
-		if ($database == "EventProvider")
+		if ($table == "EventProvider")
 		{
 			$columns = "(email, password, firstname, lastname, phone) VALUES (?,?,?,?,?)";
 			$sql = $createSql.$columns;
@@ -163,7 +163,7 @@ class Authentication extends Database
 			$statusCode = 200;
 		}
 
-		if ($database == "Admin")
+		if ($table == "Admin")
 		{
 			$columns = "(email, password, firstname, lastname, phone) VALUES (?,?,?,?,?)";
 			$sql = $createSql.$columns;
@@ -187,10 +187,10 @@ class Authentication extends Database
 		$method = $_SERVER['REQUEST_METHOD'];
 		if ($method == 'POST')
 		{
-			$database = "User";
+			$table = "User";
 			$json = file_get_contents("php://input");
 			$data = json_decode($json,TRUE);
-			$result = $this->createUser($database, $data);
+			$result = $this->createUser($table, $data);
 			$this->response($result, 200);
 		}else{
 			$this->response("Method Not Allowed", 405);
@@ -202,10 +202,10 @@ class Authentication extends Database
 		$method = $_SERVER['REQUEST_METHOD'];
 		if ($method == 'POST')
 		{
-			$database = "EventProvider";
+			$table = "EventProvider";
 			$json = file_get_contents("php://input");
 			$data = json_decode($json, TRUE);
-			$result = $this->createUser($database, $data);
+			$result = $this->createUser($table, $data);
 			$this->response($result, 200);
 		}
 	}
@@ -215,19 +215,14 @@ class Authentication extends Database
 		$method = $_SERVER['REQUEST_METHOD'];
 		if ($method == 'POST')
 		{
-			$database = "Admin";
+			$table = "Admin";
 			$json = file_get_contents("php://input");
 			$data = json_decode($json, TRUE);
-			$result = $this->createUser($database, $data);
+			$result = $this->createUser($table, $data);
 			$this->response($result, 200);
 		}
 	}
 	
 }
-
-// $authentication = new Authentication();
-// $result = $authentication->register();
-
-// echo $result;
 
 ?>
