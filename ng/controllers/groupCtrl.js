@@ -210,8 +210,10 @@ var app = angular.module('groupUpApp')
       method: "GET",
       url: this.url + "/getGroups",
     }).then(function successCallback(res) {
-      if (verbose)
-        console.log("getGroups res: " + JSON.stringify(res));
+      if (verbose) {
+        console.log("getGroups res:");
+        console.log(JSON.parse(res));
+      }
 
       this.scope.groups = JSON.parse(res.data);
       if (this.dismissModal && this.scope.groups.length < origGroupsCount)
@@ -238,13 +240,15 @@ var app = angular.module('groupUpApp')
       method: "GET",
       url: this.url + "/getEvents?email=" + this.email
     }).then(function successCallback(res) {
-      if (verbose)
-        console.log("getEvents res: " + JSON.stringify(res));
- 
+      if (verbose) {
+        console.log("getEvents! res:");
+        console.log(JSON.parse(res.data));
+      }
+
       this.scope.events = JSON.parse(res.data).map(function (e, i, arr) {
         if ($routeParams.eventName == e.eventName
-            && $routeParams.lat == e.lat
-            && $routeParams.lon == e.lon
+            && parseFloat($routeParams.lat) == parseFloat(e.lat)
+            && parseFloat($routeParams.lon) == parseFloat(e.lon)
             && $routeParams.timeStart == e.timeStart
             && $routeParams.timeEnd == e.timeEnd) {
           // Route Params Matches an Event!
