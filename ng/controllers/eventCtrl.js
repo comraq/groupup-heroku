@@ -524,7 +524,7 @@ var app = angular.module( 'groupUpApp' ).controller( 'EventCtrl', function (
     var drawUserPostion = function drawUserPostion( bounds, map,
         userPosition ) {
         if ( userPosition ) {
-            $scope.positions.push( userPosition );
+
             var up = new google.maps.LatLng( userPosition.lat,
                 userPosition.lng );
             bounds.extend( up );
