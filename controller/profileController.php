@@ -32,14 +32,7 @@
                               E.lon = UE.lon and
                               E.timeStart = UE.timeStart and
                               E.timeEnd = UE.timeEnd
-                         left join PrivateEvent PE
-                           on E.eventName = PE.eventName and
-                              E.lat = PE.lat and
-                              E.lon = PE.lon and
-                              E.timeStart = PE.timeStart and
-                              E.timeEnd = PE.timeEnd
-                       where PE.eventName is null and
-                             E.createdBy = ?
+                       where E.createdBy = ?
                        group by E.eventName, E.lat, E.lon,
                                 E.timeStart, E.timeEnd";
 

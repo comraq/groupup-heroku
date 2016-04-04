@@ -202,7 +202,6 @@ var app = angular.module('groupUpApp')
 		}).then(function successCallback(response){
 			alertFactory.add('success', 'Update Successful');
 			this.dataLoading = false;
-			$location.path('/Account');
 
 		}.bind(this), function errorCallback(response){
 			var message = response.data.data;

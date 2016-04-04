@@ -462,7 +462,8 @@ class Account extends Database
 		{
 			$table = "Admin";
 			$json = file_get_contents("php://input");
-			$dataObj = json_decode($json, TRUE);
+			$dataObj = json_decode($json,TRUE);
+
 			if (isset($dataObj["profile"])){
 				
 				$data = $dataObj["profile"];
@@ -483,4 +484,5 @@ class Account extends Database
 		}
 	}
 }
+
 ?>
